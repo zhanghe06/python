@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta name="keywords" content="招聘,人才,网络招聘,简历,工作,找工作,求职,面试,应聘,跳槽,高薪,兼职,猎头,薪酬,薪资,培训,测评,人事,实习">
+    <meta name="description" content="智联招聘为求职者提供职位搜索,简历管理,职位定制,人才评测,培训信息等.为企业提供一站式专业人力资源服务,包括网络招聘,报纸招聘,校园招聘,猎头服务,招聘外包,企业培训以及人才测评等.">
+    <title>简历管理</title>
+    <link href="/css/new_v5/be.css" type="text/css" rel="stylesheet" />
+    <link href="/css/new_v5/my_nav.css" type="text/css" rel="stylesheet" />
+    <link href="http://img00.zhaopin.cn/2012/css/my/v5/email.css" type="text/css" rel="stylesheet" />
+    <link href="http://img00.zhaopin.cn/2012/css/my/v5/resumes.css" type="text/css" rel="stylesheet" />
+    <link href="http://img00.zhaopin.cn/2012/css/my/v5/common.css" type="text/css" rel="stylesheet" />
+    <link href="http://img01.zhaopin.cn/2014/c/css/Entrust/layer.css" type="text/css"
+        rel="stylesheet" />
+    <link href="http://img00.zhaopin.cn/2012/css/my/v5/jobsearch.css" type="text/css"
+        rel="stylesheet" />
+    <link href="http://img00.zhaopin.cn/2012/css/ui/jquery.zlzp.popupdiv.css" type="text/css"
+        rel="stylesheet" />
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/za/ga.js"></script>
+</head>
+<body>
+    
+<style type="text/css">
+#globalHeader{*zoom:1;*position:relative;*z-index:8;}
+#globalHeader,#globalHeader .site-logo,#globalHeader .nav-bar li,#globalHeader .nav-bar .l,#globalHeader .nav-bar .r,#globalHeader .nav-bar em:hover a,#globalHeader .nav-bar .mycurrent a{background-image:url(http://img00.zhaopin.com/new2011/head/images/spri.gif);}
+#globalHeader{height:63px;background-position:0 -111px;background-repeat:repeat-x;font-family:simsun;}
+#globalHeader .hd-wrapper{width:990px;margin:0 auto;position:relative;}
+#globalHeader .site-logo,#globalHeader .mobile-page,#globalHeader .hotline,#globalHeader .choosecity,#globalHeader .regin,#globalHeader .companyregin,#globalHeader #companyLoginregin,#globalHeader #companyLogining{position:absolute;color:#155fc9;font-size:12px;text-decoration:none;line-height:25px;top:5px;}
+#globalHeader .mobile-page,#globalHeader .hotline,#globalHeader .choosecity,#globalHeader .regin,#globalHeader .companyregin{background:url(http://img01.zhaopin.cn/new2011/head/images/headerbg0719.png) left center no-repeat;padding-left:10px;}
+#globalHeader .site-logo{width:175px;height:56px;top:0;left:30px;}
+#globalHeader .companyregin{right:410px;color:#e56100;font-weight:bold;}
+#globalHeader .hotline{right:273px;color:#848484;background:none;padding:0;}
+#globalHeader .choosecity{right:204px;}
+#globalHeader .mobile-page{right:135px;}
+
+#globalHeader #companyLoginregin,#globalHeader #companyLogining{right:0px;width:125px;height:30px;overflow:hidden;background:url(http://my.zhaopin.com/images/new_v4/newloginicon8.png) no-repeat;}
+#globalHeader #companyLoginregin{display:block;}
+#globalHeader #companyLogining{display:none;}
+#globalHeader #companyLoginregin a,#globalHeader #companyLogining a{color:#aa4106;font-size:12px;text-decoration:none;margin-left:8px;}
+#globalHeader #companyLoginregin #person-service{margin-right:8px;}
+#globalHeader #personname{display:block;position:absolute;left:0;top:0;width:65px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;height:25px;text-align:center}
+#globalHeader #personname{color:#aa4106;}
+#globalHeader #companyLogining  #personcheckout{position:absolute;right:17px;top:0;}
+#globalHeader .regin{background:none;padding:0;}
+#globalHeader .nav-bar{position:absolute;right:0;top:37px;font-size:14px;*width:758px!important;}
+#globalHeader .nav-bar li{float:left;height:26px;background-position:154px -177px;overflow:hidden;width:87px;*width:86px;}
+#globalHeader .nav-bar li.minwidth{width:60px;}
+#globalHeader .nav-bar em{display:block;margin-top:2px;}
+#globalHeader .nav-bar em a,#globalHeader .nav-bar em span{float:left;height:25px;}
+#globalHeader .nav-bar .nav-first{background-position:0 -175px;width:3px;}
+#globalHeader .nav-bar .nav-last{background-position:-155px -175px;width:3px;}
+#globalHeader .nav-bar a{padding:0 10px;color:white;text-decoration:none;line-height:23px;font-weight:bold;}
+#globalHeader .nav-bar a:hover{color:#d7e6fc;}
+#globalHeader .nav-bar .l,#globalHeader .nav-bar .r{width:3px;background-position:154px -179px;}
+#globalHeader .nav-bar .mycurrent a,#globalHeader .nav-bar .mycurrent a:hover,#globalHeader .nav-bar .mycurrent em:hover a{background-position:-4px -203px;color:#06c;}
+#globalHeader .nav-bar .mycurrent .l,#globalHeader .nav-bar .mycurrent em:hover .l{background-position:0 -203px;}
+#globalHeader .nav-bar .mycurrent .r,#globalHeader .nav-bar .mycurrent em:hover .r{background-position:-155px -203px;}
+#globalHeader .nav-bar em:hover .l{background-position:0px -306px;}
+#globalHeader .nav-bar em:hover .r{background-position:-155px -306px;}
+#globalHeader .nav-bar em:hover a{background-position:-4px -306px;}
+#globalHeader #loginNwid{position:absolute;top:35px;right:44px;border:1px solid #bdbdbd;background-color:#a6cbff;width:228px;border-radius:3px;display:none;z-index:10;}
+#globalHeader #loginNwid form{margin:0;}
+#loginNwid h2{height:34px;line-height:34px;color:#0057cf;text-align:center;font-weight:bold;font-size:14px;background:url(http://img01.zhaopin.cn/new2011/head/images/headerbg0721.png) left top repeat-x;margin:0;}
+#loginNwid h2 #loginNcolse{position:absolute;top:5px;right:5px;display:block;width:16px;height:16px;}
+#loginNwid .loginNForm{margin:0 2px 2px 2px;background-color:#fff;padding:20px 10px 10px 10px;font-size:12px;}
+#loginNwid .loginNForm a{color:#155FC9;text-decoration:none;}
+#loginNwid .loginNFormInput{height:25px;line-height:25px;width:195px;border-width:1px;border-style:solid;border-color:#c3c3c3 #e8e8e8 #e8e8e8 #c3c3c3;background-color:#f1f1f1;margin:0 0 0px 0;padding-left:5px;color:#666;vertical-align:top;}
+#loginNwid .loginNFormBtn{background:url(http://img01.zhaopin.cn/new2011/head/images/btn0722.png) no-repeat;width:70px;height:28px;border:0;cursor:pointer;vertical-align:middle;}
+#hrimg{vertical-align:top;}
+#loginNwid .loginNformcb{vertical-align:-3px;}
+#loginNwid .validCode{width:75px;margin-right:2px;}
+#passwordtxt{width:195px;height:25px;line-height:25px;color:#666666;position:absolute;left:18px;top:105px;font-size:12px;cursor:text; text-align:left;}
+#loginNwid .errorstyle{background: url(http://myimg.zhaopin.com/images/register/MsgError.gif) no-repeat scroll 4px 2px #FFF3EF;border: 1px solid #FF6610;color: #333333;line-height: 22px;margin-bottom:4px;padding: 0 0 0 24px;width: 173px;display:none;}
+#loginNwid .errorbox{padding:10px 0;_height:1px;}
+#loginNwid #yanzm a{position:relative;display:inline-block;padding-right:40px;}
+#loginNwid #yanzm a span{position:absolute;right:0;top:6px;}
+#globalHeader .backnone{ background:none;}
+</style>
+<div id="globalHeader">
+	<div class="hd-wrapper">
+    <a href="http://www.zhaopin.com/" class="site-logo" title="智联招聘首页"></a>
+		<a class="companyregin backnone " href="http://rd2.zhaopin.com/portal/myrd/regnew.asp" onclick="recordOutboundLink(this,'addnewlink','compuser')" target="_blank"> <img src="http://img02.zhaopin.cn/2014/common/img/companuserbtn.png" border="0" onMouseOver="this.src='http://img02.zhaopin.cn/2014/common/img/companuserbtnhover.png'" onMouseOut="this.src='http://img02.zhaopin.cn/2014/common/img/companuserbtn.png'" /></a><span class="hotline">服务热线&nbsp;400-885-9898</span><a class="choosecity" href="http://www.zhaopin.com/citymap.html" onclick="recordOutboundLink(this,'addnewlink','choosecity')" target="_blank">选择城市</a><a class="mobile-page" href="http://images.zhaopin.com/2012/other/mobile/mobile.html" onclick="recordOutboundLink(this,'addnewlink','mobilejob')" target="_blank">手机求职</a>
+		<div id="companyLoginregin">
+			<a href="#" id="person-service" rel="nofollow">个人登录</a><a href="http://passport.zhaopin.com/account/register" onclick="recordOutboundLink(this,'addnewlink','personregister')" rel="nofollow">免费注册</a></div>
+		<div id="companyLogining">
+			<span id="personname" title="">test</span><a href="http://passport.zhaopin.com/account/logout" id="personcheckout" onclick="recordOutboundLink(this,'addnewlink','personexit')">退出</a></div>
+		<div class="nav-bar">
+			<ul>
+				<li class="nav-first">
+					&nbsp;</li>
+				<li class="minwidth">
+                <em>
+                    <span class="l"></span>
+					<a href="http://www.zhaopin.com/">首页</a>
+                    <span class="r"></span>
+                    </em></li>
+                    
+				<li class="mycurrent">
+					<em>
+                     <span class="l"></span>
+                    <a href="http://my.zhaopin.com/">简历中心</a>
+                     <span class="r"></span>
+                    </em></li>
+				<li >
+					<em>
+                     <span class="l"></span>
+                    <a href="http://sou.zhaopin.com/">职位搜索</a>
+                     <span class="r"></span>
+                    </em></li>
+				<li>
+					<em>
+                     <span class="l"></span>
+                    <a href="http://student.zhaopin.com/" target="_blank">校园招聘</a>
+                     <span class="r"></span>
+                    </em></li>
+                    <li>
+					<em>
+                     <span class="l"></span>
+                    <a href="http://whitecollar.zhaopin.com/">高端招聘</a>
+                     <span class="r"></span>
+                    </em></li>
+
+				<li>
+					<em>
+
+                     <span class="l"></span>
+                    <a href="http://edu.zhaopin.com/" onclick="recordOutboundLink(this,'addnewlink','educchannal')" target="_blank">智联教育</a>
+                     <span class="r"></span>
+                    </em></li>
+				<li>
+					<em>
+                     <span class="l"></span>
+                    <a href="http://www.zhaopin.com/jobseeker/index_industry.html" target="_blank">行业求职</a>
+                     <span class="r"></span>
+                    </em></li>
+				
+				<li>
+					<em>
+                     <span class="l"></span>
+                    <a href="http://article.zhaopin.com/">求职指导</a>
+                     <span class="r"></span>
+                    </em></li>
+				<li>
+					<em>
+                     <span class="l"></span>
+                    <a href="http://ceping.zhaopin.com/" target="_blank">智联测评</a>
+                     <span class="r"></span>
+                    </em></li>
+				<li class="nav-last">
+					&nbsp;</li>
+			</ul>
+		</div>
+		<!--登录弹窗-->
+		<div id="loginNwid">
+			<h2>
+				登录<a href="#" id="loginNcolse"><img border="0" src="http://img01.zhaopin.cn/new2011/head/images/close0722.png" /></a></h2>
+			<div class="loginNForm">
+				<form action="#" id="">
+					<input class="loginNFormInput" id="loginname" name="nloginname" placeholder="输入手机号/邮箱" type="text" />
+					<div class="errorbox">
+						<div class="errorstyle" id="error3">
+							请输入正确的手机号或邮箱！</div>
+						<div class="errorstyle" id="error5">
+							用户名不存在！</div>
+					</div>
+					<input class="loginNFormInput" id="password" name="npassword" placeholder="输入密码" type="password" />
+					<div id="yanzm" style="display:none;margin-top:20px">
+						<span class="logval"><input class="validCode loginNFormInput" id="newvalidate" maxlength="4" name="newvalidate" placeholder="输入验证码" required size="4" tabindex="3" type="text" /></span><a href="#" id="hrimg" onclick="ZPIDC.applyjob.freshValidate('newvimg');"><img border="0" height="23" id="newvimg" src="" title="看不清？点击更换" width="63" /><span>换一张</span></a></div>
+					<div class="errorbox">
+						<div class="errorstyle" id="error4">
+							请正确输入密码！</div>
+						<div class="errorstyle" id="error1">
+							请输入用户名和密码！</div>
+						<div class="errorstyle" id="error2">
+							请正确输入验证码！</div>
+					</div>
+					<input class="loginNFormBtn" type="button" />&nbsp;<input checked="checked" class="loginNformcb" type="checkbox" />&nbsp;自动登录&nbsp;<a href="http://passport.zhaopin.com/findpassword/email/step1" target="_blank">忘记密码</a></form>
+			</div>
+		</div>
+	</div>
+</div>
+<script src="http://img02.zhaopin.cn/2014/common/js/zpidc.utils.js?version=20150402"></script>
+<script src="http://img01.zhaopin.cn/2014/common/js/zpidc.login.js"></script>
+<script type="text/javascript">
+if (document.all){
+window.attachEvent('onload',widfn);
+}
+else{
+window.addEventListener('load', widfn,false);
+}
+function  widfn(){
+(function(){
+    var loginNcolse = document.getElementById("loginNcolse") ;
+    var loginNwid = document.getElementById("loginNwid") ;
+    $(document).click(function(e){
+        if ($(e.target).closest("#loginNwid").length || $(e.target).closest("#person-service").length ){
+            return;
+        }
+        loginNwid.style.display = 'none' ;
+    });
+
+    loginNcolse.onclick = function(){
+        loginNwid.style.display = 'none' ;
+    }
+    ;$(".loginNFormInput").focus(function(){
+        $(".errorstyle").hide();
+    });
+    if(document.all){
+        $("#loginname").val("输入手机号/邮箱");
+        $("#loginname").focus(function(){
+            if($(this).val() == '输入手机号/邮箱'){$(this).val('');}
+        }).blur(function(){
+            if($(this).val() == ''){$(this).val('输入手机号/邮箱');}
+        });
+        function passwordfn(){
+            if($("#password").val() == ''){
+                if($("#passwordtxt").length<1){$("#loginNwid").append('<div id="passwordtxt">输入密码</div>');}
+                $("#passwordtxt").show();
+                $("#passwordtxt").focus(function(){
+                    $("#passwordtxt").hide();
+                    $("#password").focus();
+                });
+            }
+        }
+        passwordfn();
+        $("#password").focus(function(){$("#passwordtxt").hide()}).blur(passwordfn);
+    }
+
+})();
+    window.zlzpUtils = {};
+    (function(i) {
+        i.cookie = function(i, m, q) {
+            if (1 < arguments.length && "[object Object]" !== "" + m) {
+                q = jQuery.extend({},
+                q);
+                if (null === m || void 0 === m) q.expires = -1;
+                if ("number" === typeof q.expires) {
+                    var h = q.expires,
+                    k = q.expires = new Date;
+                    k.setDate(k.getDate() + h);
+                }
+                m = "" + m;
+                return document.cookie = [encodeURIComponent(i), "=", q.raw ? m: encodeURIComponent(m), q.expires ? "; expires=" + q.expires.toUTCString() : "", q.path ? "; path=" + q.path: "", q.domain ? "; domain=" + q.domain: "", q.secure ? "; secure": ""].join("");
+            }
+            q = m || {};
+            k = q.raw ?
+            function(h) {
+                return h
+            }: decodeURIComponent;
+            return (h = RegExp("(?:^|; )" + encodeURIComponent(i) + "=([^;]*)").exec(document.cookie)) ? k(h[1]) : null;
+        }
+    })(jQuery);
+    //初始化头
+    ZPIDC.applyjob.LoginInHeadShowHtml();
+    $("#person-service").click(function(){
+        $("#loginNwid").show();
+        try{ recordOutboundLink(this,'addnewlink','personlogin');}catch(e){}
+    });
+    $(".loginNFormBtn").click(function(){
+        ZPIDC.applyjob.LoginInHead();
+    });
+    $("#personcheckout").click(function(){
+        ZPIDC.applyjob.LoginoutHeadHtml();
+    });
+}
+</script>
+
+ <script language="javascript" type="text/javascript" src="http://my.zhaopin.com/js/new_v4/regFormVal.js"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var arr1 = $(".nav_listmain a");
+        var arr2 = $(".nav_listmain_1 a");
+        var arr3 = $("#hd2011mainNav2 a");
+        for (i in arr1) {
+            arr1[i].href = arr1[i].href + "?r=" + Math.random();
+        }
+        for (i in arr2) {
+            arr2[i].href = arr2[i].href + "?r=" + Math.random();
+        }
+        for (i in arr3) {
+            arr3[i].href = arr3[i].href + "?r=" + Math.random();
+        }
+
+        var mpi_a = $("#mpi_a");
+        mpi_a[0].href = mpi_a[0].href + "?r=" + Math.random();
+    }
+</script>
+<!---导航下拉--->
+<div class="nav_listmain">
+    <div class="nav_title">
+        <div class="nav_list nav_a">
+            简历管理</div>
+        <div class="nav_list_icon1">
+        </div>
+    </div>
+    <div class="nav_list_content">
+        <a target="_top" class="emailBiao" href="http://my.zhaopin.com/myzhaopin/resume_list.asp">
+            简历管理</a></div>
+    <!--   <div class="nav_list_content"><a target="_top" class="emailQian" href="http://my.zhaopin.com/myzhaopin/resume_hits.asp">谁看了简历</a></div>-->
+    <div class="nav_list_content">
+        <a target="_top" class="resumes" href="http://my.zhaopin.com/myzhaopin/job_letter.asp">
+            求职信管理</a></div>
+</div>
+<div class="nav_listmain_1">
+    <div class="nav_title">
+        <div class="nav_list nav_a">
+            申请与反馈</div>
+        <div class="nav_list_icon1">
+        </div>
+    </div>
+    <div class="nav_list_content">
+        <a target="_top" onclick="dyweTrackEvent('Cfeedback','COpening07')" href="http://i.zhaopin.com/PositionRecord/jobpostrecord/JobHistory">
+            我的投递记录</a></div>
+    <div class="nav_list_content">
+        <a target="_top" href="http://my.zhaopin.com/myzhaopin/jobmng_maillist.asp">人事经理来信</a></div>
+</div>
+<div id="hd2011mainNav2">
+    <div id="hd2011mainNav2-Box">
+        <ul>
+            <li><a href="http://my.zhaopin.com/myzhaopin/resume_index.asp">我的智联</a></li>
+            <li id="resume_li_mng">
+                <div class="navBody1">
+                    <div class="nav_list">
+                        简历管理</div>
+                    <div class="nav_list_icon">
+                    </div>
+                </div>
+            </li>
+            <li><a href="http://i.zhaopin.com/PositionSearcher/Searcher/JobSearch">搜索与订阅</a></li>
+            <li><a href="http://my.zhaopin.com/myzhaopin/jobmng_fav.asp">职位收藏夹</a></li>
+            <li id="apply_li">
+                <div class="navBody2">
+                    <div class="nav_list">
+                        申请与反馈</div>
+                    <div class="nav_list_icon">
+                    </div>
+                </div>
+            </li>
+            <li><a href="http://i.zhaopin.com/Recommend/JobRecommend/History">职位推荐</a></li>
+            
+        </ul>
+        <div class="hd201_listBody">
+     <!--       <a href="http://i.zhaopin.com/Extend/jobequipment/index" target="_black">
+                <img src="http://i.zhaopin.com/Content/images/freeicon.png" class="free-icon" />求职装备></a>-->
+            <a href="http://article.zhaopin.com/payquery/index.do" target="_black">薪酬报告></a>
+            <a href="http://ceping.zhaopin.com" target="_black">职业测评></a>
+        </div>
+    </div>
+</div>
+<div id="guild">
+    <div>
+        <strong>&nbsp;&nbsp;&nbsp;王大海，您好！</strong>&nbsp;&nbsp;&nbsp;<a
+            id="mpi_a" href="person_info.asp">[修改个人信息]</a>&nbsp;&nbsp;&nbsp;<a href="#" id="emailChange">[修改邮箱]</a>&nbsp;&nbsp;&nbsp;<a
+                href="#" id="mobileChange">[修改手机]</a>&nbsp;&nbsp;&nbsp;<a href="#" id="passwordChange">[修改我的密码]</a>&nbsp;&nbsp;&nbsp;<a
+                    href="http://my.zhaopin.com/help/helpAll.html">[帮助]</a>&nbsp;&nbsp;&nbsp;<a href="/loginmgr/logout.asp">[退出]</a>
+    </div>
+    
+</div>
+<!--修改邮箱-->
+<div id="newwid2" class="newwidstyle">
+    <form name="regform" id="regform" method="post" action="#">
+    <h2>
+        修改邮箱<span class="newwidclose close"></span></h2>
+    <input type="hidden" id="uid" value="0" />
+    <input type="hidden" id="emailOld" value="2627498748@qq.com" />
+    <input type="hidden" id="loginNameOld" value="2627498748@qq.com" />
+    <div class="powerinfo2">
+        <table>
+            <tr>
+                <th>
+                    当前邮箱
+                </th>
+                <td id="oldemail">
+                    2627498748@qq.com
+                </td>
+            </tr>
+            <tr>
+                <th valign="top">
+                    新邮箱地址
+                </th>
+                <td valign="top">
+                    <div class="emailaddrr">
+                        <input type="text" class="" name="email" id="email" /><input type="hidden" name="istest"
+                            id="istest" value="0"></div>
+                    <span id="email_info"></span>
+                </td>
+            </tr>
+            <tr>
+                <th>
+                </th>
+                <td class="msgtxt_email">
+                    邮箱用于登录、找回密码、接收HR来信。修改成功后，请使用新邮箱登录智联。
+                </td>
+            </tr>
+            <tr>
+                <th>
+                </th>
+                <td>
+                    <input type="button" class="nextstepbtn" id="nextstepbtn" /><input type="button"
+                        class="cancelbtn close" />
+                </td>
+            </tr>
+        </table>
+    </div>
+    </form>
+</div>
+
+    <div class="emailAll">
+        <!-- <div id="guild">
+	   <div>
+	     <strong> &nbsp;&nbsp;&nbsp;，您好！欢迎您再次登录我的智联。</strong>&nbsp;&nbsp;&nbsp;<a href="person_info.asp">[修改个人信息]</a>&nbsp;&nbsp;&nbsp;<a href="person_pass.asp">[修改我的密码]</a>&nbsp;&nbsp;&nbsp;<a href="http://my.zhaopin.com/myzhaopin/edm_index.asp">[邮件服务]</a>&nbsp;&nbsp;&nbsp;<a target="_blank" href="http://my.zhaopin.com/help/helpAll.html">[帮助]</a>&nbsp;&nbsp;&nbsp;<a href="/loginmgr/logout.asp">[退出]</a>
+	   </div>
+	   <span></span>
+	</div>-->
+        <div class="emailAll_1">
+            <div class="email_body">
+                <div class="email_left">
+                    <div class="emailTab current">
+                        <a class="emailBiao" href="http://my.zhaopin.com/myzhaopin/resume_list.asp">简历管理</a></div>
+                    <!--		 <div class="emailTab"><a class="emailQian" href="http://my.zhaopin.com/myzhaopin/resume_hits.asp">谁看了简历</a></div>-->
+                    <div class="emailTab">
+                        <a class="resumes" href="http://my.zhaopin.com/myzhaopin/job_letter.asp">求职信管理</a></div>
+                </div>
+                <div class="email_right">
+                    <div class="email_main">
+                        <div class="email_title">
+                            <div class="email_title_left">
+                                <div class="resumes_title_button">
+                                    <div class="resumestips_1" id="createNewResume">
+                                    </div>
+                                    <a href="http://my.zhaopin.com/myzhaopin/resume_baseinfo.asp?resume_type=0">创建标准简历</a>
+                                </div>
+                                <!--bu ke chuangjian classname .resumes_title_buttondisable-->
+                                <!--<div class="resumes_title_" id="createAttaResume" style="display:" >-->
+                                <div class="resumes_title_button" id="createAttaResume">
+                                    <div class="resumestips_6">
+                                    </div>
+                                    <a href="http://my.zhaopin.com/myzhaopin/resume_baseinfo.asp?resume_type=2">创建附件简历</a>
+                                </div>
+                                共可创建6份，还可创建4份简历。
+                            </div>
+                        </div>
+                        <div class="email_list_resumes">
+                            <div class="list_title">
+                                <div class="email4 resumes1">
+                                    更新日期</div>
+                                <div class="email4 resumes2">
+                                    语言版本</div>
+                                <div class="email4 resumes3">
+                                    简历名称</div>
+                              <!--  <div class="email4 resumes4">
+                                    <div class="resumes4_1" style="margin-top: 5px;">
+                                        谁看了</div>
+                                    <div class="resumes4_1">
+                                        简历</div>
+                                </div>-->
+                                <div class="email4 resumes5">
+                                    刷新</div>
+                                <div class="email4 resumes6">
+                                    修改</div>
+                                <div class="email4 resumes7">
+                                    预览</div>
+                                <div class="email4 resumes8">
+                                    公开设置</div>
+                                <div class="email4 resumes9">
+                                    <div class="resumes9_1" style="margin-top: 5px;">
+                                        默认</div>
+                                    <div class="resumes9_1">
+                                        简历设置</div>
+                                </div>
+                                <div class="email4 resumes10">
+                                    委托投递</div>
+                                <div class="email4 resumes11">
+                                    更多操作</div>
+                            </div>
+                            <div id="219661319_C"   class="emailL_tab emailL_tab_bgcolor" resume_id="ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1" >
+					<div class="email5 tab9">2015-3-30</div>
+					<div class="email5 resumes13">
+                          <div class="resumes_select" resume_id="219661319">
+						      <div class="select_title">中文</div>
+							  <div class="select_effect"></div>
+						  </div>
+					</div> 
+
+					<div class="email5 resumes3">
+					     <div class="resumes14"><a title="王大海个人简历" target="_blank" href="resume_preview_edit.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1&LocationUrl=resume_list">王大海个人简历</a></div>
+						 <div class="resumes_wzd">
+						     <div class="wzd_left">完整度</div>
+							 <div class="wzd_center">
+							    <div class="wzd_img"   percent="90"></div>
+							 </div>
+							 <div class="wzd_right">90%</div>
+						 </div>
+						
+					</div>
+					<!--<div class="email5 resumes4"><a href='resume_hits.asp?rid=219661319'  style='color:#f60'>35</a></div>-->
+					<div class="email5 resumes5">
+					   <div class="resumes_img"><a class="resumesIcon iconHover_1" href="javascript:void(0);" url="resume_publish.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1"></a></div>
+					</div>
+					<div class="email5 resumes6">
+					   <div class="resumes_img1"><a class="resumesIcon iconHover_2" title="简历修改" href="resume_preview_edit.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1&LocationUrl=resume_list"></a></div>
+					</div>
+					<div class="email5 resumes7">
+					   <div class="resumes_img1"><a href="resume_preview.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1&LocationUrl=resume_list" class="resumePreview resumesIcon iconHover_3" title="简历预览"></a></div>
+					   <div class="resumes_nolook"></div>
+					</div>
+					<div class="email5 resumes8"><a href="javascript:void(0);" class="openSetno">保密</a></div>
+					<div class="email5 resumes9"><a href="javascript:void(0);" class="shezhimr">设置默认</a></div>
+					<div class="email5 resumes10"><a href="javascript:void(0);" class="comDeliver">立即委托</a></div>
+					<div class="email5 resumes11">
+					    <div class="resumes15">
+						      <div class="select_title_1">更多操作</div>
+							  <div class="select_effect"></div>
+						</div>
+					</div>
+</div>
+<div  id="219661319_E" style="display:none" class="emailL_tab emailL_tab_bgcolor" resume_id="ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=2" >
+					<div class="email5 tab9">2015-3-30</div>
+					<div class="email5 resumes13">
+                          <div class="resumes_select" resume_id="219661319">
+						      <div class="select_title">英文</div>
+							  <div class="select_effect"></div>
+						  </div>
+					</div> 
+					<div class="email5 resumes3">
+					     <div class="resumes14"><a title="王大海个人简历" target="_blank" href="resume_baseinfo.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=1&LocationUrl=resume_list">王大海个人简历</a></div>
+						 <div class="resumes_wzd">
+						     <div class="wzd_left">完整度</div>
+							 <div class="wzd_center">
+							    <div class="wzd_img" percent="10"></div>
+							 </div>
+							 <div class="wzd_right">10%</div>
+						 </div>
+						
+					</div>
+					<!--<div class="email5 resumes4"><a href='resume_hits.asp?rid=219661319'  style='color:#f60'>35</a></div>-->
+					<div class="email5 resumes5">
+					   <div class="resumes_img"><a class="resumesIcon iconHover_1" href="javascript:void(0)" url="resume_publish.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=2" ></a></div>
+					</div>
+					<div class="email5 resumes6">
+					   <div class="resumes_img1"><a class="resumesIcon iconHover_2" title="简历修改" href="resume_baseinfo.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=2&LocationUrl=resume_list"></a></div>
+					</div>
+					<div class="email5 resumes7">
+					   <div class="resumes_img1"><a href="resume_preview.asp?ext_id=JM349012478R90250000000&resume_id=219661319&Version_Number=1&language_id=2&LocationUrl=resume_list" class="resumePreview resumesIcon iconHover_3" title="简历预览"></a></div>
+					   <div class="resumes_nolook"></div>
+					</div>
+					<div class="email5 resumes8"><a href="javascript:void(0);" class="openSetno">保密</a></div>
+					<div class="email5 resumes9"><a href="javascript:void(0);" class="shezhimr">设置默认</a></div>
+					<div class="email5 resumes10"><a href="javascript:void(0);" class="comDeliver">立即委托</a></div>
+					<div class="email5 resumes11">
+					    <div class="resumes15">
+						      <div class="select_title_1">更多操作</div>
+							  <div class="select_effect"></div>
+						</div>
+					</div>
+				 </div>
+<div id="220044925_C"   class="emailL_tab emailL_tab_bgcolor" resume_id="ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1" >
+					<div class="email5 tab9">2015-3-30</div>
+					<div class="email5 resumes13">
+                          <div class="resumes_select" resume_id="220044925">
+						      <div class="select_title">中文</div>
+							  <div class="select_effect"></div>
+						  </div>
+					</div> 
+
+					<div class="email5 resumes3">
+					     <div class="resumes14"><a title="销售代表 0年 上海" target="_blank" href="resume_preview_edit.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1&LocationUrl=resume_list">销售代表 0年 上海</a></div>
+						 <div class="resumes_wzd">
+						     <div class="wzd_left">完整度</div>
+							 <div class="wzd_center">
+							    <div class="wzd_img"   percent="70"></div>
+							 </div>
+							 <div class="wzd_right">70%</div>
+						 </div>
+						
+					</div>
+					<!--<div class="email5 resumes4">0</div>-->
+					<div class="email5 resumes5">
+					   <div class="resumes_img"><a class="resumesIcon iconHover_1" href="javascript:void(0);" url="resume_publish.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1"></a></div>
+					</div>
+					<div class="email5 resumes6">
+					   <div class="resumes_img1"><a class="resumesIcon iconHover_2" title="简历修改" href="resume_preview_edit.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1&LocationUrl=resume_list"></a></div>
+					</div>
+					<div class="email5 resumes7">
+					   <div class="resumes_img1"><a href="resume_preview.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1&LocationUrl=resume_list" class="resumePreview resumesIcon iconHover_3" title="简历预览"></a></div>
+					   <div class="resumes_nolook"></div>
+					</div>
+					<div class="email5 resumes8"><a href="javascript:void(0);" class="openSetno">开放</a></div>
+					<div class="email5 resumes9"><a href="javascript:void(0);" class="shezhimr">设置默认</a></div>
+					<div class="email5 resumes10"><a href="javascript:void(0);" class="comDeliver">立即委托</a></div>
+					<div class="email5 resumes11">
+					    <div class="resumes15">
+						      <div class="select_title_1">更多操作</div>
+							  <div class="select_effect"></div>
+						</div>
+					</div>
+</div>
+<div  id="220044925_E" style="display:none" class="emailL_tab emailL_tab_bgcolor" resume_id="ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=2" >
+					<div class="email5 tab9">2015-3-30</div>
+					<div class="email5 resumes13">
+                          <div class="resumes_select" resume_id="220044925">
+						      <div class="select_title">英文</div>
+							  <div class="select_effect"></div>
+						  </div>
+					</div> 
+					<div class="email5 resumes3">
+					     <div class="resumes14"><a title="销售代表 0年 上海" target="_blank" href="resume_add_language.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=1&LocationUrl=resume_list">销售代表 0年 上海</a></div>
+						 <div class="resumes_wzd">
+						     <div class="wzd_left">完整度</div>
+							 <div class="wzd_center">
+							    <div class="wzd_img" percent="0"></div>
+							 </div>
+							 <div class="wzd_right">0%</div>
+						 </div>
+						
+					</div>
+					<!--<div class="email5 resumes4">0</div>-->
+					<div class="email5 resumes5">
+					   <div class="resumes_img"><a class="resumesIcon iconHover_1" href="javascript:void(0)" url="resume_publish.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=2" ></a></div>
+					</div>
+					<div class="email5 resumes6">
+					   <div class="resumes_img1"><a class="resumesIcon iconHover_2" title="简历修改" href="resume_add_language.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=2&LocationUrl=resume_list"></a></div>
+					</div>
+					<div class="email5 resumes7">
+					   <div class="resumes_img1"><a href="resume_preview.asp?ext_id=JM349012478R90250001000&resume_id=220044925&Version_Number=1&language_id=2&LocationUrl=resume_list" class="resumePreview resumesIcon iconHover_3" title="简历预览"></a></div>
+					   <div class="resumes_nolook"></div>
+					</div>
+					<div class="email5 resumes8"><a href="javascript:void(0);" class="openSetno">开放</a></div>
+					<div class="email5 resumes9"><a href="javascript:void(0);" class="shezhimr">设置默认</a></div>
+					<div class="email5 resumes10"><a href="javascript:void(0);" class="comDeliver">立即委托</a></div>
+					<div class="email5 resumes11">
+					    <div class="resumes15">
+						      <div class="select_title_1">更多操作</div>
+							  <div class="select_effect"></div>
+						</div>
+					</div>
+				 </div>
+
+                        </div>
+                        <div class="resumes_btn">
+                            <div class="resumes_title_button" id="refuseCom">
+                                <div class="resumestips_2">
+                                </div>
+                                <a href="#">企业屏蔽</a>
+                            </div>
+                            <!--  <div class="resumes_title_button" id="zengjiang">
+				       <div class="resumestips_3"></div>
+				       <a  href="http://my.zhaopin.com/myzhaopin/icon_redirect.asp">简历增强显示</a>
+				   </div>-->
+                        </div>
+                        <div class="email_tips">
+                            <div class="email_img">
+                                <div class="email_tipsimg">
+                                </div>
+                            </div>
+                            <div class="email_tipsmain">
+                                <div class="email_tipsmainA">
+                                    <div class="email_tipsimg1">
+                                    </div>
+                                    屏蔽企业：如果您的简历不想被某公司搜到，可以设置公司屏蔽。
+                                </div>
+                                <div class="email_tipsmainA">
+                                    <div class="email_tipsimg1">
+                                    </div>
+                                    更新简历状态：根据您目前的求职状态设置简历的开放程度，避免在您找到工作后，还有电话打扰您。
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+    <!---导航下拉--->
+    <div class="nav_listmain">
+        <div class="nav_title">
+            <div class="nav_list nav_a">
+                简历管理</div>
+            <div class="nav_list_icon1">
+            </div>
+        </div>
+        <div class="nav_list_content">
+            <a target="_top" class="emailBiao" href="http://my.zhaopin.com/myzhaopin/resume_list.asp">
+                简历管理</a></div>
+        <!--  <div class="nav_list_content"><a target="_top" class="emailQian" href="http://my.zhaopin.com/myzhaopin/resume_hits.asp">谁看了简历</a></div>-->
+        <div class="nav_list_content">
+            <a target="_top" class="resumes" href="http://my.zhaopin.com/myzhaopin/job_letter.asp">
+                求职信管理</a></div>
+    </div>
+    <div class="nav_listmain_1">
+        <div class="nav_title">
+            <div class="nav_list nav_a">
+                申请与反馈</div>
+            <div class="nav_list_icon1">
+            </div>
+        </div>
+        <div class="nav_list_content">
+            <a target="_top" onclick="dyweTrackEvent('Cfeedback','COpening07')" href="http://i.zhaopin.com/PositionRecord/jobpostrecord/JobHistory">
+                我的投递记录</a></div>
+        <div class="nav_list_content">
+            <a target="_top" href="http://my.zhaopin.com/myzhaopin/jobmng_maillist.asp">人事经理来信</a></div>
+    </div>
+    <!---此页面提示--->
+    <div class="szmr_over">
+        <div class="szmr_overts">
+            <div class="hide_btn">
+                <div class="hide_btnimg">
+                </div>
+            </div>
+            <div class="tanchuang_main">
+            </div>
+        </div>
+    </div>
+    <div class="shieldLayerAdd" id="ulshieldLayerAdd" style="display: none; position: absolute">
+    </div>
+    <div class="wzd_body">
+    </div>
+    <!---中英文切换--->
+    <div id="switchIng">
+        <div class="resumes_select_layer">
+        </div>
+        <div class="switchIng_main">
+            <div class="switchIng_choose">
+                <a href="javascript:void(0)">中文</a></div>
+            <div class="switchIng_choose">
+                <a href="javascript:void(0)">英文</a></div>
+        </div>
+    </div>
+    <!---更多操作下拉--->
+    <div class="resumes15_click">
+        <div class="resumes_select_layer">
+        </div>
+        <div class="switchIng_main caozuo1">
+            <div class="switchIng_choose caozuo1 resumes_copy">
+                <a href="javascript:void(0)" id="resume_copy">复制</a></div>
+            <div class="switchIng_choose caozuo1">
+                <a href="javascript:void(0)" id="resume_export">导出</a></div>
+            <!-- <div class="switchIng_choose caozuo1"><a href="javascript:void(0)" id="resume_outgoing">外发</a></div>-->
+            <div class="switchIng_choose caozuo1">
+                <a href="javascript:void(0)" id="resume_remove">删除</a></div>
+        </div>
+    </div>
+    <div class="shuaxinBody_all">
+        <div class="shuaxinBody">
+            <div class="shuaxin_tips">
+                刷新简历，让HR在简历库中优先看到您的简历
+            </div>
+            <div class="resumes_jt">
+                <em>◆</em> <span>◆</span>
+            </div>
+        </div>
+    </div>
+    <link href="http://img00.zhaopin.cn/2012/css/headfoot/foot_common.css" rel="stylesheet" type="text/css" />
+<div class="link">
+  <div class="link_1"> <a onmousedown="return AdsClick(121115223,'zhilianjieshao')" target="_blank" href="http://special.zhaopin.com/sh/2009/aboutus/about.html">智联介绍</a> | <a target="_blank" href="http://www.zhaopin.com/sitemap.html">网站地图</a> | <a onmousedown="return AdsClick(121115223,'jiaruzhilian')" target="_blank" href="http://special.zhaopin.com/sh/2009/aboutus/join.html" rel="nofollow">加入智联</a> | <a onmousedown="return AdsClick(121115223,'falvshengming')" target="_blank" href="http://special.zhaopin.com/sh/2009/aboutus/law.html" rel="nofollow">法律声明</a> | <a onmousedown="return AdsClick(121115223,'baomichengnuo')" target="_blank" href="http://special.zhaopin.com/sh/2009/aboutus/secrecy.html" rel="nofollow">保密承诺</a> | <a onmousedown="return AdsClick(121115223,'lianxifangshi')" target="_blank" href="http://special.zhaopin.com/sh/2009/aboutus/contact.html">联系方式</a> | <a onmousedown="return AdsClick(121115223,'changjianwenti')" target="_blank" href="http://jobseeker.zhaopin.com/zhaopin/faq/question.html">常见问题</a> | <a onmousedown="return AdsClick(121115223,'touzizheguanxi')" target="_blank" href="http://ir.zhaopin.com" rel="nofollow">Investor Relations</a> 
+			您对 Zhaopin.com 有任何建议或意见请<a onclick="openFeedback('http://interact.zhaopin.com/feedback/feedback.asp');return false;" onmousedown="return AdsClick(121115223,' contactus')" href="#" rel="nofollow">联系我们</a><br>
+未经zhaopin.com 同意，不得转载本网站之所有招聘信息及作品
+ 智联招聘网版权所有 &copy; 1997-2015<br>
+京ICP备12025925号 电信业务审批[2001]字第233号函 京公网安备110105000322 </div>
+ 
+</div>
+<script type="text/javascript" src="http://img01.zhaopin.cn/2014/common/js/index_ads.js" ></script>
+<script type="text/javascript" >
+function openFeedback(strTarget){
+	
+	window.open(strTarget, "_blank","width=1,height=1,left=100,top=60,scrollbars=0,overflow=auto,status=0");
+	}
+	
+</script>
+
+<script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/jquery-1.6.4.min.js"></script>
+<script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/jquery.zlzp.validate.js"></script>
+<script type="text/javascript" src="/js/New_v3/editMoblie.js"></script>
+<script src="http://i.zhaopin.com/Content/js/Sms.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/jquery-1.6.4.min.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/arrdata.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/new2011/head/lib/head.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/utils.min.js"></script>
+    <script type="text/javascript" src="http://my.zhaopin.com/js/new_v3/ajaxbase.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/ui/jquery.zlzp.popupbase.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/ui/jquery.zlzp.popupdiv.js "></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/my/v5/jsHelper.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/my/v5/resumes_resume_list.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/my/v5/job_searcher.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/my/v5/jobsearch_deliver.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/jquery.zlzp.validate.js"></script>
+    <script type="text/javascript" src="http://img01.zhaopin.cn/2012/js/my/v5/resume_foot.js"></script>
+    <link type="text/css" rel="Stylesheet" href="http://img00.zhaopin.cn/2012/css/my/live800.css" />
+    <script src="http://service.zhaopin.com/live800/chatClient/staticButton.js?companyID=8899&configID=23&codeType=steady"></script>
+    <div class="line-img line_service" id='live23'>
+    </div>
+    <script id='write' language="javascript">
+        $(function () {
+            var arr4 = $(".email_left a");
+            for (i in arr4) {
+                arr4[i].href = arr4[i].href + "?r=" + Math.random();
+            }
+
+        })
+        if ($("#createAttaResume").attr("class") == "resumes_title_buttondisable") {
+            $("#createAttaResume a").click(function () {
+                return false;
+            });
+        }
+        function writehtml() { var temptext = StaticIcon_generate(); document.getElementById('live23').innerHTML = temptext; setTimeout('write.src', 9000); } writehtml();
+    </script>
+</body>
+</html>

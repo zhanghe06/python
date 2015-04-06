@@ -1,0 +1,6 @@
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTPS connection (1): passport.zhaopin.com
+DEBUG:requests.packages.urllib3.connectionpool:"POST / HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): i.zhaopin.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET / HTTP/1.1" 200 None
+INFO:requests.packages.urllib3.connectionpool:Starting new HTTP connection (1): my.zhaopin.com
+DEBUG:requests.packages.urllib3.connectionpool:"GET /myzhaopin/resume_list.asp HTTP/1.1" 200 None

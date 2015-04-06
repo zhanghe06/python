@@ -1,0 +1,237 @@
+Metadata-Version: 1.1
+Name: pyquery
+Version: 1.2.9
+Summary: A jquery-like library for python
+Home-page: https://github.com/gawel/pyquery
+Author: Gael Pasgrimaud
+Author-email: gael@gawel.org
+License: BSD
+Description: 
+        pyquery: a jquery-like library for python
+        =========================================
+        
+        pyquery allows you to make jquery queries on xml documents.
+        The API is as much as possible the similar to jquery. pyquery uses lxml for fast
+        xml and html manipulation.
+        
+        This is not (or at least not yet) a library to produce or interact with
+        javascript code. I just liked the jquery API and I missed it in python so I
+        told myself "Hey let's make jquery in python". This is the result.
+        
+        The `project`_ is being actively developped on a git repository on Github. I
+        have the policy of giving push access to anyone who wants it and then to review
+        what he does. So if you want to contribute just email me.
+        
+        Please report bugs on the `github
+        <https://github.com/gawel/pyquery/issues>`_ issue
+        tracker.
+        
+        .. _deliverance: http://www.gawel.org/weblog/en/2008/12/skinning-with-pyquery-and-deliverance
+        .. _project: https://github.com/gawel/pyquery/
+        
+        Quickstart
+        ==========
+        
+        You can use the PyQuery class to load an xml document from a string, a lxml
+        document, from a file or from an url::
+        
+            >>> from pyquery import PyQuery as pq
+            >>> from lxml import etree
+            >>> import urllib
+            >>> d = pq("<html></html>")
+            >>> d = pq(etree.fromstring("<html></html>"))
+            >>> d = pq(url=your_url)
+            >>> d = pq(url=your_url,
+            ...        opener=lambda url, **kw: urlopen(url).read())
+            >>> d = pq(filename=path_to_html_file)
+        
+        Now d is like the $ in jquery::
+        
+            >>> d("#hello")
+            [<p#hello.hello>]
+            >>> p = d("#hello")
+            >>> print(p.html())
+            Hello world !
+            >>> p.html("you know <a href='http://python.org/'>Python</a> rocks")
+            [<p#hello.hello>]
+            >>> print(p.html())
+            you know <a href="http://python.org/">Python</a> rocks
+            >>> print(p.text())
+            you know Python rocks
+        
+        You can use some of the pseudo classes that are available in jQuery but that
+        are not standard in css such as :first :last :even :odd :eq :lt :gt :checked
+        :selected :file::
+        
+            >>> d('p:first')
+            [<p#hello.hello>]
+        
+        
+        
+        See http://pyquery.rtfd.org/ for the full documentation
+        
+        News
+        ====
+        
+        1.2.9 (2014-08-22)
+        ------------------
+        
+        - Support for keyword arguments in PyQuery custom functions
+        
+        - Fixed #78: items must take care or the parent
+        
+        - Fixed #65 PyQuery.make_links_absolute() no longer creates 'href' attribute
+          when it isn't there
+        
+        - Fixed #19. ``is_()`` was broken.
+        
+        - Fixed #9. ``.replaceWith(PyQuery element)`` raises error
+        
+        - Remove official python3.2 support (mostly because of 3rd party semi-deps)
+        
+        
+        1.2.8 (2013-12-21)
+        ------------------
+        
+        - Fixed #22: Open by filename fails when file contains invalid xml
+        
+        - Bug fix in .remove_class()
+        
+        
+        1.2.7 (2013-12-21)
+        ------------------
+        
+        - Use pep8 name for methods but keep an alias for camel case method.
+          Eg: remove_attr and removeAttr works
+          Fix #57
+        
+        - .text() now return an empty string instead of None if there is no text node.
+          Fix #45
+        
+        - Fixed #23: removeClass adds class attribute to elements which previously
+          lacked one
+        
+        
+        1.2.6 (2013-10-11)
+        ------------------
+        
+        README_fixt.py was not include in the release. Fix #54.
+        
+        
+        1.2.5 (2013-10-10)
+        ------------------
+        
+        cssselect compat. See https://github.com/SimonSapin/cssselect/pull/22
+        
+        tests improvments. no longer require a eth connection.
+        
+        fix #55
+        
+        1.2.4
+        -----
+        
+        Moved to github. So a few files are renamed from .txt to .rst
+        
+        Added .xhtml_to_html() and .remove_namespaces()
+        
+        Use requests to fetch urls (if available)
+        
+        Use restkit's proxy instead of Paste (which will die with py3)
+        
+        Allow to open https urls
+        
+        python2.5 is no longer supported (may work, but tests are broken)
+        
+        1.2.3
+        -----
+        
+        Allow to pass this in .filter() callback
+        
+        Add .contents() .items()
+        
+        Add tox.ini
+        
+        Bug fixes: fix #35 #55 #64 #66
+        
+        1.2.2
+        -----
+        
+        Fix cssselectpatch to match the newer implementation of cssselect. Fixes issue #62, #52 and #59 (Haoyu Bai)
+        
+        Fix issue #37 (Caleb Burns)
+        
+        1.2.1
+        -----
+        
+        Allow to use a custom css translator.
+        
+        Fix issue 44: case problem with xml documents
+        
+        1.2
+        ---
+        
+        PyQuery now use `cssselect <http://pypi.python.org/pypi/cssselect>`_. See issue
+        43.
+        
+        Fix issue 40: forward .html() extra arguments to ``lxml.etree.tostring``
+        
+        1.1.1
+        -----
+        
+        Minor release. Include test file so you can run tests from the tarball.
+        
+        
+        1.1
+        ---
+        
+        fix issues 30, 31, 32 - py3 improvements / webob 1.2+ support
+        
+        
+        1.0
+        ---
+        
+        fix issues 24
+        
+        0.7
+        ---
+        
+        Python 3 compatible
+        
+        Add __unicode__ method
+        
+        Add root and encoding attribute
+        
+        fix issues 19, 20, 22, 23 
+        
+        0.6.1
+        ------
+        
+        Move README.txt at package root
+        
+        Add CHANGES.txt and add it to long_description
+        
+        0.6
+        ----
+        
+        Added PyQuery.outerHtml
+        
+        Added PyQuery.fn
+        
+        Added PyQuery.map
+        
+        Change PyQuery.each behavior to reflect jQuery api
+        
+        
+        
+        
+        
+Keywords: jquery html xml scraping
+Platform: UNKNOWN
+Classifier: Intended Audience :: Developers
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Programming Language :: Python :: 2
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.3
+Classifier: Programming Language :: Python :: 3.4

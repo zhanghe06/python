@@ -1,0 +1,13 @@
+
+
+[source]
+Cython>=0.20
+
+[cssselect]
+cssselect>=0.7
+
+[html5]
+html5lib
+
+[htmlsoup]
+BeautifulSoup4
