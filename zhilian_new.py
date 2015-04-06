@@ -40,7 +40,7 @@ if 'window.location.href = "http://i.zhaopin.com"' in login_response.text:
     print type(resume_list_page)
     print type(resume_list_page.text)
     # print resume_list.text
-    with open('00.html', 'wb') as f:
+    with open('static/html/test.html', 'wb') as f:
         f.write(resume_list_page.text.encode('utf-8'))
     # 提取简历列表信息
     rows = pq(resume_list_page.text).find('div.emailL_tab')
@@ -86,3 +86,62 @@ if 'window.location.href = "http://i.zhaopin.com"' in login_response.text:
     # 根据PRD描述的规则获取最优简历
     best_resume = zhilian.select_best_resume(resume_list)
     print best_resume
+
+# 进入简历管理页面，获取各个模块的url
+if best_resume is not None:
+    module_url_dict = {}
+    module_list_page = s.get(best_resume['resume'])
+    module_url_rows = pq(module_list_page.text).find('.left .leftRow .leftRowCon ul.leftRowB')
+    for module_url_row in pq(module_url_rows).find('li.ok'):
+        print pq(module_url_row).html()
+        title = pq(module_url_row).text()
+        url = zhilian.url_join(pq(module_url_row).find('a').attr('href'), 'http://my.zhaopin.com')
+        module_url_dict[title] = url
+    print json.dumps(module_url_dict, indent=4).decode('raw_unicode_escape')
+
+# 获取各个模块的数据
+if u'个人信息' in module_url_dict:
+    profile = s.get(module_url_dict[u'个人信息'])
+    print profile.text
+    profile_items_list = [
+        'username',
+        'gender',
+        'birth_date_y',
+        'birth_date_m',
+        'experience',
+        'experience_month',
+        'hukou',
+        'hukou_p',
+        'residence',
+        'residence_p',
+        'residence_district',
+        'contact_num',
+        'email1',
+    ]
+    profile_items_dict = {}
+    for item in profile_items_list:
+        profile_items_dict[item] = pq(profile.text).find('input[name="' + item + '"]').attr('value')
+    # 婚姻状况js实现
+    print json.dumps(profile_items_dict, indent=4).decode('raw_unicode_escape')
+    pass
+
+# 头像的存储
+if best_resume is not None:
+    module_url_dict = {}
+    module_list_page = s.get(best_resume['resume'])
+    avatar_url = pq(module_list_page.text).find('.rightRow1 p.f_right a').attr('href')
+    avatar = s.get(avatar_url)
+    with open('static/avatar/test.jpg', 'wb') as f:
+        for item in avatar:
+            f.write(item)
+# 映射关系转换
+
+# 保存json至服务器
+import os
+filepath = 'static/json/'
+if not os.path.isdir(filepath):
+    os.mkdir(filepath)
+filename = 'static/json/test.json'
+result_json = json.dumps(profile_items_dict, indent=4, ensure_ascii=False)
+with open(filename, 'wb') as f:
+    f.write(result_json.encode('utf-8'))

@@ -64,3 +64,21 @@ def select_best_resume(resume_list):
             if item_max['weight'] == max_weight:
                 url_list['resume'] = item_max['url']
     return url_list
+
+
+def url_join(url_str, host):
+    '''
+    url拼接
+    :param url_str:
+    :param host:
+    :return:
+    '''
+    if url_str.startswith(host) or url_str.startswith('http://'):
+        return url_str
+    return host.rstrip('/') + '/' + url_str.lstrip('/')
+
+
+if __name__ == '__main__':
+    print url_join('http://www.baidu.com/123/fff', 'http://eee.baidu.com')
+    print url_join('/123/fff', 'http://eee.baidu.com')
+    print url_join('/123/fff', 'http://eee.baidu.com/')
