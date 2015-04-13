@@ -43,7 +43,7 @@ settings = {
 if __name__ == '__main__':
     tornado.options.parse_command_line()
     app = tornado.web.Application(handlers, **settings)
-    http_server = tornado.httpserver.HTTPServer(app)
-    http_server.listen(options.port)
-    # app.listen(options.port)  # 貌似这一句可以替代上面两句，待研究
+    # http_server = tornado.httpserver.HTTPServer(app)
+    # http_server.listen(options.port)
+    app.listen(options.port)  # 貌似这一句可以替代上面两句，待研究
     tornado.ioloop.IOLoop.instance().start()

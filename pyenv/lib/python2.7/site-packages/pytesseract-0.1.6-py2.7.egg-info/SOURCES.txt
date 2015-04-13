@@ -1,0 +1,13 @@
+MANIFEST.in
+README.md
+setup.cfg
+setup.py
+pytesseract.egg-info/PKG-INFO
+pytesseract.egg-info/SOURCES.txt
+pytesseract.egg-info/dependency_links.txt
+pytesseract.egg-info/entry_points.txt
+pytesseract.egg-info/top_level.txt
+src/__init__.py
+src/pytesseract.py
+src/test-european.jpg
+src/test.png
