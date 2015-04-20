@@ -4,7 +4,7 @@ __author__ = 'zhanghe'
 import requests
 import json
 import logging
-from pyquery import PyQuery as pq
+from pyquery import PyQuery as Pq
 from tools import zhilian
 
 logging.basicConfig(level=logging.DEBUG, filename='zhilian.log', filemode='w')
@@ -43,15 +43,15 @@ if 'window.location.href = "http://i.zhaopin.com"' in login_response.text:
     with open('static/html/test.html', 'wb') as f:
         f.write(resume_list_page.text.encode('utf-8'))
     # 提取简历列表信息
-    rows = pq(resume_list_page.text).find('div.emailL_tab')
+    rows = Pq(resume_list_page.text).find('div.emailL_tab')
     i = 0
     resume_list = []
-    for row in pq(rows):
+    for row in Pq(rows):
         j = 0
         item_list = []
         item_dict = {}
-        for item in pq(row).find('.email5'):
-            item_text = pq(item).text()
+        for item in Pq(row).find('.email5'):
+            item_text = Pq(item).text()
             print "[%s-%s]" % (i, j) + item_text
             # 0,1,2,6是有效的信息
             if j in (0, 1, 2, 6):
@@ -62,7 +62,7 @@ if 'window.location.href = "http://i.zhaopin.com"' in login_response.text:
         if len(item_list) == 4:
             item_list[2] = item_list[2].split()[-1].rstrip('%')
         # 简历url添加进item_list
-        url = pq(row).find('.email5 .iconHover_2').attr('href')
+        url = Pq(row).find('.email5 .iconHover_2').attr('href')
         item_list.append('http://my.zhaopin.com/myzhaopin/' + url)
         print json.dumps(item_list).decode('raw_unicode_escape')
         i += 1
@@ -91,11 +91,11 @@ if 'window.location.href = "http://i.zhaopin.com"' in login_response.text:
 if best_resume is not None:
     module_url_dict = {}
     module_list_page = s.get(best_resume['resume'])
-    module_url_rows = pq(module_list_page.text).find('.left .leftRow .leftRowCon ul.leftRowB')
-    for module_url_row in pq(module_url_rows).find('li.ok'):
-        print pq(module_url_row).html()
-        title = pq(module_url_row).text()
-        url = zhilian.url_join(pq(module_url_row).find('a').attr('href'), 'http://my.zhaopin.com')
+    module_url_rows = Pq(module_list_page.text).find('.left .leftRow .leftRowCon ul.leftRowB')
+    for module_url_row in Pq(module_url_rows).find('li.ok'):
+        print Pq(module_url_row).html()
+        title = Pq(module_url_row).text()
+        url = zhilian.url_join(Pq(module_url_row).find('a').attr('href'), 'http://my.zhaopin.com')
         module_url_dict[title] = url
     print json.dumps(module_url_dict, indent=4).decode('raw_unicode_escape')
 
@@ -120,7 +120,7 @@ if u'个人信息' in module_url_dict:
     ]
     profile_items_dict = {}
     for item in profile_items_list:
-        profile_items_dict[item] = pq(profile.text).find('input[name="' + item + '"]').attr('value')
+        profile_items_dict[item] = Pq(profile.text).find('input[name="' + item + '"]').attr('value')
     # 婚姻状况js实现
     print json.dumps(profile_items_dict, indent=4).decode('raw_unicode_escape')
     pass
@@ -129,7 +129,7 @@ if u'个人信息' in module_url_dict:
 if best_resume is not None:
     module_url_dict = {}
     module_list_page = s.get(best_resume['resume'])
-    avatar_url = pq(module_list_page.text).find('.rightRow1 p.f_right a').attr('href')
+    avatar_url = Pq(module_list_page.text).find('.rightRow1 p.f_right a').attr('href')
     avatar = s.get(avatar_url)
     with open('static/avatar/test.jpg', 'wb') as f:
         for item in avatar:
