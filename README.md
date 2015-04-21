@@ -189,31 +189,37 @@
 # 模拟登录相关
 
 Requests
+
     HTTP库，Requests 使用的是 urllib3，因此继承了它的所有特性。比Python 标准库中的 urllib 模块api简单
     http://cn.python-requests.org/zh_CN/latest/
 
 Tornado
+
     用Python语言写成的Web服务器(非阻塞)兼Web应用框架
     http://demo.pythoner.com/itt2zh/index.html
 
 Pyquery
+
     一个类似于jQuery的Python库
     https://pythonhosted.org/pyquery/api.html#module-pyquery.pyquery
     安装顺序：libxml2 \libxslt \lxml \pyquery
 
 Gevent
+
     gevent是一个基于libev的并发库
     [英文原版]http://sdiehl.github.io/gevent-tutorial/
     [中文指南]http://xlambda.com/gevent-tutorial/
 
 
 Gevent安装过程
+
     $ sudo apt-get install libevent-dev
     $ sudo apt-get install python-dev
     $ pip install greenlet
     $ pip install gevent
 
 lxml安装过程
+
     使用：$ sudo apt-get install libxml2 libxml2-dev 安装 libxml2
     使用：$ sudo apt-get install libxslt1.1 libxslt1-dev 安装 libxslt
     安装 python-libxml2 和 python-libxslt1 ：
@@ -221,11 +227,11 @@ lxml安装过程
     $ pip install lxml
     （注意：虚拟环境下pip install不要sudo，否则会有提示：Requirement already satisfied (use --upgrade to upgrade): lxml in /usr/lib/python2.7/dist-packages
     ）
-
     安装完lxml之后，即可安装pyquery
     $ pip install pyquery
 
 Tornado安装
+
     $ pip install tornado
 
 
@@ -319,4 +325,5 @@ Tornado安装
 # TODO
 
 反向代理
+
 supervisor
