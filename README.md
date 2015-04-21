@@ -188,32 +188,32 @@
 
 # 模拟登录相关
 
-    Requests
+Requests
     HTTP库，Requests 使用的是 urllib3，因此继承了它的所有特性。比Python 标准库中的 urllib 模块api简单
     http://cn.python-requests.org/zh_CN/latest/
 
-    Tornado
+Tornado
     用Python语言写成的Web服务器(非阻塞)兼Web应用框架
     http://demo.pythoner.com/itt2zh/index.html
 
-    Pyquery
+Pyquery
     一个类似于jQuery的Python库
     https://pythonhosted.org/pyquery/api.html#module-pyquery.pyquery
     安装顺序：libxml2 \libxslt \lxml \pyquery
 
-    Gevent
+Gevent
     gevent是一个基于libev的并发库
     [英文原版]http://sdiehl.github.io/gevent-tutorial/
     [中文指南]http://xlambda.com/gevent-tutorial/
 
 
-    Gevent安装过程
+Gevent安装过程
     $ sudo apt-get install libevent-dev
     $ sudo apt-get install python-dev
     $ pip install greenlet
     $ pip install gevent
 
-    lxml安装过程
+lxml安装过程
     使用：$ sudo apt-get install libxml2 libxml2-dev 安装 libxml2
     使用：$ sudo apt-get install libxslt1.1 libxslt1-dev 安装 libxslt
     安装 python-libxml2 和 python-libxslt1 ：
@@ -225,13 +225,13 @@
     安装完lxml之后，即可安装pyquery
     $ pip install pyquery
 
-    Tornado安装
+Tornado安装
     $ pip install tornado
 
-    ==================================
-    python
 
-    一、Python 禅道
+# python
+
+一、Python 禅道
 
     >>> import this
 
@@ -245,7 +245,7 @@
     ......
 
 
-    二、代码风格
+二、代码风格
 
     PEP 8: Python 代码风格指南
     https://www.python.org/dev/peps/pep-0008/
@@ -270,7 +270,7 @@
     使用下划线分隔方式命名方法或者函数
 
 
-    三、数据类型
+三、数据类型
 
     Python提供的基本数据类型主要有：布尔类型、整型、浮点型、字符串、列表、元组、集合、字典等等
 
@@ -306,7 +306,7 @@
     9、字典(Dict)
     字典是一种无序存储结构，字典的格式为：dictionary = {key: value}
 
-    四、控制语句
+四、控制语句
 
     pass
     空语句 do nothing
