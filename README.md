@@ -1,4 +1,4 @@
-# 本地git仓库上传到github账户操作
+## 本地git仓库上传到github账户操作
     zhanghe@ubuntu:~/code/python$ ssh-keygen -t rsa -C "zhang_he06@163.com"
     Generating public/private rsa key pair.
     Enter file in which to save the key (/home/zhanghe/.ssh/id_rsa):
@@ -42,7 +42,7 @@
       remotes/origin/master
 
 
-# 程序所需依赖
+## 程序所需依赖
     zhanghe@ubuntu:~/code/python$ source pyenv/bin/activate
     (pyenv)zhanghe@ubuntu:~/code/python$ pip freeze
     Pillow==2.8.1
@@ -61,7 +61,7 @@
     (pyenv)zhanghe@ubuntu:~/code/python$ pip freeze > requirements.txt
 
 
-# 测试环境部署
+## 测试环境部署
     建立 虚拟环境
     virtualenv pyenv
 
@@ -76,7 +76,7 @@
 
 
 
-# ubuntu下python 图片识别pytesseract安装记录
+## ubuntu下python 图片识别pytesseract安装记录
 
     Pillow 是 PIL 的替代版本
 
@@ -186,7 +186,7 @@
 
 
 
-# 模拟登录相关
+## 模拟登录相关
 
 Requests
 
@@ -235,7 +235,7 @@ Tornado安装
     $ pip install tornado
 
 
-# python
+## python
 
 一、Python 禅道
 
@@ -322,8 +322,129 @@ Tornado安装
 
     例子：可以（预）定义一个空函数
 
-# TODO
 
-反向代理
 
-supervisor
+## 反向代理
+
+    user nginx;
+    worker_processes 5;
+    
+    error_log /var/log/nginx/error.log;
+    
+    pid /var/run/nginx.pid;
+    
+    events {
+        worker_connections 1024;
+        use epoll;
+    }
+    
+    proxy_next_upstream error;
+    
+    upstream tornadoes {
+        server 127.0.0.1:8000;
+        server 127.0.0.1:8001;
+        server 127.0.0.1:8002;
+        server 127.0.0.1:8003;
+    }
+    
+    server {
+        listen 80;
+        server_name www.example.org *.example.org;
+    
+        location /static/ {
+            root /var/www/static;
+            if ($query_string) {
+                expires max;
+            }
+        }
+    
+        location / {
+            proxy_pass_header Server;
+            proxy_set_header Host $http_host;
+            proxy_redirect off;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Scheme $scheme;
+            proxy_pass http://tornadoes;
+        }
+    }
+
+## Supervisor(Supervisor是一个进程监控程序)
+
+安装Supervisor
+
+    $ sudo pip install supervisor
+
+生成配置文件(supervisord.conf)
+
+    $ sudo su
+    # echo_supervisord_conf > /etc/supervisord.conf
+
+修改配置文件(/etc/supervisord.conf)
+    
+    [group:tornadoes]
+    programs=tornado-8000,tornado-8001,tornado-8002,tornado-8003
+    
+    [program:tornado-8000]
+    command=python /var/www/main.py --port=8000
+    directory=/var/www
+    user=www-data
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/var/log/tornado.log
+    loglevel=info
+    
+    [program:tornado-8001]
+    command=python /var/www/main.py --port=8001
+    directory=/var/www
+    user=www-data
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/var/log/tornado.log
+    loglevel=info
+    
+    [program:tornado-8002]
+    command=python /var/www/main.py --port=8002
+    directory=/var/www
+    user=www-data
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/var/log/tornado.log
+    loglevel=info
+    
+    [program:tornado-8003]
+    command=python /var/www/main.py --port=8003
+    directory=/var/www
+    user=www-data
+    autorestart=true
+    redirect_stderr=true
+    stdout_logfile=/var/log/tornado.log
+    loglevel=info
+
+
+启动服务
+
+    $ sudo supervisord
+    或
+    $ sudo supervisord -c /etc/supervisord.conf
+
+启动supervisor的命令行窗口
+
+    $ sudo supervisorctl
+    tornadoes:tornado-8000           RUNNING    pid 969, uptime 0:00:58
+    tornadoes:tornado-8001           RUNNING    pid 970, uptime 0:00:58
+    tornadoes:tornado-8002           RUNNING    pid 971, uptime 0:00:58
+    tornadoes:tornado-8003           RUNNING    pid 972, uptime 0:00:58
+    supervisor>
+
+修改配置后需要重新读取（或加载）配置
+
+    $ sudo supervisorctl reread
+    或
+    $ sudo supervisorctl reload
+
+更新状态
+
+    $ sudo supervisorctl update
+
+## TODO
+
