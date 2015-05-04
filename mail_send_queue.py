@@ -15,7 +15,7 @@ from email.utils import parseaddr, formataddr
 # 邮件内容
 email_info = {
     'to_email_name': u'测试收件人',
-    'to_email': u'455091702@qq.com',
+    'to_email': u'xxxxxx@qq.com',
     'subject': u'这是一封来自python的测试邮件！',
     'content': u'<html><body><h1>Hello</h1>' +
                 u'<p>send by <a href="http://www.python.org">Python</a>...</p>' +
