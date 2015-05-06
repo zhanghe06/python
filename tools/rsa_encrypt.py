@@ -93,7 +93,7 @@ def verify_sign(plain_text, cipher_text):
 
 def test(message):
     """
-    测试,打印密文和明文,
+    测试,打印密文和明文,签名和验证签名结果
     :param message:
     :return:
     """
