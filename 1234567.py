@@ -5,7 +5,55 @@ __author__ = 'zhanghe'
 天天基金网 - 模拟登录演练
 请求地址：https://trade.1234567.com.cn/do.aspx/CheckedCS
 请求方式：post
-参数格式：{CS: "MCUyQzAlMkMxMzgxODczMjU5NCUyQzEyMzQ1NiUyQzAlMkMlMkM="}
+请求协议：ajax
+参数格式：{"CS":"MCUyQzAlMkMxMzgwMDAwMDAwMCUyQzEyMzQ1NiUyQzAlMkMlMkM="}
 参数产生：data:JSON.stringify({CS:JsEncrpt.encode(encodeURIComponent(opts.TabID+","+at+","+$.trim(name)+","+escape($.trim(tbpwd.val()))+","+$("#hidenum").val()+","+tbcode.val()+","+direct))}),
 获取表单数据加密方法：https://trade.1234567.com.cn/js/jsencrpt.js
+"""
+
+import requests
+import json
+
+
+# 登录页的url
+url = 'https://trade.1234567.com.cn/do.aspx/CheckedCS'
+
+# 配置User-Agent
+header = {
+    'Content-Type': 'application/json; charset=UTF-8',  # 因为是ajax请求，格式为json，这个必须指定
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'}
+
+# 这里测试构造的数据 手机号码：13800000000,密码：123456
+payload = {"CS": "MCUyQzAlMkMxMzgwMDAwMDAwMCUyQzEyMzQ1NiUyQzAlMkMlMkM="}
+
+# 保持会话
+s = requests.session()
+
+
+def login():
+    """
+    登录
+    :return:
+    """
+    response = s.post(url, data=json.dumps(payload), headers=header)
+    return response.content
+
+
+def form_to_json():
+    """
+    将表单形式参数数据加密后转为json形式
+    """
+    pass
+    # todo 待实现
+
+
+if __name__ == "__main__":
+    result = login()
+    print result
+
+
+"""
+返回结果如下：
+{"d":"{\u0027num\u0027:1000,\u0027msg\u0027:\u0027账户密码已连续输错5次，请在30分钟后再尝试登录。\u0027,\u0027risk\u0027:-1}"}
+说明ajax请求成功
 """
