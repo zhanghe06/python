@@ -59,14 +59,6 @@ def login():
     return response.content
 
 
-def form_to_json():
-    """
-    将表单形式参数数据加密后转为json形式
-    """
-    pass
-    # todo 待实现
-
-
 if __name__ == "__main__":
     result = login()
     print result
