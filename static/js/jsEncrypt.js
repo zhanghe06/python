@@ -3,7 +3,7 @@
  */
 
 (function () {
-    var tool = window.JsEncrpt || {};
+    var tool = window.JsEncrypt || {};
 
     var base64EncodeChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
     var base64DecodeChars = new Array(-1, -1, -1, -1, -1, -1, -1, -1, -1, -1, -1,
@@ -158,5 +158,5 @@
         return result;
     };
 
-    window.JsEncrpt = tool;
+    window.JsEncrypt = tool;
 })();

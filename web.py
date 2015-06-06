@@ -6,10 +6,23 @@ import tornado.httpserver
 import tornado.web
 import tornado.ioloop
 import tornado.options
+import requests
+import json
 # from handlers import *
 
 from tornado.options import define, options
 define("port", default=8000, help="run on the given port", type=int)
+
+s = requests.session()
+
+# 登录页的url
+url = 'https://trade.1234567.com.cn/do.aspx/CheckedCS'
+
+# 配置User-Agent
+header = {
+    'Content-Type': 'application/json; charset=UTF-8',  # 因为是ajax请求，格式为json，这个必须指定
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'
+}
 
 
 class IndexHandler(tornado.web.RequestHandler):
@@ -23,8 +36,22 @@ class IndexHandler(tornado.web.RequestHandler):
         self.render('index.html')
 
 
+class LoginHandler(tornado.web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
+    def post(self):
+        payload = self.get_argument("payload", '')
+        print payload
+        response = s.post(url, data=payload, headers=header)
+        content = response.text
+        print content
+        return self.render('login.html', payload=payload, content=content)
+
+
 handlers = [
     (r'/', IndexHandler),
+    (r'/login', LoginHandler),
     # (r'/member', memberHandler),
     # (r'/chat/(\d+)', chatHandler),
     # (r'/register', registerHandler),

@@ -3,17 +3,39 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>python web</title>
-    <script type="text/javascript" src="/static/js/jsencrpt.js"></script>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/static/js/jsEncrypt.js"></script>
     <script type="text/javascript">
-        window.onload = function () {
-            var text = JsEncrpt.decode("MCUyQzAlMkMxMzgwMDAwMDAwMCUyQzEyMzQ1NiUyQzAlMkMlMkM=");
-            var text2 = decodeURIComponent(text);
-            alert(text2);
-        }
+        $(document).ready(function(){
+            //解密测试
+            //var text = JsEncrypt.decode("MCUyQzAlMkMxMzgwMDAwMDAwMCUyQzEyMzQ1NiUyQzAlMkMlMkM=");
+            //var text2 = decodeURIComponent(text);
+            //弹出明文
+            //alert(text2);
+
+            //加密
+            $('#encrypt').click(function(){
+                var text_encrypt = JsEncrypt.encode(encodeURIComponent("0,0,"+$('#username').val()+","+$('#password').val()+",0,,"));
+                var text_payload = JSON.stringify({'CS':text_encrypt});
+                $('#payload').val(text_payload);
+            });
+        });
+
     </script>
 </head>
 <body>
 Hello Python~~
 I will try my best to learn it !
+<br/>
+<form method="post" action="/login">
+    账号：<input type="text" id="username">
+    <br/>
+    密码：<input type="text" id="password">
+    <br/>
+    密参：<input type="text" name="payload" id="payload">
+    <input type="button" id="encrypt" value="加密">
+    <div id="err_show"></div>
+    <button type="submit">登录</button>
+</form>
 </body>
 </html>
