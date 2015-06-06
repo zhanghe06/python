@@ -9,6 +9,18 @@ __author__ = 'zhanghe'
 参数格式：{"CS":"MCUyQzAlMkMxMzgwMDAwMDAwMCUyQzEyMzQ1NiUyQzAlMkMlMkM="}
 参数产生：data:JSON.stringify({CS:JsEncrpt.encode(encodeURIComponent(opts.TabID+","+at+","+$.trim(name)+","+escape($.trim(tbpwd.val()))+","+$("#hidenum").val()+","+tbcode.val()+","+direct))}),
 获取表单数据加密方法：https://trade.1234567.com.cn/js/jsencrpt.js
+
+上面可以看出，6个逗号，应该是7个参数
+为了查看参数具体的组成，需要解密来验证一下（这里是对称加密，没有什么复杂度）
+解密方法已经写在这里：
+/template/index.html
+启动web服务
+$ source pyenv/bin/activate
+$ python web.py
+访问http://localhost:8000/
+得到解密后的参数构成如下：
+0,0,13800000000,123456,0,,
+模拟登录只需要构造成这个结构就可以了
 """
 
 import requests
