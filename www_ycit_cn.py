@@ -1,7 +1,6 @@
 # encoding: utf-8
 __author__ = 'zhanghe'
 
-
 import requests
 from pyquery import PyQuery as Pq
 import json
@@ -40,12 +39,18 @@ def url_filter(url_str, domain):
 
 
 def save(result_list, file_name):
-    # 保存json至服务器
+    """
+    保存文件
+    :param result_list:
+    :param file_name:
+    :return:
+    """
     import os
-    filepath = 'static/url_list/'
-    if not os.path.isdir(filepath):
-        os.mkdir(filepath)
-    filename = filepath + file_name
+
+    file_path = 'static/url_list/'
+    if not os.path.isdir(file_path):
+        os.mkdir(file_path)
+    filename = file_path + file_name
     result_json = json.dumps(result_list, indent=4, ensure_ascii=False)
     with open(filename, 'wb') as f:
         f.write(result_json.encode('utf-8'))
@@ -70,23 +75,13 @@ def web_crawler(url_node=None):
     save(url_visited_list, 'url_visited_list.json')
 
 
-
 if __name__ == "__main__":
     while len(url_list) > 0:
         web_crawler(url_list.pop(0))
-    # for url_item in url_list:
-    #     web_crawler(url_item)
-
-# 中心主进程
-# 分配url（待访问列表减少）
-
-# 工作进程
-# 请求url（已访问列表增加）
-# 补充url（增加待访问列表）
-#
-# url_list = []  # 爬虫待访问url列表
-# url_visited_list = []  # 爬虫已访问url列表
 
 
-
-
+"""
+查看测试结果：
+$ tail -f ~/code/python/static/url_list/url_list.json
+$ tail -f ~/code/python/static/url_list/url_visited_list.json
+"""
