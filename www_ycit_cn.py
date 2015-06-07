@@ -1,0 +1,92 @@
+# encoding: utf-8
+__author__ = 'zhanghe'
+
+
+import requests
+from pyquery import PyQuery as Pq
+import json
+
+
+root_url = 'http://www.ycit.cn/'  # 爬虫入口
+web_host = 'http://www.ycit.cn/'
+web_domain = 'ycit.cn'
+url_list = [root_url]  # 爬虫待访问url列表
+url_visited_list = []  # 爬虫已访问url列表
+
+
+def url_join(url_str, host):
+    """
+    url拼接
+    :param url_str:
+    :param host:
+    :return:
+    """
+    if url_str is not None:
+        if url_str.startswith(host) or url_str.startswith('http://'):
+            return url_str
+        return host.rstrip('/') + '/' + url_str.lstrip('/')
+
+
+def url_filter(url_str, domain):
+    """
+    过滤其它域名
+    :param url_str:
+    :param domain:
+    :return:
+    """
+    if url_str is not None:
+        if domain in url_str:
+            return url_str
+
+
+def save(result_list, file_name):
+    # 保存json至服务器
+    import os
+    filepath = 'static/url_list/'
+    if not os.path.isdir(filepath):
+        os.mkdir(filepath)
+    filename = filepath + file_name
+    result_json = json.dumps(result_list, indent=4, ensure_ascii=False)
+    with open(filename, 'wb') as f:
+        f.write(result_json.encode('utf-8'))
+
+
+def web_crawler(url_node=None):
+    if url_node is None:
+        url_node = root_url
+    response = requests.get(url_node)
+    text_pq = Pq(response.text)
+    tags = text_pq('html').find('a')
+    for tag in tags:
+        url_pre = Pq(tag).attr('href')
+        if url_pre != '#' and url_pre is not None:  # 过滤掉错误地址
+            url = url_filter(url_join(url_pre, web_host), web_domain)
+            if url is not None and url not in url_list and url not in url_visited_list:  # 去重
+                url_list.append(url.rstrip('/'))
+    print json.dumps(url_list, indent=4, ensure_ascii=False)
+    print len(url_list)
+    url_visited_list.append(url_node)
+    save(url_list, 'url_list.json')
+    save(url_visited_list, 'url_visited_list.json')
+
+
+
+if __name__ == "__main__":
+    while len(url_list) > 0:
+        web_crawler(url_list.pop(0))
+    # for url_item in url_list:
+    #     web_crawler(url_item)
+
+# 中心主进程
+# 分配url（待访问列表减少）
+
+# 工作进程
+# 请求url（已访问列表增加）
+# 补充url（增加待访问列表）
+#
+# url_list = []  # 爬虫待访问url列表
+# url_visited_list = []  # 爬虫已访问url列表
+
+
+
+
