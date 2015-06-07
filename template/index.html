@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>python web</title>
     <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="/static/js/jsEncrypt.js"></script>
+    <script type="text/javascript" src="{{ static_url('js/jsEncrypt.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             //解密测试
@@ -28,11 +28,11 @@ Hello Python~~
 I will try my best to learn it !
 <br/>
 <form method="post" action="/login">
-    账号：<input type="text" id="username">
+    <label for="username">账号：</label><input type="text" id="username">
     <br/>
-    密码：<input type="text" id="password">
+    <label for="password">密码：</label><input type="text" id="password">
     <br/>
-    密参：<input type="text" name="payload" id="payload">
+    <label for="payload">密参：</label><input type="text" name="payload" id="payload">
     <input type="button" id="encrypt" value="加密">
     <div id="err_show"></div>
     <button type="submit">登录</button>
