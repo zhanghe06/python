@@ -3,6 +3,7 @@ __author__ = 'zhanghe'
 
 import requests
 from pyquery import PyQuery as Pq
+import re
 import json
 
 
@@ -56,7 +57,10 @@ def save(result_list, file_name):
         f.write(result_json.encode('utf-8'))
 
 
-def web_crawler(url_node=None):
+def web_crawler_pq(url_node=None):
+    """
+    基于PyQuery的网页爬虫
+    """
     if url_node is None:
         url_node = root_url
     response = requests.get(url_node)
@@ -75,9 +79,32 @@ def web_crawler(url_node=None):
     save(url_visited_list, 'url_visited_list.json')
 
 
+def web_crawler_re(url_node=None):
+    """
+    基于正则表达式的网页爬虫
+    """
+    if url_node is None:
+        url_node = root_url
+    response = requests.get(url_node)
+    html = response.text
+    reg = '<a .*?href="(.+?)".*?>'
+    tags = re.compile(reg, re.I).findall(html)
+    for tag in tags:
+        if tag != '#' and tag is not None:  # 过滤掉错误地址
+            url = url_filter(url_join(tag, web_host), web_domain)
+            if url is not None and url not in url_list and url not in url_visited_list:  # 去重
+                url_list.append(url.rstrip('/'))
+    print json.dumps(url_list, indent=4, ensure_ascii=False)
+    print len(url_list)
+    url_visited_list.append(url_node)
+    save(url_list, 'url_list.json')
+    save(url_visited_list, 'url_visited_list.json')
+
+
 if __name__ == "__main__":
     while len(url_list) > 0:
-        web_crawler(url_list.pop(0))
+        # web_crawler_pq(url_list.pop(0))  # PyQuery方式
+        web_crawler_re(url_list.pop(0))  # 正则方式
 
 
 """
