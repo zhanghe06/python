@@ -9,6 +9,9 @@ import json
 # 入口
 url_root = 'https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=16&mibao_css=m_webqq&appid=501004106&enable_qlogin=0&no_verifyimg=1&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=loginerroralert&strong_login=1&login_state=10&t=20131024001'
 
+# 验证参数
+url_check = 'https://ssl.ptlogin2.qq.com/check?pt_tea=1&uin=123456&appid=501004106&js_ver=10125&js_type=0&login_sig=&u1=http%3A%2F%2Fw.qq.com%2Fproxy.html&r=0.5067279115319252'
+
 # 登录页的url
 url_login = 'https://ssl.ptlogin2.qq.com/login'
 
@@ -72,6 +75,11 @@ def parse_hide_params(html):
     return json.dumps(params_list, ensure_ascii=False, indent=4)
 
 
+def get_check():
+    response = s.get(url_check, headers=header)
+    return response.content
+
+
 def login():
     """
     登录
@@ -84,5 +92,11 @@ def login():
 if __name__ == "__main__":
     params_html = get_hide_params_html()
     params = parse_hide_params(params_html)
-    #result = login()
+
     print dict(json.loads(params))
+    check_dict = get_check()
+    payload['pt_verifysession_v1'] = check_dict.split(',')[3]
+
+    result = login()
+    print result
+
