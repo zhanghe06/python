@@ -53,11 +53,20 @@ s = requests.session()
 
 
 def get_hide_params_html():
+    """
+    获取隐藏域表单内容
+    :return:
+    """
     response = s.get(url_root, headers=header)
     return response.content
 
 
 def parse_hide_params(html):
+    """
+    解析隐藏域参数
+    :param html:
+    :return:
+    """
     reg_params = '<input type="hidden" name="(.+?)" value="(.*?)".*?>'
     params_list = re.compile(reg_params, re.S).findall(html)
     return json.dumps(params_list, ensure_ascii=False, indent=4)
