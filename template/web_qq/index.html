@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>python web</title>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ static_url('js/web_qq/10125/mq_comm.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            //加密
+            $('#encrypt').click(function(){
+                var text_encrypt = JsEncrypt.encode(encodeURIComponent("0,0,"+$('#username').val()+","+$('#password').val()+",0,,"));
+                var text_payload = JSON.stringify({'CS':text_encrypt});
+                $('#payload').val(text_payload);
+            });
+        });
+
+    </script>
+</head>
+<body>
+Hello Python~~
+I will try my best to learn it !
+<br/>
+<form method="post" action="/login">
+    <label for="username">账号：</label><input type="text" id="username">
+    <br/>
+    <label for="password">密码：</label><input type="text" id="password">
+    <br/>
+    <label for="payload">密参：</label><input type="text" name="payload" id="payload">
+    <input type="button" id="encrypt" value="加密">
+    <div id="err_show"></div>
+    <button type="submit">登录</button>
+</form>
+</body>
+</html>
