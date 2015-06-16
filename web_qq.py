@@ -16,7 +16,7 @@ url_root = 'https://ui.ptlogin2.qq.com/cgi-bin/login?daid=164&target=self&style=
 url_check = 'https://ssl.ptlogin2.qq.com/check'
 
 # 图形验证码
-url_img_verify = 'https://ssl.captcha.qq.com/getimage?aid=501004106&r=0.746980357915163&uin=555555&cap_cd=Yktn0uE_UcyPqpvIbJe99ncYNR1jVUbobBraaII7JI5aTuzo5UJzsA**'
+url_img_verify = 'https://ssl.captcha.qq.com/getimage'
 
 # 登录页的url
 url_login = 'https://ssl.ptlogin2.qq.com/login'
@@ -153,3 +153,8 @@ if __name__ == "__main__":
     result = login()
     print result
 
+
+"""
+对于加密部分，最好的方案是引入外部js到本地作为单独的服务
+如果将算法集成到代码里，加密算法变更后，还要重写
+"""

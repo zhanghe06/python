@@ -2326,6 +2326,7 @@ $.RSA = $pt.RSA = function() {
         } else {
             var z = 0;
             for (var A = 0; A < D.length; A += 2) {
+                //解析十六进制，转为整数
                 B[z++] = parseInt(D.substr(A, 2), 16)
             }
         }
@@ -2336,7 +2337,7 @@ $.RSA = $pt.RSA = function() {
             var z = h(A);
             return w(z)
         },enAsBase64: function(E, D) {
-            var C = o(E, D);
+            var C = o(E, D);//十六进制转为十进制整数
             var B = h(C);
             var z = "";
             for (var A = 0; A < B.length; A++) {

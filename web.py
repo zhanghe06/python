@@ -56,10 +56,19 @@ class QQHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('web_qq/index.html')
 
+
+class QQPasswordHandler(tornado.web.RequestHandler):
+    def data_received(self, chunk):
+        pass
+
+    def get(self):
+        self.render('web_qq/password.html')
+
 handlers = [
     (r'/', IndexHandler),
     (r'/login', LoginHandler),
     (r'/qq', QQHandler),
+    (r'/qq/password', QQPasswordHandler),
     # (r'/member', memberHandler),
     # (r'/chat/(\d+)', chatHandler),
     # (r'/register', registerHandler),
