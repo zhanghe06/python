@@ -125,7 +125,7 @@ def run_write():
 if __name__ == "__main__":
     # run_write()
     # run_read()
-    timed_task(run_write, 5)
+    timed_task(run_write, 60*2)
 
 
 """
