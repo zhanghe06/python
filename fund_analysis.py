@@ -5,7 +5,10 @@ import requests
 import time
 import json
 import os
-
+import csv
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 # app接口
 url = 'http://fundex2.eastmoney.com/FundWebServices/MyFavorInformation.aspx?t=kf&s=desc&sc=&pstart=0&psize=10000'
@@ -122,24 +125,55 @@ def run_write():
         save_json(item_dict)
 
 
+def save_csv(code):
+    """
+    读取json数据，保存csv文件
+    """
+    file_path = 'static/csv/'
+    if not os.path.isdir(file_path):
+        os.mkdir(file_path)
+    # 创建CSV文件
+    csv_file_name = file_path + str(code) + '.csv'
+    csv_file = file(csv_file_name, 'wb')
+    writer = csv.writer(csv_file)
+    writer.writerow(['记录时间', '基金编号', '基金名称', '基金类型', '估值时间', '估算净值', '估算涨幅', '净值日期', '单位净值', '日增长率'])
+    # 读取json数据文件
+    filename = 'static/json/' + str(code) + '.json'
+    with open(filename, 'r') as files:
+        for each_line in files:
+            item = json.loads(each_line)
+            item_tuple = (
+                item[u'记录时间'],
+                item[u'基金编号'],
+                item[u'基金名称'],
+                item[u'基金类型'],
+                item[u'估值时间'],
+                item[u'估算净值'],
+                item[u'估算涨幅'],
+                item[u'净值日期'],
+                item[u'单位净值'],
+                item[u'日增长率']
+            )
+            writer.writerow(item_tuple)
+    csv_file.close()
+
+
 if __name__ == "__main__":
     # run_write()
     # run_read()
-    timed_task(run_write, 60*2)
+    # timed_task(run_write, 60*2)
+    save_csv('161024')
 
 
 """
 因为只有app接口数据实时更新
 这里采用app接口作为数据来源
 [使用Fiddler捕获接口即可]
-
 fc=100056,161024
 9点-16点
 整个过程9小时
 2分钟抓取一次
 9*60/2 = 270次/天
-
 # 100056.json 名称为基金编号
-
 每2分钟 追加写入
 """
