@@ -2,10 +2,10 @@
 __author__ = 'zhanghe'
 
 import hashlib
-import md5
 import rsa
 import Tea
 import base64
+
 
 # RSA 公钥
 pubkey = "F20CE00BAE5361F8FA3AE9CEFA495362FF7DA1BA628F64A347F0A8C012BF0B254A30CD92ABFFE7A6EE0DC424CB6166F8819EFA5BCCB20EDFB4AD02E412CCF579B1CA711D55B8B0B3AEB60153D5E0693A2A86F3167D7847A0CB8B00004716A9095D9BADC977CBB804DBDCBA6029A9710869A453F27DFDDF83C016D928B3CBF4C7"
@@ -15,10 +15,14 @@ key = rsa.PublicKey(rsa_public_key, 3)
 
 def get_tea_pass(q, p, v):
     # MD5 密码
-    p = md5.new(p).digest()
+    md5 = hashlib.md5()
+    md5.update(p)
+    p = md5.digest()
 
     # TEA 的KEY
-    m = md5.new(p + ("%0.16X" % q).decode('hex')).digest()
+    md5 = hashlib.md5()
+    md5.update(p + ("%0.16X" % q).decode('hex'))
+    m = md5.digest()
 
     # RSA的加密结果
     n = rsa.encrypt(p, key)
