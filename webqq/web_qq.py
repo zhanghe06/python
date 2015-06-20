@@ -7,6 +7,7 @@ import json
 import random
 import time
 import os
+import pswEncrypt
 
 
 # 入口
@@ -25,15 +26,11 @@ url_login = 'https://ssl.ptlogin2.qq.com/login'
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2272.118 Safari/537.36'}
 
-# 加密salt
-salt = ''
-
 # 登录需要的参数
 payload = {
-    'u': '234567',
-    'p': '2rDrq7sBKdqkqzHgyntOBpaM6p8RAAcBpEio3*UCWuMNiG0LUw6WRsKTDsps2GJ6vAf1CPd-HoNl-QFekDH9Lfn54h1KOvOZeQlARGNPON0JECRoSUF1*8kOezqzRqBFMVVPM5cMJ3PFjn00*5KbpSHkHAJHF9AV3kV-JKE0iChfjaXcOBkRKv75mM2j8RQByBz0KFPssmrgKqPIGGatXw__',
-    # 'verifycode': '!NQA',
-    'verifycode': '!QYD',
+    'u': '',
+    'p': '',
+    'verifycode': '!QYD',  # !QYD
     # 隐藏域表单参数-------------start
     'webqq_type': '10',  # 10: "在线",20: "离线",30: "离开",40: "隐身",50: "忙碌",60: "Q我吧",70: "请勿打扰",
     'remember_uin': '1',
@@ -105,8 +102,8 @@ def get_check():
     # 具体参数参考607行[https://ui.ptlogin2.qq.com/js/10125/mq_comm.js]
     response = s.get(url_check, params=check_payload, headers=header)
     check_dict = response.content
+    print check_dict
     payload['verifycode'] = check_dict.split(',')[1].strip('\'')
-    salt = check_dict.split(',')[2].strip('\'')
     payload['pt_verifysession_v1'] = check_dict.split(',')[3].strip('\'')
 
 
@@ -139,6 +136,11 @@ def login():
 
 
 if __name__ == "__main__":
+    # 设置账号密码
+    NAME = 455091702
+    PASS = '123456'
+
+    payload['u'] = NAME
     # 获取隐藏域表单参数
     params_html = get_hide_params_html()
     params = parse_hide_params(params_html)
@@ -147,7 +149,9 @@ if __name__ == "__main__":
     payload = dict(payload, **payload_hide_params)
     # 获取验证参数
     get_check()
-
+    # 获取加密的密码
+    payload['p'] = pswEncrypt.get_tea_pass(NAME, PASS, payload['verifycode'])
+    # 记录登录参数
     print json.dumps(payload, ensure_ascii=False, indent=4)
     # 登录
     result = login()
@@ -155,6 +159,16 @@ if __name__ == "__main__":
 
 
 """
-对于加密部分，最好的方案是引入外部js到本地作为单独的服务
-如果将算法集成到代码里，加密算法变更后，还要重写
+对于加密部分，最好的方案是引入外部js到本地作为单独的服务，但这种方案没有成功
+如果将算法集成到代码里，加密算法变更后，还要重写，目前是这种方式
+
+登录失败提示：
+ptuiCB('3','0','','0','您输入的帐号或密码不正确，请重新输入。', '10000');
+
+登录成功提示：
+ptuiCB('0','0','http://ptlogin4.web2.qq.com/check_sig?pttype=1&uin=455091702&service=login&nodirect=0&ptsigx=0cfd5d7d11011c487d8cd854cbb7cebb52ffd113651fde7f62bf959620ca6e24942484a017e32b37fc2bd677965f64b8b55a4edc5ae225eac27f0739f1a1b243&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=&ptlang=2052&ptredirect=100&aid=501004106&daid=164&j_later=0&low_login_hour=0&regmaster=0&pt_login_type=1&pt_aid=0&pt_aaid=0&pt_light=0&pt_3rd_aid=0','0','登录成功！', '空ping子');
+
+模拟登录成功实现
+下一步消息发送
+
 """

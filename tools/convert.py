@@ -47,6 +47,7 @@ def test():
 
 if __name__ == "__main__":
     test()
+    print system_to_decimal('000000001b2025f6', 16)
 
 
 """
