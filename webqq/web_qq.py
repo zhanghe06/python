@@ -129,16 +129,63 @@ def get_img_verify():
 def login():
     """
     登录
-    :return:
     """
     response = s.get(url_login, params=payload, headers=header)
-    return response.content
+    return response
+
+
+def check_sign(url):
+    """
+    检查签名
+    """
+    response = s.get(url, headers=header)
+    return response
+
+
+def get_self_info():
+    """
+    获取个人信息
+    """
+    url_self_info = 'http://s.web2.qq.com/api/get_self_info2?t=1434857217484'
+    header['Host'] = 's.web2.qq.com'
+    header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
+    response = s.get(url_self_info, headers=header)
+    return json.dumps(response.content, ensure_ascii=False, indent=4)
+
+
+def get_vf_web_qq():
+    vf_web_qq_url = 'http://s.web2.qq.com/api/getvfwebqq'
+    vf_web_qq_payload = {
+        'ptwebqq': ptwebqq,  # 从cookie中获取
+        'clientid': ClientID,
+        'psessionid': '',
+        't': time.time()
+    }
+    response = s.get(vf_web_qq_url, params=vf_web_qq_payload, headers=header)
+    print response.content
+    return json.loads(response.content)['result']['vfwebqq']
+
+
+def get_group_info():
+    group_info_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
+    group_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": "075E5863516A0EBD"})}
+    # todo hash值如何获得
+    header['Host'] = 's.web2.qq.com'
+    header['Origin'] = 'http://s.web2.qq.com'
+    header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
+    response = s.post(group_info_url, data=group_info_payload, headers=header)
+    print json.dumps({"vfwebqq": vfwebqq, "hash": "585E0863526A5ABD"})
+    print response.content
+    return json.loads(response.content)
 
 
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
     PASS = '123456'
+    ClientID = 53999199
+    AppID = 1003903
+    PSessionID = ''
 
     payload['u'] = NAME
     # 获取隐藏域表单参数
@@ -154,8 +201,45 @@ if __name__ == "__main__":
     # 记录登录参数
     print json.dumps(payload, ensure_ascii=False, indent=4)
     # 登录
-    result = login()
+    r = login()
+    result = r.content
     print result
+    # 获取cookie
+    supertoken = r.cookies['supertoken']
+    pt2gguin = r.cookies['pt2gguin']
+    # ETK = r.cookies['ETK']
+    superuin = r.cookies['superuin']
+    superkey = r.cookies['superkey']
+    uin = r.cookies['uin']
+    ptisp = r.cookies['ptisp']
+    # ptnick_455091702 = r.cookies['ptnick_455091702']
+    ptwebqq = r.cookies['ptwebqq']
+    skey = r.cookies['skey']
+    # 验证签名
+    url_check_sign = result.split(',')[2].strip('\'')
+    print url_check_sign
+
+    cookies = {
+        'supertoken': supertoken,
+        'pt2gguin': pt2gguin,
+        'superuin': superuin,
+        'superkey': superkey,
+        'uin': uin,
+        'ptisp': ptisp,
+        'ptwebqq': ptwebqq,
+        'skey': skey
+    }
+    r_check_sign = s.get(url_check_sign, headers=header)
+
+    print get_self_info()
+
+    vfwebqq = get_vf_web_qq()
+    print vfwebqq
+
+    print get_group_info()
+
+
+
 
 
 """
