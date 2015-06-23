@@ -41,13 +41,14 @@ def test():
     # 十进制转二进制
     print bin(0), bin(1), bin(255)  # 0b0 0b1 0b11111111
     # 十进制转八进制
-    print bin(0), bin(1), oct(255)  # 0b0 0b1 0377
+    print oct(0), oct(1), oct(255)  # 0 01 0377
     # 十进制转十六进制
-    print bin(0), bin(1), hex(255)  # 0b0 0b1 0xff
+    print hex(0), hex(1), hex(255)  # 0x0 0x1 0xff
 
 if __name__ == "__main__":
     test()
     print system_to_decimal('000000001b2025f6', 16)
+    print system_to_decimal('0001000100010001', 2)
 
 
 """
