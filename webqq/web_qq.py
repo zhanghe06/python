@@ -166,6 +166,32 @@ def get_vf_web_qq():
     return json.loads(response.content)['result']['vfwebqq']
 
 
+def get_hash(x, K):
+    x += ""
+    N = [0, 0, 0, 0]
+    for T in range(0, len(K)):
+        N[T % 4] ^= ord(K[T])
+    U = ["EC", "OK"]
+    V = []
+    V.append(int(x) >> 24 & 255 ^ ord(U[0][0]))
+    V.append(int(x) >> 16 & 255 ^ ord(U[0][1]))
+    V.append(int(x) >> 8 & 255 ^ ord(U[1][0]))
+    V.append(int(x) & 255 ^ ord(U[1][1]))
+    U = []
+    for T in range(0, 8):
+        U.append(T % 2)
+        if U[T] == 0:
+            U[T] = N[T >> 1]
+        else:
+            U[T] = V[T >> 1]
+    N = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F"]
+    V = ""
+    for T in range(0, len(U)):
+        V += N[U[T] >> 4 & 15]
+        V += N[U[T] & 15]
+    return V
+
+
 def get_group_info():
     group_info_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
     group_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": "075E5863516A0EBD"})}
