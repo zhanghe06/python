@@ -60,6 +60,8 @@ payload = {
     'pt_verifysession_v1': 'e8dd4fef1f230072429cae05732530ef5d7df5fa61660a7311235e2315409046d556365705db19ae32cd082739370abd93a5f90e5a174a5a',
 }
 
+qq_hash = ''
+
 # 保持会话
 s = requests.session()
 
@@ -142,6 +144,27 @@ def check_sign(url):
     return response
 
 
+def get_session_id():
+    """
+    获取sessionId
+    :return:
+    """
+    session_id_url = 'http://d.web2.qq.com/channel/login2'
+    header['Host'] = 'd.web2.qq.com'
+    header['Origin'] = 'http://d.web2.qq.com'
+    header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+    session_id_dict = {
+        "ptwebqq": ptwebqq,
+        "clientid": ClientID,
+        "psessionid": "",
+        "status": "online"
+    }
+    session_id_payload = {'r': json.dumps(session_id_dict)}
+    response = s.post(session_id_url, data=session_id_payload, headers=header)
+    data = json.loads(response.content)
+    return data['result']['psessionid']
+
+
 def get_self_info():
     """
     获取个人信息
@@ -154,6 +177,10 @@ def get_self_info():
 
 
 def get_vf_web_qq():
+    """
+    获取验证令牌
+    :return:
+    """
     vf_web_qq_url = 'http://s.web2.qq.com/api/getvfwebqq'
     vf_web_qq_payload = {
         'ptwebqq': ptwebqq,  # 从cookie中获取
@@ -167,7 +194,11 @@ def get_vf_web_qq():
 
 
 def get_hash(x, K):
-    x += ""
+    """
+    获取hash令牌（由js转化过来）
+    获取群组信息，好友信息需要用到
+    """
+    # x += ""
     N = [0, 0, 0, 0]
     for T in range(0, len(K)):
         N[T % 4] ^= ord(K[T])
@@ -193,22 +224,57 @@ def get_hash(x, K):
 
 
 def get_group_info():
+    """
+    获取群组信息
+    """
     group_info_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
-    group_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": "075E5863516A0EBD"})}
-    # todo hash值如何获得
+    group_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})}
     header['Host'] = 's.web2.qq.com'
     header['Origin'] = 'http://s.web2.qq.com'
     header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
     response = s.post(group_info_url, data=group_info_payload, headers=header)
-    print json.dumps({"vfwebqq": vfwebqq, "hash": "585E0863526A5ABD"})
-    print response.content
+    print json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})
     return json.loads(response.content)
+
+
+def get_friends_info():
+    friends_info_url = 'http://s.web2.qq.com/api/get_user_friends2'
+    friends_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})}
+    header['Host'] = 's.web2.qq.com'
+    header['Origin'] = 'http://s.web2.qq.com'
+    header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
+    response = s.post(friends_info_url, data=friends_info_payload, headers=header)
+    print json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})
+    return json.loads(response.content)
+
+
+def send_group_msg(group_uin, msg):
+    """
+    发送群消息
+    """
+    group_msg_url = 'http://d.web2.qq.com/channel/send_qun_msg2'
+    header['Host'] = 'd.web2.qq.com'
+    header['Origin'] = 'http://d.web2.qq.com'
+    header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+    group_msg_dict = {
+        "group_uin": group_uin,
+        "content": "[\"" + msg + "\",[\"font\",{\"name\":\"宋体\",\"size\":10,\"style\":[0,0,0],\"color\":\"000000\"}]]",
+        "face": 0,
+        "clientid": ClientID,
+        "msg_id": 52880001,  # todo 这个值怎么确定?
+        "psessionid": PSessionID
+    }
+    group_msg_payload = {'r': json.dumps(group_msg_dict)}
+    response = s.post(group_msg_url, data=group_msg_payload, headers=header)
+    return json.loads(response.content)
+
 
 
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
     PASS = '123456'
+    PASS = '5257(@!L!^G'
     ClientID = 53999199
     AppID = 1003903
     PSessionID = ''
@@ -262,8 +328,15 @@ if __name__ == "__main__":
     vfwebqq = get_vf_web_qq()
     print vfwebqq
 
-    print get_group_info()
+    qq_hash = get_hash(NAME, ptwebqq)
 
+    group_info = get_group_info()
+    print json.dumps(group_info, ensure_ascii=False, indent=4)
+
+    friends_info = get_friends_info()
+    print json.dumps(friends_info, ensure_ascii=False, indent=4)
+
+    PSessionID = get_session_id()
 
 
 
