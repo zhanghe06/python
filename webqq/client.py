@@ -269,6 +269,27 @@ def send_group_msg(group_uin, msg):
     return json.loads(response.content)
 
 
+def get_friends_account(friends_uin):
+    """
+    获取好友QQ号码与uin的对应关系
+    """
+    friends_account_dict = {}
+    friends_account_url = 'http://s.web2.qq.com/api/get_friend_uin2'
+    header['Host'] = 's.web2.qq.com'
+    header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
+    friends_account_payload = {
+        'tuin': friends_uin,
+        'type': 1,
+        'vfwebqq': vfwebqq,
+        't': time.time(),
+    }
+    response = s.get(friends_account_url, params=friends_account_payload, headers=header)
+    result_dict = json.loads(response.content)
+    friends_account_dict['account'] = result_dict['result']['account']
+    friends_account_dict['uin'] = result_dict['result']['uin']
+    FriendsList.append(friends_account_dict)
+
+
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
@@ -276,6 +297,7 @@ if __name__ == "__main__":
     ClientID = 53999199
     AppID = 1003903
     PSessionID = ''
+    FriendsList = []
 
     payload['u'] = NAME
     # 获取隐藏域表单参数
