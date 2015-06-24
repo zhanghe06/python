@@ -269,12 +269,10 @@ def send_group_msg(group_uin, msg):
     return json.loads(response.content)
 
 
-
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
     PASS = '123456'
-    PASS = '5257(@!L!^G'
     ClientID = 53999199
     AppID = 1003903
     PSessionID = ''
@@ -352,6 +350,7 @@ ptuiCB('3','0','','0','您输入的帐号或密码不正确，请重新输入。
 ptuiCB('0','0','http://ptlogin4.web2.qq.com/check_sig?pttype=1&uin=455091702&service=login&nodirect=0&ptsigx=0cfd5d7d11011c487d8cd854cbb7cebb52ffd113651fde7f62bf959620ca6e24942484a017e32b37fc2bd677965f64b8b55a4edc5ae225eac27f0739f1a1b243&s_url=http%3A%2F%2Fw.qq.com%2Fproxy.html&f_url=&ptlang=2052&ptredirect=100&aid=501004106&daid=164&j_later=0&low_login_hour=0&regmaster=0&pt_login_type=1&pt_aid=0&pt_aaid=0&pt_light=0&pt_3rd_aid=0','0','登录成功！', '空ping子');
 
 模拟登录成功实现
-下一步消息发送
+消息发送成功实现
+下一步，进一步改进
 
 """
