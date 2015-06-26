@@ -313,8 +313,21 @@ def get_friends_account(friends_uin):
 def get_new_msg():
     """
     获取最新消息（轮询）
+    备注：请求到返回时间大概10S
+    可以用死循环模拟轮询
     """
-    pass
+    new_msg_url = 'http://d.web2.qq.com/channel/poll2'
+    header['Host'] = 'd.web2.qq.com'
+    header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+    new_msg_dict = {
+        "ptwebqq": ptwebqq,
+        "clientid": ClientID,
+        "psessionid": PSessionID,
+        "key": ""
+    }
+    new_msg_payload = {'r': json.dumps(new_msg_dict)}
+    response = s.post(new_msg_url, data=new_msg_payload, headers=header)
+    return json.loads(response.content)
 
 
 if __name__ == "__main__":
