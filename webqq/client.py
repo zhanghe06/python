@@ -223,21 +223,41 @@ def get_hash(x, K):
     return V
 
 
-def get_group_info():
+def get_group_list():
     """
-    获取群组信息
+    获取群组列表信息
     """
-    group_info_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
-    group_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})}
+    group_list_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
+    group_list_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})}
     header['Host'] = 's.web2.qq.com'
     header['Origin'] = 'http://s.web2.qq.com'
     header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
-    response = s.post(group_info_url, data=group_info_payload, headers=header)
+    response = s.post(group_list_url, data=group_list_payload, headers=header)
     print json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})
     return json.loads(response.content)
 
 
+def get_group_detail(group_code):
+    """
+    获取群组详细信息
+    包含群组成员信息
+    """
+    group_detail_url = 'http://s.web2.qq.com/api/get_group_info_ext2'
+    group_detail_payload = {
+        'gcode': group_code,
+        'vfwebqq': vfwebqq,
+        't': time.time()
+    }
+    header['Host'] = 's.web2.qq.com'
+    header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
+    response = s.get(group_detail_url, params=group_detail_payload, headers=header)
+    return json.loads(response.content)
+
+
 def get_friends_info():
+    """
+    获取好友信息
+    """
     friends_info_url = 'http://s.web2.qq.com/api/get_user_friends2'
     friends_info_payload = {'r': json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})}
     header['Host'] = 's.web2.qq.com'
@@ -288,6 +308,13 @@ def get_friends_account(friends_uin):
     friends_account_dict['account'] = result_dict['result']['account']
     friends_account_dict['uin'] = result_dict['result']['uin']
     FriendsList.append(friends_account_dict)
+
+
+def get_new_msg():
+    """
+    获取最新消息（轮询）
+    """
+    pass
 
 
 if __name__ == "__main__":
@@ -350,8 +377,8 @@ if __name__ == "__main__":
 
     qq_hash = get_hash(NAME, ptwebqq)
 
-    group_info = get_group_info()
-    print json.dumps(group_info, ensure_ascii=False, indent=4)
+    group_list_info = get_group_list()
+    print json.dumps(group_list_info, ensure_ascii=False, indent=4)
 
     friends_info = get_friends_info()
     print json.dumps(friends_info, ensure_ascii=False, indent=4)
