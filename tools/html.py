@@ -81,6 +81,8 @@ if __name__ == '__main__':
         (r'<a href="http://(.*?)"', '<a href="#"'),
         (r'<a target="_blank" href="http://(.*?)"', '<a target="_blank" href="#"'),
         (r'(\s*)onClick="analytical((.*?))"', ''),
+        # (r'(\n){2,}', '\n'),  # 这种不能去除空格组成的行
+        (r'(\n[\s|\r]*\n)', '\n'),  # 贪婪匹配，去除多余换行和无意义空行
         ]
     test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/container/floor.volt'
     replace_file_html(test_file_path, reg_rule_html)
