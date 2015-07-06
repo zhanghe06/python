@@ -80,9 +80,17 @@ if __name__ == '__main__':
     reg_rule_html = [
         (r'<a href="http://(.*?)"', '<a href="#"'),
         (r'<a target="_blank" href="http://(.*?)"', '<a target="_blank" href="#"'),
+        (r'<a style="width:56px;" href="http://(.*?).shtml"', '<a style="width:56px;" href="#"'),
         (r'(\s*)onClick="analytical((.*?))"', ''),
         # (r'(\n){2,}', '\n'),  # 这种不能去除空格组成的行
         (r'(\n[\s|\r]*\n)', '\n'),  # 贪婪匹配，去除多余换行和无意义空行
         ]
-    test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/container/floor.volt'
+    # test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/container/slider.volt'
+    test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/head.volt'
     replace_file_html(test_file_path, reg_rule_html)
+
+
+'''
+这个工具可以做为仿站辅助工具
+下一步做个获取页面图片的辅助工具配合使用
+'''
