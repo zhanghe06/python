@@ -53,9 +53,11 @@
     gevent==1.0.1
     greenlet==0.4.5
     lxml==3.4.2
+    pyasn1==0.1.7
     pyquery==1.2.9
     pytesseract==0.1.6
     requests==2.5.0
+    rsa==3.1.4
     tornado==4.1
     wsgiref==0.1.2
     (pyenv)zhanghe@ubuntu:~/code/python$ pip freeze > requirements.txt
@@ -70,10 +72,6 @@
 
     安装依赖库
     pip install -r requirements.txt
-
-
-
-
 
 
 ## ubuntu下python 图片识别pytesseract安装记录
@@ -178,11 +176,6 @@
     from PIL import Image
     import pytesseract
     print(pytesseract.image_to_string(Image.open('test.jpg')))
-
-
-
-
-
 
 
 
