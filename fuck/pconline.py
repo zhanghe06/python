@@ -21,7 +21,6 @@ def get_temp_url(url):
     """
     response = s.get(url)
     html = response.text
-    '<a class="btn sbDownload" .*? tempUrl="(.+?)">'
     reg = '<a class="btn sbDownload" .*? tempUrl="(.+?)">'
     tags = re.compile(reg, re.I).findall(html)
     # http://dlc2.pconline.com.cn/filedown_55919_6912056/zhifubaoqianbao.apk
@@ -53,13 +52,25 @@ def get_link(url, token):
     return down_link
 
 
+def download(file_path):
+    """
+    执行下载
+    """
+    response = s.get(file_path, headers=header)
+    file_name = file_path.split('/')[-1]
+    print file_name
+    with open('../static/download/'+file_name, 'wb') as f:
+        f.write(response.content)
+
+
 def fuck():
     """
     主程序
     """
     temp_url = get_temp_url(url_down)
     token_down = get_token(url_token)
-    get_link(temp_url, token_down)
+    down_link = get_link(temp_url, token_down)
+    download(down_link)
 
 
 if __name__ == '__main__':
