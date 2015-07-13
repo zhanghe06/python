@@ -54,13 +54,17 @@ def get_link(url, token):
 
 def download(file_path):
     """
-    执行下载
+    执行下载，支持断点续传
     """
-    response = s.get(file_path, headers=header)
+    import os
     file_name = file_path.split('/')[-1]
+    save_file_path = '../static/download/'+file_name
     print file_name
-    with open('../static/download/'+file_name, 'wb') as f:
-        f.write(response.content)
+    print save_file_path
+    # 伪装浏览器，组装下载命令
+    cmd = "wget --user-agent=\"%s\" -c -O %s %s" % (header['User-Agent'], save_file_path, file_path)
+    print cmd
+    os.system(cmd)
 
 
 def fuck():
