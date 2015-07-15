@@ -305,9 +305,10 @@ def get_friends_account(friends_uin):
     }
     response = s.get(friends_account_url, params=friends_account_payload, headers=header)
     result_dict = json.loads(response.content)
-    friends_account_dict['account'] = result_dict['result']['account']
-    friends_account_dict['uin'] = result_dict['result']['uin']
-    FriendsList.append(friends_account_dict)
+    # friends_account_dict['account'] = result_dict['result']['account']
+    # friends_account_dict['uin'] = result_dict['result']['uin']
+    # FriendsList.append(friends_account_dict)
+    return result_dict['result']['account']
 
 
 def get_new_msg():
@@ -333,7 +334,8 @@ def get_new_msg():
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
-    PASS = '123456'
+    # PASS = '123456'
+    PASS = '5257(@!L!^G'
     ClientID = 53999199
     AppID = 1003903
     PSessionID = ''
@@ -389,13 +391,41 @@ if __name__ == "__main__":
     print vfwebqq
 
     qq_hash = get_hash(NAME, ptwebqq)
-
+    print('----------------群组列表 START----------------')
     group_list_info = get_group_list()
     print json.dumps(group_list_info, ensure_ascii=False, indent=4)
-
+    print('----------------群组列表   END----------------')
+    print('----------------好友列表 START----------------')
     friends_info = get_friends_info()
     print json.dumps(friends_info, ensure_ascii=False, indent=4)
-
+    print('----------------好友列表   END----------------')
+    print('----------------好友字典 START----------------')
+    user_info_dict = {}
+    user_mark_dict = {}
+    for i in friends_info['result']['info']:
+        user_info_dict[i['uin']] = i
+    for i in friends_info['result']['marknames']:
+        user_mark_dict[i['uin']] = i
+    print len(user_info_dict)
+    print len(user_mark_dict)
+    user_dict = {}
+    for i in user_info_dict:
+        for j in user_mark_dict:
+            if i == j:
+                user_dict[i] = dict(user_info_dict[i], **user_mark_dict[j])
+                break
+            else:
+                user_dict[i] = user_info_dict[i]
+    print json.dumps(user_dict, ensure_ascii=False, indent=4)
+    print('----------------好友字典   END----------------')
+    print('----------------好友信息 START----------------')
+    user_new_dict = {}
+    for i in user_dict:
+        user_account = get_friends_account(i)
+        print 'QQ号码：' + str(user_account)
+        user_new_dict[user_account] = user_dict[i]
+    print json.dumps(user_new_dict, ensure_ascii=False, indent=4)
+    print('----------------好友信息   END----------------')
     PSessionID = get_session_id()
 
 
