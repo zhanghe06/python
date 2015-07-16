@@ -55,12 +55,17 @@ def timed_task(func, interval=60, start_time='2015-06-18 09:00:00', end_time='20
     if rest_time > 0:
         print '程序等待执行'
     while True:
+        status = 'wait'
         while run_time <= time.time():
+            status = 'run'
             func()
             time.sleep(interval)  # 等待循环
             if exit_time <= time.time():
-                print '程序执行完毕'
+                status = 'exit'
                 break
+        if status == 'exit':
+            print '程序执行完毕'
+            break
 
 
 def save_json(read_dict):
@@ -161,8 +166,8 @@ def save_csv(code):
 if __name__ == "__main__":
     # run_write()
     # run_read()
-    # timed_task(run_write, 60*2)
-    save_csv('161024')
+    timed_task(run_write, 60*2)
+    # save_csv('161024')
 
 
 """
