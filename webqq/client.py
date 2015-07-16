@@ -61,6 +61,7 @@ payload = {
 }
 
 qq_hash = ''
+user_list_dict = {}
 
 # 保持会话
 s = requests.session()
@@ -311,6 +312,38 @@ def get_friends_account(friends_uin):
     return result_dict['result']['account']
 
 
+def get_uin_by_qq(qq):
+    """
+    根据QQ号码获取uin
+    :param qq:
+    :return:
+    """
+    return user_list_dict[qq]['uin']
+
+
+def send_qq_msg(qq, msg):
+    qq_msg_url = 'http://d.web2.qq.com/channel/send_buddy_msg2'
+    header['Host'] = 'd.web2.qq.com'
+    header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+    qq_msg_dict = {
+        "to": get_uin_by_qq(qq),
+        "content": "[\""+str(msg)+"\",[\"font\",{\"name\":\"宋体\",\"size\":10,\"style\":[0,0,0],\"color\":\"000000\"}]]",
+        "face": 0,
+        "clientid": ClientID,
+        "msg_id": 18980001,  # todo 这个值怎么确定，随机，需要自增?
+        "psessionid": PSessionID
+    }
+    qq_msg_payload = {'r': json.dumps(qq_msg_dict)}
+    response = s.post(qq_msg_url, data=qq_msg_payload, headers=header)
+    qq_msg_result = json.loads(response.content)
+    if qq_msg_result['retcode'] == 0 and qq_msg_result['result'] == 'ok':
+        print '发送成功'
+    else:
+        print '发送失败'
+    # return json.loads(response.content)
+    # {"retcode":0,"result":"ok"}
+
+
 def get_new_msg():
     """
     获取最新消息（轮询）
@@ -334,8 +367,7 @@ def get_new_msg():
 if __name__ == "__main__":
     # 设置账号密码
     NAME = 455091702
-    # PASS = '123456'
-    PASS = '5257(@!L!^G'
+    PASS = '123456'
     ClientID = 53999199
     AppID = 1003903
     PSessionID = ''
@@ -419,14 +451,16 @@ if __name__ == "__main__":
     print json.dumps(user_dict, ensure_ascii=False, indent=4)
     print('----------------好友字典   END----------------')
     print('----------------好友信息 START----------------')
-    user_new_dict = {}
+
     for i in user_dict:
         user_account = get_friends_account(i)
         print 'QQ号码：' + str(user_account)
-        user_new_dict[user_account] = user_dict[i]
-    print json.dumps(user_new_dict, ensure_ascii=False, indent=4)
+        user_list_dict[user_account] = user_dict[i]
+    print json.dumps(user_list_dict, ensure_ascii=False, indent=4)
     print('----------------好友信息   END----------------')
     PSessionID = get_session_id()
+    # 给指定好友发送消息
+    send_qq_msg(875270022, 'this is a test by python')
 
 
 
