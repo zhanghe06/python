@@ -62,6 +62,7 @@ payload = {
 
 qq_hash = ''
 user_list_dict = {}
+group_list_dict = {}
 
 # 保持会话
 s = requests.session()
@@ -235,6 +236,11 @@ def get_group_list():
     header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
     response = s.post(group_list_url, data=group_list_payload, headers=header)
     print json.dumps({"vfwebqq": vfwebqq, "hash": qq_hash})
+
+    group_list = json.loads(response.content)['result']['gnamelist']
+    for group_item in group_list:
+        group_list_dict[group_item['name']] = group_item
+    print json.dumps(group_list_dict, ensure_ascii=False, indent=4)
     return json.loads(response.content)
 
 
@@ -269,6 +275,14 @@ def get_friends_info():
     return json.loads(response.content)
 
 
+def get_group_uin_by_name(group_name):
+    if group_name in group_list_dict:
+        print '找到对应群组'
+        print group_list_dict[group_name]['gid']
+        return group_list_dict[group_name]['gid']
+    print '没有对应群组'
+
+
 def send_group_msg(group_uin, msg):
     """
     发送群消息
@@ -287,6 +301,7 @@ def send_group_msg(group_uin, msg):
     }
     group_msg_payload = {'r': json.dumps(group_msg_dict)}
     response = s.post(group_msg_url, data=group_msg_payload, headers=header)
+    print json.loads(response.content)
     return json.loads(response.content)
 
 
@@ -461,6 +476,11 @@ if __name__ == "__main__":
     PSessionID = get_session_id()
     # 给指定好友发送消息
     send_qq_msg(875270022, 'this is a test by python')
+
+    # 给指定群组发送消息
+    group_uin = get_group_uin_by_name(u'Python爬虫群')
+    send_group_msg(group_uin, 'this is a test by python')
+    # {u'retcode': 0, u'result': u'ok'}
 
 
 
