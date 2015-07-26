@@ -13,13 +13,13 @@ def test_1():
     print dict(a.items() + b.items())
 
 
-#way 2
+# way 2
 @time_log.time_log
 def test_2():
     print dict(a, **b)
 
 
-#way 3
+# way 3
 @time_log.time_log
 def test_3():
     c = a.copy()
