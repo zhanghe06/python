@@ -1,6 +1,75 @@
 # encoding: utf-8
 __author__ = 'zhanghe'
 
+import requests
+import time
+import json
+
+
+header = {
+    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36',
+    }
+
+
+ID = '1152617826'
+url_p = 'http://item.jd.com/'+ID+'.html'
+s = requests.session()
+
+
+def get_price():
+    """
+    获取简单的价格信息
+    """
+    url = 'http://p.3.cn/prices/get'
+    payload = {
+        'skuid': 'J_'+ID,
+        # 'type': '1',
+        # 'area': '2_2820_2879',  # 区域，会影响到现货数量
+        # 'callback': 'cnp',
+    }
+    header['Host'] = 'p.3.cn'
+    header['Referer'] = 'http://item.jd.com/'+ID+'.html'
+    response = s.get(url, params=payload, headers=header)
+    print response.url
+    print response.text
+    # http://p.3.cn/prices/get?skuid=J_1152617826
+    # [{"id":"J_1152617826","p":"9.90","m":"15.00"}]
+
+
+def get_detail():
+    """
+    获取商品详细信息
+    """
+    url = 'http://d.jd.com/fittingInfo/get'
+    payload = {
+        'callback': 'jQuery9305912',
+        'skuId': ID,
+        '_': time.time()
+    }
+    header['Host'] = 'd.jd.com'
+    header['Referer'] = 'http://item.jd.com/'+ID+'.html'
+    response = s.get(url, params=payload, headers=header)
+    content = response.text.lstrip('jQuery9305912(').rstrip(')')
+    print response.url
+    print json.dumps(json.loads(content), indent=4, ensure_ascii=False)
+    # http://d.jd.com/fittingInfo/get?callback=jQuery9305912&_=1438014651.47&skuId=1152617826
+    # {
+    #     "fittings": [],
+    #     "master": {
+    #         "sort": 12239,
+    #         "skuid": "1152617826",
+    #         "name": "富爸爸韩国泡菜韩式五福腌渍菜150g袋装正宗韩国",
+    #         "price": "9.90",
+    #         "pic": "jfs/t148/132/858922143/236699/5f23e1ed/539ab9d3Nf5ccab7f.jpg",
+    #         "discount": "0.00"
+    #     },
+    #     "fittingType": []
+    # }
+
+
+if __name__ == '__main__':
+    get_price()
+    get_detail()
 
 
 """
