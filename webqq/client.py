@@ -499,4 +499,8 @@ ptuiCB('0','0','http://ptlogin4.web2.qq.com/check_sig?pttype=1&uin=455091702&ser
 消息发送成功实现
 下一步，进一步改进
 
+2015-07-29
+计划新增验证码校验功能（待研究）
+请求地址：https://ssl.captcha.qq.com/getimage?&uin=455091702&aid=501004106&0.21378088742494583&cap_cd=M03CoM8sOGmSyjOT_4s4idzZOhxTXAwZiJFuupVZt1lmIBKogHaNhw**
+请求方式：get
 """
