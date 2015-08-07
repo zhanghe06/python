@@ -1,6 +1,6 @@
-##pycharm相关设置
+## pycharm相关设置
 
-一、修改头部模板定义
+### 一、修改头部模板定义
 
 1、设置PyCharm工具的编码格式：
 ```
@@ -19,7 +19,7 @@ File -->> Setting -->> File and Code Templates
 
 
 
-二、设置python标准编码风格（PEP8）
+### 二、设置python标准编码风格（PEP8）
 ```
 file -->> setting -->> inspections -->> PEP 8 coding style violation
 ```
