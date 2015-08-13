@@ -121,6 +121,9 @@ zhanghe@ubuntu:~/code/python$ top
 """
 
 """
+
+方法create_dict运行时间：17.35S
+
 zhanghe@ubuntu:~/code/python$ du -h config_dict/data_dict.py
 18M	config_dict/data_dict.py
 
