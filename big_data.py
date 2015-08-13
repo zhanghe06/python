@@ -46,10 +46,52 @@ def read_data_all():
         print i.split('\t')
 
 
+@tools.time_log.time_log
+def create_dict():
+    """
+    创建大数据字典(作为模块使用)
+    """
+    write_file_name = 'config_dict/data_dict.py'
+    with open(write_file_name, 'wb') as wf:
+        # 写入开始头部定义
+        wf.write('DataDict = {\n')
+        # 逐行读取文件
+        read_file_name = 'static/csv/data.csv'
+        with open(read_file_name) as rf:
+            for line in rf:
+                line_list = line.rstrip('\n').split('\t')
+                row = '\t\'%s\': \'%s\',\n' % (line_list[0], line_list[1])
+                print row
+                # 写入单行数据
+                wf.write(row)
+        # 写入尾行
+        wf.write('}\n')
+
+
+@tools.time_log.time_log
+def load_dict():
+    """
+    加载大数据字典
+    """
+    from config_dict.data_dict import DataDict
+    return DataDict
+
+
+@tools.time_log.time_log
+def get_dict_value(big_dict, key):
+    """
+    查找大数据字典的值
+    """
+    print big_dict.get(key)
+
+
 if __name__ == '__main__':
     # create_data()
     # read_data_line()
-    read_data_all()
+    # read_data_all()
+    # create_dict()
+    dict_tmp = load_dict()
+    get_dict_value(dict_tmp, '1550')
 
 
 """
@@ -76,4 +118,19 @@ zhanghe@ubuntu:~/code/python$ top
 以上结果可以看出：
 逐行读取文件比一次性加载文件节约内存，适合处理大数据的场景
 一次性加载文件的方式适合数据量不大（占用内存可以忽略），但对速度要求较高的场景
+"""
+
+"""
+zhanghe@ubuntu:~/code/python$ du -h config_dict/data_dict.py
+18M	config_dict/data_dict.py
+
+方法load_dict开始时间：Fri Aug 14 00:25:42 2015
+方法load_dict结束时间：Fri Aug 14 00:25:43 2015
+方法load_dict运行时间：0.85S
+方法get_dict_value开始时间：Fri Aug 14 00:25:43 2015
+153
+方法get_dict_value结束时间：Fri Aug 14 00:25:43 2015
+方法get_dict_value运行时间：0.00S
+
+可以看出将大字典作为模块导入，效率是最快的。
 """
