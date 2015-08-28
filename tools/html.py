@@ -30,7 +30,7 @@ def strip_html(input_html):
 
 def read_file(file_path):
     """
-    读取文件
+    一次读取全文件
     :param file_path:
     :return:
     """
@@ -38,14 +38,25 @@ def read_file(file_path):
         return f.read()
 
 
-def save_file(file_path, text):
+def read_file_each_line(file_path):
+    """
+    逐行读取文件
+    :param file_path:
+    :return:
+    """
+    with open(file_path, 'r') as f:
+        for each_line in f:
+            yield each_line
+
+
+def save_file(file_path, text, save_type='w'):
     """
     保存文件
     :param file_path:
     :param text:
     :return:
     """
-    with open(file_path, 'w') as f:
+    with open(file_path, save_type) as f:
         f.write(text)
 
 
