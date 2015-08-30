@@ -2,20 +2,8 @@
 __author__ = 'zhanghe'
 
 
-import requests
-from pyquery import PyQuery as Pq
 import json
 import html
-import random
-
-source_site = 'http://ip.qiaodm.com/'
-
-header = {
-    'Host': 'ip.qiaodm.com',
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'
-}
-
-s = requests.session()
 
 ProxyList = []
 # IP地址	端口号	代理类型	匿名度	地域分布	响应速度	最后检测时间
@@ -37,6 +25,9 @@ PortDict = {
     'DBZAE': '3988',
     'HBBAE': '8888',
     'CFACE': '3128',
+    # 'HGCBG': '',
+    'GEZIE': '8123',
+    'GEZEE': '8118',
 }
 
 
@@ -45,6 +36,17 @@ def scan_proxy():
     扫描代理资源
     :return:
     """
+    import requests
+    from pyquery import PyQuery as Pq
+
+    source_site = 'http://ip.qiaodm.com/'
+
+    header = {
+        'Host': 'ip.qiaodm.com',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'
+    }
+
+    s = requests.session()
     # 抓取页面
     file_html = s.get(source_site).content
 
@@ -121,9 +123,10 @@ def get_item():
     随机获取一个可用代理
     :return:
     """
+    import random
     proxy_list = get_list()
     random.shuffle(proxy_list)
-    # print json.dumps(proxy_list[0], ensure_ascii=False, indent=4)
+    print json.dumps(proxy_list[0], ensure_ascii=False, indent=4)
     return proxy_list[0]
 
 
@@ -135,6 +138,12 @@ def rm_item():
     pass
 
 if __name__ == "__main__":
-    # scan_proxy()
+    scan_proxy()
     # get_list()
-    get_item()
+    # get_item()
+
+
+"""
+因为此网站对关键信息（IP 和 端口）做了防爬虫处理
+所以多了几行特殊处理的代码，整体效果还是可以的
+"""
