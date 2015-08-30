@@ -6,6 +6,13 @@ import time
 import json
 import os
 import csv
+
+today = time.strftime("%Y-%m-%d", time.localtime())
+import tools.timed_task
+tools.timed_task.start_time = ' '.join((today, '09:00:00'))
+tools.timed_task.end_time = ' '.join((today, '15:00:00'))
+tools.timed_task.interval = 60*2
+
 import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
@@ -40,32 +47,6 @@ fund_dict = {
 # 组装接口
 fc = ','.join(fund_list)
 url += '&fc=' + fc
-
-
-def timed_task(func, interval=60, start_time='2015-06-18 09:00:00', end_time='2015-06-18 15:00:00'):
-    """
-    循环定时任务
-    :param func:
-    :param interval:
-    :return:
-    """
-    run_time = time.mktime(time.strptime(start_time, '%Y-%m-%d %H:%M:%S'))
-    exit_time = time.mktime(time.strptime(end_time, '%Y-%m-%d %H:%M:%S'))
-    rest_time = run_time - time.time()  # 启动剩余时间
-    if rest_time > 0:
-        print '程序等待执行'
-    while True:
-        status = 'wait'
-        while run_time <= time.time():
-            status = 'run'
-            func()
-            time.sleep(interval)  # 等待循环
-            if exit_time <= time.time():
-                status = 'exit'
-                break
-        if status == 'exit':
-            print '程序执行完毕'
-            break
 
 
 def save_json(read_dict):
@@ -103,6 +84,7 @@ def run_read():
         read_line(i)
 
 
+@tools.timed_task.timed_task
 def run_write():
     """
     获取数据，写入本地
@@ -166,7 +148,7 @@ def save_csv(code):
 if __name__ == "__main__":
     # run_write()
     # run_read()
-    timed_task(run_write, 60*2)
+    run_write()
     # save_csv('161024')
 
 
