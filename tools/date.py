@@ -25,6 +25,12 @@ def test():
     print time.localtime()
     print time.ctime()
     print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+    print time.strftime("%Y-%m-%d", time.localtime()) + ' 09:00:00'
+    print ' '.join((time.strftime("%Y-%m-%d", time.localtime()), '09:00:00'))
+
+
+if __name__ == "__main__":
+    test()
 
 
 """
