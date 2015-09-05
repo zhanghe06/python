@@ -49,6 +49,8 @@ def get_info(file_html):
         td_list = Pq(tr_item).find('a')
         item_dict = {
             u'公司编号': td_list.attr('company_id'),
+            u'公司名称': '',
+            u'公司链接': '',
             u'职位名称': td_list.text(),
             u'职位链接': td_list.attr('href'),
             u'薪资待遇': '',
@@ -58,6 +60,9 @@ def get_info(file_html):
             u'招聘人数': '',
             u'公司规模': '',
         }
+
+        company = Pq(tr_item).find('.s-tit14.fl')
+        item_dict[u'公司名称'] = company.text()
 
         introduce_list = Pq(tr_item).find('.s-butt.s-bb1 ul li')
         for introduce_item in introduce_list:
@@ -83,6 +88,8 @@ def get_info_5(file_html):
         td_list = Pq(tr_item).find('a')
         item_dict = {
             u'公司编号': td_list.attr('company_id'),
+            u'公司名称': '',
+            u'公司链接': '',
             u'职位名称': td_list.text(),
             u'职位链接': td_list.attr('href'),
             u'薪资待遇': '',
@@ -92,6 +99,9 @@ def get_info_5(file_html):
             u'招聘人数': '',
             u'公司规模': '',
         }
+
+        company = Pq(tr_item).find('.s-tit14.fl')
+        item_dict[u'公司名称'] = company.text()
 
         introduce_list = Pq(tr_item).find('.s-butt.s-bb1 ul li')
         for introduce_item in introduce_list:
@@ -118,7 +128,7 @@ def write_csv_head():
     csv_file_name = file_path + 'ganji.csv'
     csv_file = file(csv_file_name, 'w')
     writer = csv.writer(csv_file)
-    writer.writerow(['公司编号', '职位名称', '职位链接', '薪资待遇', '工作地点', '工作经验', '最低学历', '招聘人数', '公司规模'])
+    writer.writerow(['公司编号', '公司名称', '公司链接', '职位名称', '职位链接', '薪资待遇', '工作地点', '工作经验', '最低学历', '招聘人数', '公司规模'])
     csv_file.close()
 
 
@@ -133,9 +143,11 @@ def save_csv(item_dict):
     csv_file_name = file_path + 'ganji.csv'
     csv_file = file(csv_file_name, 'a')
     writer = csv.writer(csv_file)
-    # writer.writerow(['公司编号', '职位名称', '职位链接', '薪资待遇', '工作地点', '工作经验', '最低学历', '招聘人数', '公司规模'])
+
     item_tuple = (
         item_dict[u'公司编号'],
+        item_dict[u'公司名称'],
+        'http://www.ganji.com/gongsi/%s/' % str(item_dict[u'公司编号']),
         item_dict[u'职位名称'],
         item_dict[u'职位链接'],
         item_dict[u'薪资待遇'],
