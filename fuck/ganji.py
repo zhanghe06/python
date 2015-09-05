@@ -198,4 +198,19 @@ if __name__ == "__main__":
 http://www.ganji.com/gongsi/26735941/
 
 太奇葩了，前4页源码居然和后面的不一致。也是醉了～～
+
+准备进一步抓取公司联系人和联系电话
+网站上的电话是带干扰功能的图片，尝试识别之后发现，识别率很低，没有意义
+进一步发现wap站是文本显示，可以通过抓取wap站获取这类数据。
+http://wap.ganji.com/gongsi/5504323/?domain=sh
+特征
+<div class="detail-describe">
+    <p><span>联系人：</span>王小姐</p>
+    <p><span>电话联系：</span>86656161 <a href="tel:86656161">[拨打]</a></p>
+
+    <p>
+        <span class="line-contact"><a href="tel:86656161">拨打电话</a></span>
+        <span class="phone-contact"><a href="/wapim/getMsgs/?userId=64219650">给他留言</a></span>
+    </p>
+</div>
 """
