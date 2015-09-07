@@ -455,6 +455,28 @@ Tornado安装
     世上没有最好的框架，只有最适合你自己、最适合你的团队的框架。
     在没有一定的访问量前谈性能其实是没有多大意义的，因为你的CPU和内存一直就闲着呢。
     而且语言和框架一般也不会是性能瓶颈，性能问题最常出现在数据库访问和文件读写上。
+
+
+## 踩过的坑
+
+requests的乱码问题
+```
+是由于运行环境中缺少一个叫chardet的用于探测字符集的第三库导致的
+chardet自称是一个非常优秀的编码识别模块
+有人说这个第三方库也不怎么靠谱。
+解决方案有三种（前两种Requests文档有提过，但没明确指明是解决这类问题）：
+第一：直接用response.content以二进制字节的方式访问请求响应体；（推荐）
+第二：改变Requests使用其推测的文本编码，response.encoding = 'utf-8' 再获取解码内容 response.text
+第二：把requests的models.py给hack一下，写出自己的一套检测字符集的function。
+```
+```
+说明一点，网上很多错误观点认为乱码与Accept-Encoding有关
+header['Accept-Encoding'] = 'gzip, deflate, sdch'
+纯属扯淡，Requests会自动为你解码 gzip 和 deflate 传输编码的响应数据。
+```
+
+参考：
+[python 模块 chardet](http://pypi.python.org/pypi/chardet "python 模块 chardet")
     
 ## TODO
 
