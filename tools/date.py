@@ -2,6 +2,7 @@
 __author__ = 'zhanghe'
 
 import time
+import datetime
 
 
 def add_time(time_str, second):
@@ -21,12 +22,55 @@ def test():
     """
     测试代码
     """
-    print time.time()
-    print time.localtime()
-    print time.ctime()
-    print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
-    print time.strftime("%Y-%m-%d", time.localtime()) + ' 09:00:00'
-    print ' '.join((time.strftime("%Y-%m-%d", time.localtime()), '09:00:00'))
+    # 时间戳（timestamp）
+    # 时间戳表示的是从 1970-01-01 00:00:00 开始按秒计算的偏移量。
+    # 返回时间戳方式的函数主要有time()，clock()等
+    print time.time()  # 1441632561.1
+    print type(time.time())  # <type 'float'>
+
+    # 元组（struct_time）
+    # struct_time元组共有9个元素，返回struct_time的函数主要有gmtime()，localtime()，strptime()
+    print time.localtime()  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=21, tm_min=29, tm_sec=21, tm_wday=0, tm_yday=250, tm_isdst=0)
+    print type(time.localtime())  # <type 'time.struct_time'>
+
+    # 将一个元祖（struct_time）转化为时间戳
+    print time.mktime(time.localtime())  # 1441633092.0
+    print type(time.mktime(time.localtime()))  # <type 'float'>
+
+    print time.ctime()  # Mon Sep  7 21:31:02 2015
+    print type(time.ctime())  # <type 'str'>
+
+    # 格式化字符串 time.strftime(format[, t])
+    # 把一个代表时间的元组或者struct_time（如由time.localtime()和time.gmtime()返回）转化为格式化的时间字符串。
+    # 如果t未指定，将传入time.localtime()。
+    # 如果元组中任何一个元素越界，ValueError的错误将会被抛出。
+    print time.strftime("%Y-%m-%d %H:%M:%S")  # 2015-09-07 21:44:07
+    print type(time.strftime("%Y-%m-%d %H:%M:%S"))  # <type 'str'>
+    print time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())  # 2015-09-07 21:44:07
+    print time.strftime("%Y-%m-%d", time.localtime()) + ' 09:00:00'  # 2015-09-07 09:00:00
+    print ' '.join((time.strftime("%Y-%m-%d", time.localtime()), '09:00:00'))  # 2015-09-07 09:00:00
+
+    # time.strptime(string[, format])
+    # 把一个格式化时间字符串转化为struct_time。实际上它和strftime()是逆操作。
+    # format默认为："%a %b %d %H:%M:%S %Y"。
+    print time.strptime('2015-09-07 21:44:07', '%Y-%m-%d %X')  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=21, tm_min=44, tm_sec=7, tm_wday=0, tm_yday=250, tm_isdst=-1)
+    print type(time.strptime('2015-09-07 21:44:07', '%Y-%m-%d %X'))  # <type 'time.struct_time'>
+
+    # 格式化时间字符串转时间戳
+    # 实际分解成两步 第一步：字符串转为元祖；第二步：元祖（struct_time）转为时间戳
+    print time.mktime(time.strptime('2015-09-07 21:44:07', '%Y-%m-%d %X'))  # 1441633447.0
+    print type(time.mktime(time.strptime('2015-09-07 21:44:07', '%Y-%m-%d %X')))  # <type 'float'>
+
+    # 日期时间元祖 datetime tuple(datetime obj)
+    # MySql中DATETIME类型 对应的就是 python里的这种类型
+    # 注意与时间元祖的区别
+    print datetime.datetime.now()  # 2015-09-07 22:15:03.419781
+    print type(datetime.datetime.now())  # <type 'datetime.datetime'>
+
+    # 日期时间元祖 转为 时间元祖
+    # date.timetuple()：返回日期对应的time.struct_time对象
+    print datetime.datetime.now().timetuple()  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=22, tm_min=18, tm_sec=22, tm_wday=0, tm_yday=250, tm_isdst=-1)
+    print type(datetime.datetime.now().timetuple())  # <type 'time.struct_time'>
 
 
 if __name__ == "__main__":
@@ -67,4 +111,14 @@ if __name__ == "__main__":
     %X 本地相应的时间表示
     %Z 当前时区的名称
     %% %号本身
+
+4.py中涉及的time有四种类型
+    1. time string
+    2. datetime tuple(datetime obj)
+    3. time tuple(time obj)
+    4. timestamp
+
+time模块的官方文档
+https://docs.python.org/2/library/time.html
+
 """
