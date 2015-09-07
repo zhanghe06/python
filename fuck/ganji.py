@@ -34,6 +34,7 @@ def visit_page(url):
     """
     访问页面
     """
+    header['Host'] = 'sh.ganji.com'
     response = s.get(url, headers=header)
     return response.text
 
@@ -73,6 +74,9 @@ def get_info(file_html):
             key = item_list[0]
             value = item_list[1]
             item_dict[key] = value
+        # 获取公司联系方式
+        contact_dict = get_contact(item_dict[u'公司编号'])
+        item_dict = dict(item_dict, **contact_dict)
         yield item_dict
     print '单页共 %s 条记录' % len(tr_list)
 
@@ -112,8 +116,41 @@ def get_info_5(file_html):
             key = item_list[0]
             value = item_list[1]
             item_dict[key] = value
+        # 获取公司联系方式
+        contact_dict = get_contact(item_dict[u'公司编号'])
+        item_dict = dict(item_dict, **contact_dict)
         yield item_dict
     print '单页共 %s 条记录' % len(tr_list)
+
+
+def get_contact(cid):
+    """
+    获取公司联系方式
+    :param cid:
+    :return:
+    """
+    wap_url = 'http://wap.ganji.com/gongsi/%s/?domain=sh' % str(cid)
+    header['Host'] = 'wap.ganji.com'
+    response = s.get(wap_url, headers=header)
+    wap_html = response.content
+    wap_pq = Pq(wap_html)
+    contact_list = wap_pq('.detail-describe').eq(1)
+    name_line = contact_list.find('p').eq(0).text()
+    phone_line = contact_list.find('p').eq(1).text()
+    contact_dict = {
+        u'联系人': '',
+        u'联系电话': ''
+    }
+    if name_line is not None:
+        name_line_list = name_line.split('： ')
+        if len(name_line_list) == 2:
+            contact_dict[u'联系人'] = name_line_list[1]
+    if phone_line is not None:
+        phone_line_list = phone_line.split('： ')
+        if len(phone_line_list) == 2:
+            contact_dict[u'联系电话'] = phone_line_list[1].strip(' [拨打]')
+    # print contact_dict
+    return contact_dict
 
 
 def write_csv_head():
@@ -128,7 +165,7 @@ def write_csv_head():
     csv_file_name = file_path + 'ganji.csv'
     csv_file = file(csv_file_name, 'w')
     writer = csv.writer(csv_file)
-    writer.writerow(['公司编号', '公司名称', '公司链接', '职位名称', '职位链接', '薪资待遇', '工作地点', '工作经验', '最低学历', '招聘人数', '公司规模'])
+    writer.writerow(['公司编号', '公司名称', '联系人', '联系电话', '公司链接', '职位名称', '职位链接', '薪资待遇', '工作地点', '工作经验', '最低学历', '招聘人数', '公司规模'])
     csv_file.close()
 
 
@@ -147,6 +184,8 @@ def save_csv(item_dict):
     item_tuple = (
         item_dict[u'公司编号'],
         item_dict[u'公司名称'],
+        item_dict[u'联系人'],
+        item_dict[u'联系电话'],
         'http://www.ganji.com/gongsi/%s/' % str(item_dict[u'公司编号']),
         item_dict[u'职位名称'],
         item_dict[u'职位链接'],
@@ -165,6 +204,7 @@ def fuck(max_page_num=10):
     """
     主程序，获取max_page_num个页面的数据，并写入csv文件
     """
+    start_time = time.time()
     write_csv_head()
     for i in xrange(max_page_num):
         if i > 0:
@@ -182,6 +222,7 @@ def fuck(max_page_num=10):
             for item in get_info_5(html_text):
                 save_csv(item)
         # time.sleep(8)
+    print '程序耗时：%sS' % (time.time() - start_time)
 
 
 if __name__ == "__main__":
@@ -213,4 +254,14 @@ http://wap.ganji.com/gongsi/5504323/?domain=sh
         <span class="phone-contact"><a href="/wapim/getMsgs/?userId=64219650">给他留言</a></span>
     </p>
 </div>
+
+抓取文件统计
+
+程序耗时：486.772469044S
+
+zhanghe@ubuntu:~/code/python$ du -h static/csv/ganji.csv
+720K	static/csv/ganji.csv
+zhanghe@ubuntu:~/code/python$ wc -l static/csv/ganji.csv
+2965 static/csv/ganji.csv
+
 """
