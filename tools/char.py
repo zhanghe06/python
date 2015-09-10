@@ -111,7 +111,101 @@ def string2list(ustring):
     return ret_list
 
 
+def get_first_char(s):
+    """
+    获取字符串首字母数 (如果是中文 获取拼音首字母)
+    """
+    if s is None or s == '':
+        return ''
+
+    s = s.decode('utf-8', 'ignore')
+    # 如果字符串首字符是字母，直接返回
+    first_char = ord(s[0].upper())
+    # print first_char
+    if ord('A') <= first_char <= ord('Z'):
+        return s[0].upper()
+    # 处理汉字情况
+    s = s.encode('gb18030', 'ignore')
+    # print len(s)
+    if len(s) < 2:
+        return ''
+    asc = ord(s[0])*256 + ord(s[1])-65536
+    if -20319 <= asc <= -20284:
+        return 'A'
+
+    if -20283 <= asc <= -19776:
+        return 'B'
+
+    if -19775 <= asc <= -19219:
+        return 'C'
+
+    if -19218 <= asc <= -18711:
+        return 'D'
+
+    if -18710 <= asc <= -18527:
+        return 'E'
+
+    if -18526 <= asc <= -18240:
+        return 'F'
+
+    if -18239 <= asc <= -17923:
+        return 'G'
+
+    if -17922 <= asc <= -17418:
+        return 'H'
+
+    if -17417 <= asc <= -16475:
+        return 'J'
+
+    if -16474 <= asc <= -16213:
+        return 'K'
+
+    if -16212 <= asc <= -15641:
+        return 'L'
+
+    if -15640 <= asc <= -15166:
+        return 'M'
+
+    if -15165 <= asc <= -14923:
+        return 'N'
+
+    if -14922 <= asc <= -14915:
+        return 'O'
+
+    if -14914 <= asc <= -14631:
+        return 'P'
+
+    if -14630 <= asc <= -14150:
+        return 'Q'
+
+    if -14149 <= asc <= -14091:
+        return 'R'
+
+    if -14090 <= asc <= -13319:
+        return 'S'
+
+    if -13318 <= asc <= -12839:
+        return 'T'
+
+    if -12838 <= asc <= -12557:
+        return 'W'
+
+    if -12556 <= asc <= -11848:
+        return 'X'
+
+    if -11847 <= asc <= -11056:
+        return 'Y'
+
+    if -11055 <= asc <= -10247:
+        return 'Z'
+
+    return ''
+
+
 if __name__ == '__main__':
     print is_chinese(u'你好啊')  # True
     print is_chinese(u'你abc')  # True
     print is_chinese(u'abc你')  # False
+    print get_first_char('abc你')  # A
+    print get_first_char('q')  # Q
+    print get_first_char('你好')  # N
