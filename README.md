@@ -477,7 +477,31 @@ header['Accept-Encoding'] = 'gzip, deflate, sdch'
 
 参考：
 [python 模块 chardet](http://pypi.python.org/pypi/chardet "python 模块 chardet")
-    
+
+
+## Python MySQLdb
+
+测试安装状态
+```
+zhanghe@ubuntu:~$ python
+Python 2.7.6 (default, Mar 22 2014, 22:59:38) 
+[GCC 4.8.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+>>> import MySQLdb
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+ImportError: No module named MySQLdb
+>>> 
+```
+
+安装
+```
+$ sudo apt-get install python-mysqldb
+```
+
+再次测试安装状态，不报错即可
+
+
 ## TODO
 
 多线程
