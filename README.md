@@ -502,6 +502,21 @@ $ sudo apt-get install python-mysqldb
 再次测试安装状态，不报错即可
 
 
+## Python的XML库
+
+[用 ElementTree 在 Python 中解析 XML](http://pycoders-weekly-chinese.readthedocs.org/en/latest/issue6/processing-xml-in-python-with-element-tree.html)
+
+[模块手册](https://docs.python.org/2/library/xml.etree.elementtree.html)
+
+使用：
+```
+try:
+    import xml.etree.cElementTree as ET
+except ImportError:
+    import xml.etree.ElementTree as ET
+```
+
+
 ## TODO
 
 多线程
