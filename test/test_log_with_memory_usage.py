@@ -12,3 +12,13 @@ log_test.log_config()
 log_test.debug('This is debug message')
 log_test.info('This is info message')
 log_test.warning('This is warning message')
+
+log_test.get_memory_usage()
+print log_test.memory_usage
+
+
+"""
+测试结果：
+内存使用4.14M
+4.14M
+"""

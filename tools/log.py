@@ -43,7 +43,7 @@ class Log:
             memory_usage_value = 0
         else:
             memory_usage_value = int(result.strip())
-        memory_usage_format = memory_usage_value/1000.0
+        memory_usage_format = memory_usage_value/1024.0
         print '内存使用%.2fM' % memory_usage_format
         self.memory_usage = '%.2fM' % memory_usage_format
 
