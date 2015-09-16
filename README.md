@@ -481,6 +481,8 @@ header['Accept-Encoding'] = 'gzip, deflate, sdch'
 
 ## Python MySQLdb
 
+Python interface to MySQL
+
 测试安装状态
 ```
 zhanghe@ubuntu:~$ python
@@ -494,12 +496,33 @@ ImportError: No module named MySQLdb
 >>> 
 ```
 
-安装
+apt方式安装
 ```
+$ apt-cache search python-mysqldb
 $ sudo apt-get install python-mysqldb
 ```
 
+pip方式安装（虚拟环境推荐这种方式）
+```
+$ pip search MySQL-python | grep MySQL
+$ sudo pip install MySQL-python
+```
+
 再次测试安装状态，不报错即可
+
+说明：
+python版本的MySQL库（不建议使用这个）
+```
+$ sudo pip install PyMySQL
+```
+
+生产环境推荐导入模块方式
+```
+try:
+    import MySQLdb
+except:
+    import pymysql
+```
 
 
 ## Python的XML库
