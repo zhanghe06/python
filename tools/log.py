@@ -14,28 +14,50 @@ class Log:
         self.log_datefmt = '%a, %d %b %Y %H:%M:%S'
         self.log_filename = 'myapp.log'
         self.log_filemode = 'w'
+        self.memory_usage = '0.00M'
 
     def log_config(self):
         """
         加载配置信息
         """
-        logging.basicConfig(level=self.log_level,
-                            format=self.log_format,
-                            datefmt=self.log_datefmt,
-                            filename=self.log_filename,
-                            filemode=self.log_filemode)
+        logging.basicConfig(
+            level=self.log_level,
+            format=self.log_format,
+            datefmt=self.log_datefmt,
+            filename=self.log_filename,
+            filemode=self.log_filemode
+        )
 
+    def get_memory_usage(self):
+        """
+        获取当前进程内存使用情况(单位M)
+        """
+        import os
+        # 获取当前脚本的进程ID
+        pid = os.getpid()
+        # 获取当前脚本占用的内存
+        cmd = 'ps -p %s -o rss=' % pid
+        output = os.popen(cmd)
+        result = output.read()
+        if result == '':
+            memory_usage_value = 0
+        else:
+            memory_usage_value = int(result.strip())
+        memory_usage_format = memory_usage_value/1000.0
+        print '内存使用%.2fM' % memory_usage_format
+        self.memory_usage = '%.2fM' % memory_usage_format
 
-def debug(msg):
-    return logging.debug(msg)
+    @staticmethod
+    def debug(msg):
+        logging.debug(msg)
 
+    @staticmethod
+    def info(msg):
+        logging.info(msg)
 
-def info(msg):
-    return logging.info(msg)
-
-
-def warning(msg):
-    return logging.warning(msg)
+    @staticmethod
+    def warning(msg):
+        logging.warning(msg)
 
 
 if __name__ == '__main__':
@@ -44,9 +66,9 @@ if __name__ == '__main__':
     xxx.log_filename = 'myapp2.log'
     xxx.log_config()
     # 测试
-    debug('This is debug message')
-    info('This is info message')
-    warning('This is warning message')
+    xxx.debug('This is debug message')
+    xxx.info('This is info message')
+    xxx.warning('This is warning message')
 
 '''
 logging.basicConfig函数各参数:
