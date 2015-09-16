@@ -525,6 +525,17 @@ except:
 ```
 
 
+## Python Redis
+
+安装
+```
+$ pip search redis
+$ sudo pip install redis
+```
+
+[官方文档](https://pypi.python.org/pypi/redis)
+
+
 ## Python的XML库
 
 [用 ElementTree 在 Python 中解析 XML](http://pycoders-weekly-chinese.readthedocs.org/en/latest/issue6/processing-xml-in-python-with-element-tree.html)
