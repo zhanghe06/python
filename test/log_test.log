@@ -1,0 +1,3 @@
+Wed, 16 Sep 2015 15:39:21 log.py[line:52] DEBUG This is debug message
+Wed, 16 Sep 2015 15:39:21 log.py[line:56] INFO This is info message
+Wed, 16 Sep 2015 15:39:21 log.py[line:60] WARNING This is warning message
