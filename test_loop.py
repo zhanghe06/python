@@ -28,14 +28,18 @@ while 1:
     print '\n-------------'
     print '1、发送好友消息'
     print '2、发送群组消息'
-    send_type = raw_input("请输入类型: ")
-    if send_type == '1':
+    print 'q、退出程序'
+    command = raw_input("请输入类型: ")
+    if command == '1':
         show_list(friend_dict)  # 显示好友列表
         raw_input_msg = raw_input("输入好友消息: ")
         print raw_input_msg
         continue
-    if send_type == '2':
+    if command == '2':
         show_list(group_dict)  # 显示群组列表
         raw_input_msg = raw_input("输入群组消息: ")
         print raw_input_msg
         continue
+    if command == 'q':
+        print '程序已退出'
+        break
