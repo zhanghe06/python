@@ -1,10 +1,34 @@
-# encoding: utf-8
-__author__ = 'zhanghe'
+#!/usr/bin/env python
+#coding:utf-8
+#
+# Simple asynchronous HTTP proxy with tunnelling (CONNECT).
+#
+# GET/POST proxying based on
+# http://groups.google.com/group/python-tornado/msg/7bea08e7a049cf26
+#
+# Copyright (C) 2012 Senko Rasic <senko.rasic@dobarkod.hr>
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+# THE SOFTWARE.
 
 import logging
 import os
 import sys
-sys.path.append("/usr/lib/python2.7/dist-packages")
 import socket
 from urlparse import urlparse
 
@@ -14,6 +38,18 @@ import tornado.iostream
 import tornado.web
 import tornado.httpclient
 
+import logging
+logging.basicConfig(stream = sys.stderr,
+                    #filename='/tmp/1.log',
+                    level = logging.DEBUG,
+                    format = '%(asctime)s - %(name)s - %(process)d - %(levelname)s: %(message)s')
+
+
+from tcp_client import MySimpleAsyncHTTPClient
+
+from tornado.httpclient import AsyncHTTPClient
+AsyncHTTPClient.configure("tcp_client.MySimpleAsyncHTTPClient")
+
 logger = logging.getLogger('tornado_proxy')
 
 __all__ = ['ProxyHandler', 'run_proxy']
@@ -22,21 +58,18 @@ __all__ = ['ProxyHandler', 'run_proxy']
 def get_proxy(url):
     url_parsed = urlparse(url, scheme='http')
     proxy_key = '%s_proxy' % url_parsed.scheme
-    print 'proxy_key', proxy_key
-    print 'os.environ.get(proxy_key)', os.environ.get(proxy_key)
+    print 'proxy:',os.environ.get(proxy_key)
     return os.environ.get(proxy_key)
 
 
 def parse_proxy(proxy):
     proxy_parsed = urlparse(proxy, scheme='http')
-    print 'proxy_parsed.hostname, proxy_parsed.port\n', proxy_parsed.hostname, proxy_parsed.port
     return proxy_parsed.hostname, proxy_parsed.port
 
 
 def fetch_request(url, callback, **kwargs):
     proxy = get_proxy(url)
     if proxy:
-        print('Forward request via upstream proxy %s\n' % proxy)
         logger.debug('Forward request via upstream proxy %s', proxy)
         tornado.httpclient.AsyncHTTPClient.configure(
             'tornado.curl_httpclient.CurlAsyncHTTPClient')
@@ -54,8 +87,8 @@ class ProxyHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self):
-        print 'Handle %s request to %s' % (self.request.method, self.request.uri)
-        logger.debug('Handle %s request to %s', self.request.method, self.request.uri)
+        logger.debug('Handle %s request to %s', self.request.method,
+                     self.request.uri)
 
         def handle_response(response):
             if (response.error and not
@@ -64,7 +97,7 @@ class ProxyHandler(tornado.web.RequestHandler):
                 self.write('Internal server error:\n' + str(response.error))
             else:
                 self.set_status(response.code)
-                for header in ('Date', 'Cache-Control', 'Server', 'Content-Type', 'Location'):
+                for header in ('Date', 'Cache-Control', 'Server','Content-Type', 'Location'):
                     v = response.headers.get(header)
                     if v:
                         self.set_header(header, v)
@@ -99,7 +132,6 @@ class ProxyHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def connect(self):
-        print('Start CONNECT to %s' % self.request.uri)
         logger.debug('Start CONNECT to %s', self.request.uri)
         host, port = self.request.uri.split(':')
         client = self.request.connection.stream
@@ -125,7 +157,6 @@ class ProxyHandler(tornado.web.RequestHandler):
             client.close()
 
         def start_tunnel():
-            print('CONNECT tunnel established to %s' % self.request.uri)
             logger.debug('CONNECT tunnel established to %s', self.request.uri)
             client.read_until_close(client_close, read_from_client)
             upstream.read_until_close(upstream_close, read_from_upstream)
@@ -136,7 +167,6 @@ class ProxyHandler(tornado.web.RequestHandler):
                 first_line = data.splitlines()[0]
                 http_v, status, text = first_line.split(None, 2)
                 if int(status) == 200:
-                    print('Connected to upstream proxy %s' % proxy)
                     logger.debug('Connected to upstream proxy %s', proxy)
                     start_tunnel()
                     return
@@ -151,12 +181,13 @@ class ProxyHandler(tornado.web.RequestHandler):
             upstream.read_until('\r\n\r\n', on_proxy_response)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+        #改变源端口
+        #s.bind(('192.168.0.50',0))
         upstream = tornado.iostream.IOStream(s)
+
         proxy = get_proxy(self.request.uri)
-        print 'proxy', proxy
         if proxy:
             proxy_host, proxy_port = parse_proxy(proxy)
-            print 'proxy_host, proxy_port:', proxy_host, proxy_port
             upstream.connect((proxy_host, proxy_port), start_proxy_tunnel)
         else:
             upstream.connect((host, int(port)), start_tunnel)
@@ -176,12 +207,9 @@ def run_proxy(port, start_ioloop=True):
         ioloop.start()
 
 if __name__ == '__main__':
-    port = 8890
+    port = 8888
     if len(sys.argv) > 1:
         port = int(sys.argv[1])
 
     print ("Starting HTTP proxy on port %d" % port)
-    try:
-        run_proxy(port)
-    except KeyboardInterrupt:
-        sys.exit(1)
+    run_proxy(port)

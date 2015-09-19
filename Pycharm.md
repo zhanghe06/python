@@ -14,6 +14,7 @@ File -->> Setting -->> File and Code Templates
 
 在模块里顶部加入下面语句
 ```
+#!/usr/bin/env python
 # coding=utf-8
 ```
 
