@@ -45,7 +45,7 @@ logging.basicConfig(stream = sys.stderr,
                     format = '%(asctime)s - %(name)s - %(process)d - %(levelname)s: %(message)s')
 
 
-from tcp_client import MySimpleAsyncHTTPClient
+# from tcp_client import MySimpleAsyncHTTPClient
 
 from tornado.httpclient import AsyncHTTPClient
 AsyncHTTPClient.configure("tcp_client.MySimpleAsyncHTTPClient")
@@ -182,7 +182,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
         #改变源端口
-        #s.bind(('192.168.0.50',0))
+        s.bind(('192.168.3.2', 0))
         upstream = tornado.iostream.IOStream(s)
 
         proxy = get_proxy(self.request.uri)

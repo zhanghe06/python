@@ -1,15 +1,14 @@
 #!coding:utf-8
+__author__ = 'sdm'
+
 import socket
 import logging
 
-log=logging.getLogger('httpclient')
+log = logging.getLogger('httpClient')
 
 from tornado.iostream import IOStream
 
-
-__author__ = 'sdm'
-
-from  tornado.simple_httpclient import SimpleAsyncHTTPClient
+from tornado.simple_httpclient import SimpleAsyncHTTPClient
 
 # /Library/Python/2.7/site-packages/tornado/tcpclient.py
 from tornado.tcpclient import TCPClient
@@ -31,9 +30,8 @@ class MyTCPClient(TCPClient):
         # Always connect in plaintext; we'll convert to ssl if necessary
         # after one connection has completed.
         s = socket.socket(af)
-        log.debug("connect:%s" % (af))
-        #s.bind(('192.168.2.143',0))
-        s.bind(('192.168.0.50',0))
+        log.debug("connect:%s" % af)
+        s.bind(('192.168.3.2', 0))
         stream = IOStream(s,
                           io_loop=self.io_loop,
                           max_buffer_size=max_buffer_size)

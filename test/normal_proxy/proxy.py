@@ -1,9 +1,9 @@
+#!/usr/bin/env python
 # encoding: utf-8
 __author__ = 'zhanghe'
 
 import os
 import sys
-sys.path.append("/usr/lib/python2.7/dist-packages")
 import socket
 from urlparse import urlparse
 
@@ -13,11 +13,16 @@ import tornado.iostream
 import tornado.web
 import tornado.httpclient
 
-sys.path.append("/home/zhanghe/code/python/tools")
-from log import Log
-logger = Log()
-logger.log_filename = 'test/forward_direction_proxy/tornado_proxy.log'
-logger.log_config()
+from config_proxy import *
+
+import logging
+logging.basicConfig(
+    level=logging.DEBUG,
+    format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
+    datefmt='%Y-%m-%d %H:%M:%S',
+    stream=sys.stderr
+)
+logger = logging.getLogger('tornado_proxy')
 
 __all__ = ['ProxyHandler', 'run_proxy']
 
@@ -72,6 +77,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
     @tornado.web.asynchronous
     def get(self):
+        logger.debug('remote_ip:%s' % self.request.remote_ip)  # 请求来源ip（优先获取header头部伪造的代理ip）
         logger.debug('Handle %s request to %s' % (self.request.method, self.request.uri))
 
         def handle_response(response):
@@ -81,6 +87,7 @@ class ProxyHandler(tornado.web.RequestHandler):
                 self.write('Internal server error:\n' + str(response.error))
             else:
                 self.set_status(response.code)
+                logger.debug('response.headers:%s' % response.headers)
                 for header in ('Date', 'Cache-Control', 'Server', 'Content-Type', 'Location'):
                     v = response.headers.get(header)
                     if v:
@@ -171,6 +178,8 @@ class ProxyHandler(tornado.web.RequestHandler):
             upstream.read_until('\r\n\r\n', on_proxy_response)
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
+        # 改变源端口
+        s.bind(('192.168.3.7', 0))
         upstream = tornado.iostream.IOStream(s)
         proxy = get_proxy(self.request.uri)
         logger.debug('proxy: %s' % proxy)
