@@ -459,7 +459,7 @@ Tornado安装
 
 ## 踩过的坑
 
-requests的乱码问题
+### requests的乱码问题
 ```
 是由于运行环境中缺少一个叫chardet的用于探测字符集的第三库导致的
 chardet自称是一个非常优秀的编码识别模块
@@ -477,6 +477,24 @@ header['Accept-Encoding'] = 'gzip, deflate, sdch'
 
 参考：
 [python 模块 chardet](http://pypi.python.org/pypi/chardet "python 模块 chardet")
+
+
+### pip安装第三方库报错
+
+安装过程报错的解决办法
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 49:
+由于是在虚拟环境中安装
+先找到虚拟目录下的lib/python2.7/site.py文件
+/home/zhanghe/code/project/env/lib/python2.7/site.py
+```
+def setencoding():
+    """Set the string encoding used by the Unicode implementation.  The
+    default is 'ascii', but if you're willing to experiment, you can
+    change this."""
+    encoding = "ascii"  # Default value set by _PyUnicode_Init()
+    if 0:  # 改成 if 1 (只修改第一个if 0 为 if 1)
+```
+if 0 改成 if 1 (只修改第一个if 0 为 if 1)
 
 
 ## Python MySQLdb
