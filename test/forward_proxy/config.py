@@ -15,6 +15,9 @@ bind_config = {
 }
 
 
+bind_ip = '0.0.0.0'
+
+
 def get_proxy_info(proxy_key):
     """
     获取代理信息
