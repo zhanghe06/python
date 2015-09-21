@@ -8,33 +8,54 @@ __author__ = 'zhanghe'
 import os
 
 
-# 获取当前脚本的进程ID
-print os.getpid()
+def test_memory_usage():
+    # 获取当前脚本的进程ID
+    print os.getpid()
 
-# 获取当前脚本占用的内存
-# cmd = 'ps -p %s -o rss=' % os.getpid()
-cmd = 'ps -p 6666 -o rss='
-print cmd
+    # 获取当前脚本占用的内存
+    # cmd = 'ps -p %s -o rss=' % os.getpid()
+    cmd = 'ps -p 6666 -o rss='
+    print cmd
 
-print('\n------system--------')
-result = os.system(cmd)
-print(type(result))
-print(result)
+    print('\n------system--------')
+    result = os.system(cmd)
+    print(type(result))
+    print(result)
 
-print('\n------popen--------')
-output = os.popen(cmd)
-result = output.read()
-if result == '':
-    memory_usage = 0
-else:
-    memory_usage = int(result.strip())
-print(type(memory_usage))
-print(memory_usage)
-memory_usage_format = memory_usage/1000.0
+    print('\n------popen--------')
+    output = os.popen(cmd)
+    result = output.read()
+    if result == '':
+        memory_usage = 0
+    else:
+        memory_usage = int(result.strip())
+    print(type(memory_usage))
+    print(memory_usage)
+    memory_usage_format = memory_usage/1000.0
 
-print '内存使用%.2fM' % memory_usage_format
+    print '内存使用%.2fM' % memory_usage_format
 
-raw_input('回车结束程序')
+    raw_input('回车结束程序')
+
+
+def test_get_local_ip():
+    """
+    获取本地ip地址
+    """
+    cmd = "LC_ALL=C ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'"
+    print cmd
+    # result = os.system(cmd)
+    result = os.popen(cmd).read()
+    print(type(result))
+    print(result)
+    ip_list = result.strip().split('\n')
+    print ip_list
+    return ip_list
+
+
+if __name__ == '__main__':
+    # test_memory_usage()
+    test_get_local_ip()
 
 """
 测试结果：
@@ -61,6 +82,16 @@ KiB Swap:  1046524 total,      308 used,  1046216 free.   609820 cached Mem
 
 zhanghe@ubuntu:~/code/python$ ps -p 8418 -o rss='
  3800
+
+
+
+LC_ALL=C ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'
+<type 'str'>
+192.168.1.107
+192.168.111.129
+192.168.1.106
+
+['192.168.1.107', '192.168.111.129', '192.168.1.106']
 """
 
 

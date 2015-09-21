@@ -13,14 +13,17 @@ import tornado.iostream
 import tornado.web
 import tornado.httpclient
 
-from config_proxy import *
-
 import logging
+
 logging.basicConfig(
     level=logging.DEBUG,
     format='%(asctime)s %(filename)s[line:%(lineno)d] %(levelname)s %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
-    stream=sys.stderr
+    # 屏幕输出
+    # stream=sys.stderr,
+    # 写入文件
+    filename='tornado_proxy.log',
+    filemode='w',
 )
 logger = logging.getLogger('tornado_proxy')
 
@@ -82,7 +85,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
         def handle_response(response):
             if (response.error and not
-                    isinstance(response.error, tornado.httpclient.HTTPError)):
+            isinstance(response.error, tornado.httpclient.HTTPError)):
                 self.set_status(500)
                 self.write('Internal server error:\n' + str(response.error))
             else:
@@ -179,7 +182,7 @@ class ProxyHandler(tornado.web.RequestHandler):
 
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM, 0)
         # 改变源端口
-        s.bind(('192.168.3.7', 0))
+        s.bind((config.bind_ip, 0))
         upstream = tornado.iostream.IOStream(s)
         proxy = get_proxy(self.request.uri)
         logger.debug('proxy: %s' % proxy)
@@ -204,10 +207,64 @@ def run_proxy(port, start_ioloop=True):
     if start_ioloop:
         ioloop.start()
 
+
+def get_local_ip_list():
+    """
+    获取本地ip地址
+    """
+    cmd = "LC_ALL=C ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'"
+    # result = os.system(cmd)
+    result = os.popen(cmd).read()
+    ip_list = result.strip().split('\n')
+    return ip_list
+
+
+def check_ip(ipaddr):
+    """
+    校验IP地址正确性
+    :param ipaddr:
+    :return:
+    """
+    addr = ipaddr.strip().split('.')  # 切割IP地址为一个列表
+    if len(addr) != 4:  # 切割后列表必须有4个参数
+        return False
+    for ip in addr:
+        if ip < 0 or ip > 255:
+            return False
+    return True
+
+
+def check_local_ip(ip):
+    """
+    检测是否为本地ip
+    :param ip:
+    :return:
+    """
+    ip_list = get_local_ip_list()
+    if ip in ip_list:
+        return True
+    else:
+        return False
+
+
+def usage():
+    print '程序示例：\n'
+    print 'python proxy.py 8888 192.168.1.106\n'
+
+
 if __name__ == '__main__':
     port = 8888
-    if len(sys.argv) > 1:
+    import config
+    if len(sys.argv) > 2:
         port = int(sys.argv[1])
+        config.bind_ip = str(sys.argv[2])
+        if check_local_ip(config.bind_ip) is False:
+            print '[%s]不是本地IP地址' % config.bind_ip
+            print '可用IP为：\n%s' % get_local_ip_list()
+            sys.exit(1)
+    else:
+        usage()
+        sys.exit(1)
     print ("Starting HTTP proxy on port %d" % port)
     try:
         run_proxy(port)

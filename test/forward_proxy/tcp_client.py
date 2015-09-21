@@ -3,6 +3,7 @@ __author__ = 'sdm'
 
 import socket
 import logging
+import config
 
 log = logging.getLogger('httpClient')
 
@@ -31,7 +32,7 @@ class MyTCPClient(TCPClient):
         # after one connection has completed.
         s = socket.socket(af)
         log.debug("connect:%s" % af)
-        s.bind(('192.168.3.2', 0))
+        s.bind((config.bind_ip, 0))
         stream = IOStream(s,
                           io_loop=self.io_loop,
                           max_buffer_size=max_buffer_size)
