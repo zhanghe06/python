@@ -5,8 +5,12 @@ source spiderenv/bin/activate
 pip install Scrapy
 ```
 
-安装过程报错的解决办法
+安装过程报错
+```
 UnicodeDecodeError: 'ascii' codec can't decode byte 0xe6 in position 49:
+```
+
+解决办法
 ```
 找到虚拟目录下的lib/python2.7/site.py文件
 /home/zhanghe/code/wealink/wealink-web-spider/spiderenv/lib/python2.7/site.py
@@ -25,8 +29,9 @@ pip install Scrapy
 ```
 
 不重新安装又会报错：
+```
 ImportError: Twisted requires zope.interface 3.6.0 or later: no module named zope.interface.
-
+```
 
 安装系统依赖
 ```
@@ -107,14 +112,16 @@ scrapy crawl csdnblog -o items.json
 ```
 
 有一个警告，先忽略
+```
 2015-09-21 16:44:06 [py.warnings] WARNING: :0: UserWarning: You do not have a working installation of the service_identity module: 'No module named pyasn1_modules.rfc2459'.  Please install it from <https://pypi.python.org/pypi/service_identity> and make sure all of its dependencies are satisfied.  Without the service_identity module and a recent enough pyOpenSSL to support it, Twisted can perform only rudimentary TLS client hostname verification.  Many valid certificate/hostname mappings may be rejected.
-
+```
 
 文章列表HTML结构：
+```
 <div class="list_item article_item">
     <span class="link_title">
     <div class="article_description">
-
+```
 
 在终端测试选择器
 ```
@@ -255,8 +262,6 @@ $ curl http://localhost:6800/cancel.json -d project=csdn -d job=6cf34b2e611011e5
 [架构概览-英文原版](http://scrapy.readthedocs.org/en/latest/topics/architecture.html)
 
 [架构概览-中文翻译](http://scrapy-chs.readthedocs.org/zh_CN/latest/topics/architecture.html)
-
-
 
 Scrapy的架构：
 
