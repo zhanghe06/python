@@ -43,7 +43,10 @@
 
 
 ## 程序所需依赖
+    进入虚拟环境
     zhanghe@ubuntu:~/code/python$ source pyenv/bin/activate
+    
+    查看虚拟环境依赖
     (pyenv)zhanghe@ubuntu:~/code/python$ pip freeze
     Pillow==2.8.1
     argparse==1.2.1
@@ -60,6 +63,8 @@
     rsa==3.1.4
     tornado==4.1
     wsgiref==0.1.2
+    
+    导出依赖库
     (pyenv)zhanghe@ubuntu:~/code/python$ pip freeze > requirements.txt
 
 
@@ -464,10 +469,14 @@ Tornado安装
 是由于运行环境中缺少一个叫chardet的用于探测字符集的第三库导致的
 chardet自称是一个非常优秀的编码识别模块
 有人说这个第三方库也不怎么靠谱。
+还有一种观点：
+requests的编码检测是不符标准的，他有两个编码，一个是http head里面的编码，另一个是依据网页body的编码。
+标准是网页内容声明的编码优先于http头的编码，requests没有做这个考虑，总是使用head里面的编码。
+在head和body编码声明不一致时可能出现编码错误。
 解决方案有三种（前两种Requests文档有提过，但没明确指明是解决这类问题）：
 第一：直接用response.content以二进制字节的方式访问请求响应体；（推荐）
 第二：改变Requests使用其推测的文本编码，response.encoding = 'utf-8' 再获取解码内容 response.text
-第二：把requests的models.py给hack一下，写出自己的一套检测字符集的function。
+第三：把requests的models.py给hack一下，写出自己的一套检测字符集的function。
 ```
 ```
 说明一点，网上很多错误观点认为乱码与Accept-Encoding有关
