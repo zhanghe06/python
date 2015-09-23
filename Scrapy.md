@@ -117,37 +117,51 @@ scrapy crawl csdnblog -o items.json
 
 
 在终端测试选择器
+```
 >>> response.xpath('//div/h1/span').extract()
+```
 
 标题
+```
 >>> response.xpath('//div/h1/span/a/text()').extract()
+```
 
 标题链接
+```
 >>> response.xpath('//div/h1/span/a/@href').extract()
+```
 
 简介
+```
 >>> response.xpath('//div[@class="article_description"]/text()').extract()
+```
 
 详细页面HTML结构：
+```
 <div id="article_details" class="details">
     <div class="article_title">
         <h1>
             <span class="link_title">
                 <a>
     <div id="article_content" class="article_content">
+```
 
 在终端测试选择器
 
 标题
+```
 >>> response.xpath('//div[@class="details"]/div[@class="article_title"]/h1/span/a/text()').extract()
+```
 
 链接
+```
 >>> response.xpath('//div[@class="details"]/div[@class="article_title"]/h1/span/a/@href').extract()
+```
 
 内容
+```
 >>> response.xpath('//div[@class="details"]/div[@class="article_content"]').extract()
-
-...
+```
 
 ## Scrapyd
 
@@ -246,6 +260,7 @@ $ curl http://localhost:6800/cancel.json -d project=csdn -d job=6cf34b2e611011e5
 
 Scrapy的架构：
 
+```
  ----------------------------------------------------------------------------------------
 |                                  [调度器]
 |                                (Scheduler)
@@ -265,28 +280,39 @@ Scrapy的架构：
 |                                     |
 |                                 [Spiders]
  ----------------------------------------------------------------------------------------
-
+```
 
 ### 组件介绍
 
 [Scrapy Engine]
+```
 引擎负责控制数据流在系统中所有组件中流动，并在相应动作发生时触发事件。 
 详细内容查看下面的数据流(Data Flow)部分。
+```
 
 [调度器(Scheduler)]
+```
 调度器从引擎接受request并将他们入队，以便之后引擎请求他们时提供给引擎。
+```
 
 [下载器(Downloader)]
+```
 下载器负责获取页面数据并提供给引擎，而后提供给spider。
+```
 
 [Spiders]
+```
 Spider是Scrapy用户编写用于分析response并提取item(即获取到的item)或额外跟进的URL的类。
 每个spider负责处理一个特定(或一些)网站。
+```
 
 [Item Pipeline]
+```
 Item Pipeline负责处理被spider提取出来的item。
 典型的处理有清理、 验证及持久化(例如存取到数据库中)。
 当Item在Spider中被收集之后，它将会被传递到Item Pipeline，一些组件会按照一定的顺序执行对Item的处理
+```
+
 以下是item pipeline的一些典型应用：
 ```
 清理HTML数据
@@ -296,9 +322,13 @@ Item Pipeline负责处理被spider提取出来的item。
 ```
 
 [下载器中间件(Downloader middlewares)]
+```
 下载器中间件是在引擎及下载器之间的特定钩子(specific hook)，处理Downloader传递给引擎的response。
 其提供了一个简便的机制，通过插入自定义代码来扩展Scrapy功能。
+```
 
 [Spider中间件(Spider middlewares)]
+```
 Spider中间件是在引擎及Spider之间的特定钩子(specific hook)，处理spider的输入(response)和输出(items及requests)。
 其提供了一个简便的机制，通过插入自定义代码来扩展Scrapy功能。更多内容请看 Spider中间件(Middleware) 。
+```
