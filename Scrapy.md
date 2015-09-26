@@ -78,7 +78,11 @@ $ pip install -r requirements.txt
 
 
 
-## 使用步骤
+## Scrapy使用步骤
+
+[Scrapy 1.0 documentation](http://doc.scrapy.org/en/latest/)
+
+[Scrapy入门教程](http://scrapy-chs.readthedocs.org/zh_CN/latest/intro/tutorial.html)
 
 
 创建项目
