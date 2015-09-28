@@ -552,6 +552,22 @@ except:
 ```
 
 
+## Python PostgreSQL
+
+PostgreSQL管理工具(客户端)安装
+```
+$ sudo apt-get install pgadmin3
+```
+pgadmin3已经包含了postgresql-client
+
+
+驱动的安装
+```
+$ sudo apt-get install libpq-dev
+$ pip install psycopg2
+```
+
+
 ## Python Redis
 
 安装
