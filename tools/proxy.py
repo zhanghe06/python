@@ -28,10 +28,13 @@ PortDict = {
     # 'HGCBG': '',
     'GEZIE': '8123',
     'GEZEE': '8118',
+    'HCAAA': '9000',
+    'BEFEII': '18161',
+    'HIDHG': '9797'
 }
 
 
-def scan_proxy():
+def scan_proxy_qiaodm():
     """
     扫描代理资源
     :return:
@@ -105,6 +108,37 @@ def scan_proxy():
         html.save_file('proxy.json', proxy_item + '\n', 'a')
 
 
+def scan_proxy_xicidaili():
+    """
+    扫描代理资源
+    :return:
+    """
+    import requests
+    from pyquery import PyQuery as Pq
+
+    source_site = 'http://www.xicidaili.com/'
+
+    header = {
+        'Host': 'www.xicidaili.com',
+        'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'
+    }
+
+    s = requests.session()
+    # 抓取页面
+    file_html = s.get(source_site).content
+
+    # 保存文件
+    # with open('test.html', 'a') as f:
+    #     f.write(file_html.encode('utf-8'))
+    #
+    # # 读取抓取的页面
+    # with open('test.html', 'r') as f:
+    #     file_html = f.read()
+
+    text_pq = Pq(file_html)
+    pass
+
+
 def get_list():
     """
     获取代理列表
@@ -137,8 +171,18 @@ def rm_item():
     """
     pass
 
+
+def scan_proxy(name):
+    if name is None:
+        print '请输入代理名称'
+    else:
+        scan_fun = eval('scan_proxy_%s' % name)
+        return scan_fun()
+
+
 if __name__ == "__main__":
-    scan_proxy()
+    scan_proxy('qiaodm')
+    scan_proxy('xicidaili')
     # get_list()
     # get_item()
 
