@@ -80,6 +80,22 @@ def replace_file_html(file_path, reg_rule=None):
     save_file(file_path, content)
 
 
+def get_email(html=None):
+    """
+    从文本中提取email
+    """
+    if html is None:
+        return []
+    email_rule = r'[^\_\@\s\W][\w\_\-\.]{1,}\@(?:[^\s\.]{1,}\.){1,}(?:[a-z]{2,4}\.?){1,2}'
+    email_list = re.compile(email_rule, re.S).findall(html)
+    # print json.dumps(email_list, ensure_ascii=False, indent=4)
+    # email_list_new = []
+    # for item in email_list:
+    #     email_list_new.append(item.lower())
+    # return email_list_new
+    return [item.lower() for item in email_list]
+
+
 if __name__ == '__main__':
     test_html = '''<h2>多云</h2>  '''
     print replace_html(test_html)
