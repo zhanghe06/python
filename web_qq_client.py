@@ -16,7 +16,7 @@ class WebQQ:
         }
         self.s = requests.session()
         self.qq_hash = ''
-        self.vfwebqq = ''
+        self.vf_web_qq = ''
         self.user_list_dict = {}
         self.group_list_dict = {}
         self.PSessionID = ''
@@ -139,7 +139,8 @@ class WebQQ:
         response = self.s.get(url, headers=self.header)
         # print response.content
         # print response.url
-        # print response.cookies  # 因302跳转，此处获取不到cookie
+        print response.cookies  # 因302跳转，此处获取不到cookie，如果需要查看cookie，需要设置allow_redirects=False
+        print response.history
         # Set-Cookie:uin=o0875270022; PATH=/; DOMAIN=qq.com;
         # Set-Cookie:skey=@uqacxdTvl; PATH=/; DOMAIN=qq.com;
         # Set-Cookie:pt2gguin=o0875270022; EXPIRES=Fri, 02-Jan-2020 00:00:00 GMT; PATH=/; DOMAIN=qq.com;
@@ -232,7 +233,7 @@ class WebQQ:
         获取群组列表信息
         """
         group_list_url = 'http://s.web2.qq.com/api/get_group_name_list_mask2'
-        group_list_payload = {'r': json.dumps({"vfwebqq": self.vfwebqq, "hash": self.qq_hash})}
+        group_list_payload = {'r': json.dumps({"vfwebqq": self.vf_web_qq, "hash": self.qq_hash})}
         self.header['Host'] = 's.web2.qq.com'
         self.header['Origin'] = 'http://s.web2.qq.com'
         self.header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
@@ -251,7 +252,7 @@ class WebQQ:
         group_detail_url = 'http://s.web2.qq.com/api/get_group_info_ext2'
         group_detail_payload = {
             'gcode': group_code,
-            'vfwebqq': self.vfwebqq,
+            'vfwebqq': self.vf_web_qq,
             't': time.time()
         }
         self.header['Host'] = 's.web2.qq.com'
@@ -265,7 +266,7 @@ class WebQQ:
         获取好友信息[原始数据，没有关联]
         """
         friends_info_url = 'http://s.web2.qq.com/api/get_user_friends2'
-        friends_info_payload = {'r': json.dumps({"vfwebqq": self.vfwebqq, "hash": self.qq_hash})}
+        friends_info_payload = {'r': json.dumps({"vfwebqq": self.vf_web_qq, "hash": self.qq_hash})}
         self.header['Host'] = 's.web2.qq.com'
         self.header['Origin'] = 'http://s.web2.qq.com'
         self.header['Referer'] = 'http://s.web2.qq.com/proxy.html?v=20130916001&callback=1&id=1'
@@ -343,7 +344,7 @@ class WebQQ:
         friends_account_payload = {
             'tuin': friends_uin,
             'type': 1,
-            'vfwebqq': self.vfwebqq,
+            'vfwebqq': self.vf_web_qq,
             't': time.time(),
         }
         response = self.s.get(friends_account_url, params=friends_account_payload, headers=self.header)
@@ -458,7 +459,7 @@ class WebQQ:
             self.check_sig(login_status['check_url'])
             # print self.get_self_info()
             # 获取验证令牌
-            self.vfwebqq = self.get_vf_web_qq()
+            self.vf_web_qq = self.get_vf_web_qq()
             # 获取hash令牌
             self.qq_hash = self.get_hash(self.NAME, self.qq_cookie['ptwebqq'])
             # 获取SessionId
@@ -537,7 +538,11 @@ def test_send_group_msg():
 
 
 if __name__ == "__main__":
-    # test_send_friend_msg()
-    test_send_group_msg()
+    test_send_friend_msg()
+    # test_send_group_msg()
 
 
+# todo 状态提醒
+# {"retcode":0,"result":[{"poll_type":"buddies_status_change","value":{"uin":1166353395,"status":"online","client_type":4}}]}
+# {"retcode":0,"result":[{"poll_type":"buddies_status_change","value":{"uin":3019820949,"status":"offline","client_type":1}}]}
+# {"retcode":0,"result":[{"poll_type":"buddies_status_change","value":{"uin":3019820949,"status":"online","client_type":21}}]}
