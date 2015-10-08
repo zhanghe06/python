@@ -190,6 +190,7 @@ Requests
 
     HTTP库，Requests 使用的是 urllib3，因此继承了它的所有特性。比Python 标准库中的 urllib 模块api简单
     http://cn.python-requests.org/zh_CN/latest/
+    [高级用法]http://cn.python-requests.org/zh_CN/latest/user/advanced.html#advanced
 
 Tornado
 
