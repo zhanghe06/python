@@ -28,12 +28,30 @@ def strip_html(input_html):
     return p.sub("", input_html)
 
 
+def replace_char_entity(html_str):
+    """
+    将html实体名称/实体编号转为html标签
+    :param html_str:
+    :return:
+    """
+    char_entities = {'&nbsp;': ' ', '&#160;': ' ',
+                     '&lt;': '<', '&#60;': '<',
+                     '&gt;': '>', '&#62;': '>',
+                     '&amp;': '&', '&#38;': '&',
+                     '&quot;': '"', '&#34;': '"',
+                     }
+    for char_key, char_value in char_entities.iteritems():
+        html_str = html_str.replace(char_key, char_value)
+    return html_str
+
+
 def filter_tags(html_str):
     """
     将HTML中标签等信息去掉
     :param html_str:
     :return:
     """
+    html_str = replace_char_entity(html_str)
     re_cdata = re.compile('//<!\[CDATA\[[^>]*//\]\]>', re.I)  # 匹配CDATA
     re_script = re.compile('<\s*script[^>]*>[^<]*<\s*/\s*script\s*>', re.I)  # Script
     re_style = re.compile('<\s*style[^>]*>[^<]*<\s*/\s*style\s*>', re.I)  # style
@@ -120,6 +138,14 @@ def get_email(html=None):
     return [item.lower() for item in email_list]
 
 
+def test_replace_char_entity():
+    """
+    测试特殊字符转html标签
+    """
+    html_test = '''&nbsp;&nbsp;this is a test;&nbsp;&nbsp;'''
+    print replace_char_entity(html_test)
+
+
 if __name__ == '__main__':
     test_html = '''<h2>多云</h2>  '''
     print replace_html(test_html)
@@ -139,8 +165,9 @@ if __name__ == '__main__':
     # test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/container/slider.volt'
     test_file_path = '/home/zhanghe/code/php/secoo/app/views/partials/head.volt'
     replace_file_html(test_file_path, reg_rule_html)
-    html = '''<div style="padding-bottom:30px;">好消息：有手机就可以做的好兼职 空余时间生活工作两不误！！！！<br><br>郑重声明：我们是公司直招，不是中介，不收任何费用，有收费情况请投诉、<br>非常期待您成为我们的伙伴，加不加入没关系，了解一下也没有关系<br><br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】 承诺不收取任何费用<br><br>我们不需要用太华丽的语言去宣称自己，我们只想叫我们的客户每天都有固定的收入，<br>并且我们一直在努力。我们只需要你每天有一定的上网时间，有部分的电脑知识，无经验公司可以免费培训。<br>---------------------------------------------------------------------<br><br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】 承诺不收取任何费用<br>工作要求：<br>1，工作认真，有上进心，有团队精神，服从工作安排。<br>2，有具备手机（3G网络）或 电脑，每天有1小时的空余时间。<br>3、普通话标准、 语言沟通能力强、 有简单的评判能力；<br>4、态度积极，性格开朗，做事有激情，抗压能力强，有责任心，执行力强；<br>5、要有团队合作精神；<br>6、有相关工作经验者优先；<br>7，无不良嗜好，为人心态良好，逻辑思维及条理清晰 有较强责任心。<br>8，小学以上学历，电脑操作基础懂，会打字聊天。<br>---------------------------------------------------------------------<br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】承诺不收取任何费用<br>来应聘的有志者请联系客服QQ:848304882  （注：为节省工作资源不收取简历，请联系企业客服，谢谢合作。）</div>'''
+    html = '''<div style="padding-bottom:30px;">好消息：有手机&nbsp;就可以做的好兼职 空余时间生活工作两不误！！！！<br><br>郑重声明：我们是公司直招，不是中介，不收任何费用，有收费情况请投诉、<br>非常期待您成为我们的伙伴，加不加入没关系，了解一下也没有关系<br><br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】 承诺不收取任何费用<br><br>我们不需要用太华丽的语言去宣称自己，我们只想叫我们的客户每天都有固定的收入，<br>并且我们一直在努力。我们只需要你每天有一定的上网时间，有部分的电脑知识，无经验公司可以免费培训。<br>---------------------------------------------------------------------<br><br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】 承诺不收取任何费用<br>工作要求：<br>1，工作认真，有上进心，有团队精神，服从工作安排。<br>2，有具备手机（3G网络）或 电脑，每天有1小时的空余时间。<br>3、普通话标准、 语言沟通能力强、 有简单的评判能力；<br>4、态度积极，性格开朗，做事有激情，抗压能力强，有责任心，执行力强；<br>5、要有团队合作精神；<br>6、有相关工作经验者优先；<br>7，无不良嗜好，为人心态良好，逻辑思维及条理清晰 有较强责任心。<br>8，小学以上学历，电脑操作基础懂，会打字聊天。<br>---------------------------------------------------------------------<br>有意者可直接联系我们的企业客服QQ:848304882【在线咨询】承诺不收取任何费用<br>来应聘的有志者请联系客服QQ:848304882  （注：为节省工作资源不收取简历，请联系企业客服，谢谢合作。）</div>'''
     print filter_tags(html)
+    test_replace_char_entity()
 
 
 '''
