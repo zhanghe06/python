@@ -595,6 +595,31 @@ except ImportError:
 ```
 
 
+## Beautiful Soup
+
+安装
+```
+$ apt-get install Python-bs4
+```
+或者
+```
+$ pip install beautifulsoup4
+```
+或者[下载BS4的源码](http://www.crummy.com/software/BeautifulSoup/download/4.x/)，然后通过setup.py来安装
+```
+$ Python setup.py instal
+```
+
+使用
+```
+from bs4 import BeautifulSoup
+soup = BeautifulSoup(open("index.html"))
+soup = BeautifulSoup("<html>data</html>")
+```
+
+[官方文档](http://www.crummy.com/software/BeautifulSoup/bs4/doc.zh/)
+
+
 ## Google Image Search API (Deprecated)
 
 [Google Image Search API (Deprecated)](https://developers.google.com/image-search/v1/jsondevguide?csw=1)
