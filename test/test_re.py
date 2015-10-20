@@ -72,12 +72,27 @@ def get_email(html=None):
     return [item.lower() for item in email_list]
 
 
+def test_has_key(html=u''):
+    """
+    测试是否包含某关键字
+    """
+    # html = u'''某大型公司职位'''
+    rule = ur'代招|某知名|猎头职位|某互联网|某.*公司'
+    key_list = re.compile(rule, re.S).findall(html)
+    print ' '.join(key_list)  # 匹配的关键词
+    if key_list:
+        print '代招职位'
+    else:
+        print '正常职位'
+
+
 if __name__ == '__main__':
     # print re_html(test_html)
 
     html_test = '''邮箱：yy_y.it@gabc-xx.com +zhang_he06@163.com .zhanG_he06@163.com -zhang_he06@163.com _zhang_he06@163.com @zhang_he06@163.com @zhang-he06@163.com zhanghe@baidu.com 地址：上海市'''
     email_result = get_email(html_test)
     print json.dumps(email_result, ensure_ascii=False, indent=4)
+    test_has_key(u'''某大型公司职位''')
 
 """
 测试结果
@@ -97,4 +112,14 @@ if __name__ == '__main__':
 (?:pattern)
 匹配 pattern 但不获取匹配结果
 例如， 'industr(?:y|ies) 就是一个比 'industry|industries' 更简略的表达式。
+"""
+
+"""
+修饰符	描述
+re.I	使匹配对大小写不敏感
+re.L	做本地化识别（locale-aware）匹配
+re.M	多行匹配，影响 ^ 和 $
+re.S	使 . 匹配包括换行在内的所有字符
+re.U	根据Unicode字符集解析字符。这个标志影响 \w, \W, \b, \B.
+re.X	该标志通过给予你更灵活的格式以便你将正则表达式写得更易于理解。
 """
