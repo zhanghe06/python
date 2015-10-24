@@ -258,6 +258,10 @@ $ curl http://localhost:6800/listjobs.json?project=csdn
 $ curl http://localhost:6800/cancel.json -d project=csdn -d job=6cf34b2e611011e59ff6000c29e23801
 ```
 
+删除项目
+```
+$ curl http://localhost:6800/delproject.json -d project=csdn
+```
 
 ## 框架介绍
 
@@ -341,3 +345,5 @@ Item Pipeline负责处理被spider提取出来的item。
 Spider中间件是在引擎及Spider之间的特定钩子(specific hook)，处理spider的输入(response)和输出(items及requests)。
 其提供了一个简便的机制，通过插入自定义代码来扩展Scrapy功能。更多内容请看 Spider中间件(Middleware) 。
 ```
+
+更多可以参考[Scrapy实例演示](https://github.com/zhanghe06/scrapy_project)
