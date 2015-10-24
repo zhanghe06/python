@@ -555,6 +555,14 @@ except:
 
 ## Python PostgreSQL
 
+[PostgreSQL官网](http://www.postgresql.org/)
+
+服务安装
+```
+$ apt-cache search postgresql
+$ sudo apt-get install postgresql
+```
+
 PostgreSQL管理工具(客户端)安装
 ```
 $ sudo apt-get install pgadmin3
@@ -566,6 +574,68 @@ pgadmin3已经包含了postgresql-client
 ```
 $ sudo apt-get install libpq-dev
 $ pip install psycopg2
+```
+
+终端使用
+```
+# 切换到Linux下postgres用户
+$ sudo su postgres
+或者
+$ sudo su - postgres
+# 登录postgres数据库
+$ psql postgres
+# 提示如下：
+psql (9.3.9, server 9.3.10)
+Type "help" for help.
+postgres=# 
+```
+
+使用终端命令完成新建用户dbuser和数据库exampledb
+```
+# 切换到Linux下postgres用户
+$ sudo su - postgres
+# 查看createuser的帮助
+$ createuser --help
+# 创建数据库用户dbuser，并指定其为超级用户
+$ createuser --superuser dbuser
+# 登录数据库控制台，设置dbuser用户的密码，完成后退出控制台
+$ psql
+postgres=# \password dbuser
+postgres=# \q（可以直接按ctrl+D）
+# 创建数据库exampledb，并指定所有者为dbuser
+$ createdb -O dbuser exampledb
+```
+
+服务指令
+```
+# 查看状态
+$ sudo /etc/init.d/postgresql status
+# 启动
+$ sudo /etc/init.d/postgresql start
+# 停止
+$ sudo /etc/init.d/postgresql stop
+# 重启
+$ sudo /etc/init.d/postgresql restart
+```
+
+psql is the PostgreSQL interactive terminal.
+```
+# 查看版本
+$ psql -V
+psql (PostgreSQL) 9.3.9
+```
+
+控制台命令
+```
+\h：查看SQL命令的解释，比如\h select。
+\?：查看psql命令列表。
+\l：列出所有数据库。
+\c [database_name]：连接其他数据库。
+\d：列出当前数据库的所有表格。
+\d [table_name]：列出某一张表格的结构。
+\du：列出所有用户。
+\e：打开文本编辑器。
+\conninfo：列出当前数据库和连接的信息。
 ```
 
 
