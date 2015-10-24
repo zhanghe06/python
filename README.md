@@ -639,6 +639,94 @@ psql (PostgreSQL) 9.3.9
 ```
 
 
+## ElasticSearch
+
+[ElasticSearch安装](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html)
+
+系统安装ElasticSearch
+
+Download and install the Public Signing Key:
+```
+$ wget -O - https://packages.elastic.co/GPG-KEY-elasticsearch | sudo apt-key add -
+```
+
+Save the repository definition to /etc/apt/sources.list.d/elasticsearch-{branch}.list:
+```
+echo "deb http://packages.elastic.co/elasticsearch/1.7/debian stable main" | sudo tee -a /etc/apt/sources.list.d/elasticsearch-1.7.list
+```
+
+Run apt-get update and the repository is ready for use. You can install it with:
+```
+$ sudo apt-get update && sudo apt-get install elasticsearch
+```
+
+Configure Elasticsearch to automatically start during bootup
+```
+sudo update-rc.d elasticsearch defaults 95 10
+```
+
+Start Elasticsearch Server
+```
+$ sudo /etc/init.d/elasticsearch --help
+ * Usage: /etc/init.d/elasticsearch {start|stop|restart|force-reload|status}
+$ sudo /etc/init.d/elasticsearch status
+ * elasticsearch is not running
+$ sudo /etc/init.d/elasticsearch start
+ * Starting Elasticsearch Server
+```
+
+Test by curl
+```
+$ curl -X GET 'http://localhost:9200'
+{
+  "status" : 200,
+  "name" : "Bedlam",
+  "cluster_name" : "elasticsearch",
+  "version" : {
+    "number" : "1.7.3",
+    "build_hash" : "05d4530971ef0ea46d0f4fa6ee64dbc8df659682",
+    "build_timestamp" : "2015-10-15T09:14:17Z",
+    "build_snapshot" : false,
+    "lucene_version" : "4.10.4"
+  },
+  "tagline" : "You Know, for Search"
+}
+```
+
+进入elasticsearch目录安装插件：
+```
+$ cd /usr/share/elasticsearch/bin
+$ sudo ./plugin -install mobz/elasticsearch-head
+$ sudo ./plugin -i elasticsearch/marvel/latest
+```
+
+测试插件:
+
+重启Elasticsearch服务
+```
+$ sudo /etc/init.d/elasticsearch restart
+```
+
+[http://localhost:9200/_plugin/head/](http://localhost:9200/_plugin/head/)
+
+[http://localhost:9200/_plugin/marvel/](http://localhost:9200/_plugin/marvel/)
+
+安装Python客户端驱动
+```
+$ pip install elasticsearch
+```
+
+安装Elasticsearch python客户端pyes
+```
+$ pip install pyes
+```
+
+参考文档:
+
+[PyES - Python Elastic Search](http://pyes.readthedocs.org/en/latest/index.html)
+
+[ELK中文指南](http://kibana.logstash.es/)
+
 ## Python Redis
 
 安装
