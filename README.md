@@ -667,6 +667,8 @@ sudo update-rc.d elasticsearch defaults 95 10
 
 Start Elasticsearch Server
 ```
+$ sudo service elasticsearch
+ * Usage: /etc/init.d/elasticsearch {start|stop|restart|force-reload|status}
 $ sudo /etc/init.d/elasticsearch --help
  * Usage: /etc/init.d/elasticsearch {start|stop|restart|force-reload|status}
 $ sudo /etc/init.d/elasticsearch status
@@ -722,6 +724,10 @@ $ pip install pyes
 ```
 
 参考文档:
+
+[ElasticSearch中文指南](http://www.elasticsearch.cn/guide/)
+
+[Python Elasticsearch Client](http://elasticsearch-py.readthedocs.org/en/latest/)
 
 [PyES - Python Elastic Search](http://pyes.readthedocs.org/en/latest/index.html)
 
