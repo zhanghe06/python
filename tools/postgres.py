@@ -2,6 +2,8 @@
 __author__ = 'zhanghe'
 
 from psycopg2 import *
+import json
+from datetime import date, datetime
 
 
 # 本地环境
@@ -31,7 +33,6 @@ class Postgres(object):
     """
     def __init__(self, db_config, db_name=None):
         self.db_config = db_config
-        print db_config
         if db_name is not None:
             self.db_config['database'] = db_name
         try:
@@ -44,6 +45,21 @@ class Postgres(object):
             )
         except Exception, e:
             print e
+
+    @staticmethod
+    def __default(obj):
+        """
+        支持datetime的json encode
+        TypeError: datetime.datetime(2015, 10, 21, 8, 42, 54) is not JSON serializable
+        :param obj:
+        :return:
+        """
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            raise TypeError('%r is not JSON serializable' % obj)
 
     def is_conn_open(self):
         """
@@ -108,7 +124,7 @@ class Postgres(object):
         except Exception, e:
             print e
 
-    def get_count(self, table_name=None):
+    def get_count(self, table_name=None, condition=None):
         """
         获取记录总数
         :return:
@@ -117,41 +133,37 @@ class Postgres(object):
             print '连接已断开'
             return None
         if table_name is None:
-            print 0
             return 0
         try:
             cursor = self.conn.cursor()
-            sql = 'select count(*) from %s' % table_name
+            if condition is not None:
+                sql_condition = 'where '
+                sql_condition += ' and '.join(condition)
+            else:
+                sql_condition = ''
+            sql = 'select count(*) from %s %s' % (table_name, sql_condition)
             cursor.execute(sql)
             row = cursor.fetchone()
             count = row[0]
             cursor.close()
-            print count
             return count
         except Exception, e:
             print e
 
-
-import json
-from datetime import date, datetime
-
-
-def __default(obj):
-    """
-    支持datetime的json encode
-    TypeError: datetime.datetime(2015, 10, 21, 8, 42, 54) is not JSON serializable
-    :param obj:
-    :return:
-    """
-    if isinstance(obj, datetime):
-        return obj.strftime('%Y-%m-%dT%H:%M:%S')
-    elif isinstance(obj, date):
-        return obj.strftime('%Y-%m-%d')
-    else:
-        raise TypeError('%r is not JSON serializable' % obj)
+    def output_row(self, table_name=None, condition=None):
+        """
+        格式化输出单个记录
+        """
+        columns_name = self.get_columns_name(table_name)
+        row = self.get_row(table_name, condition)
+        result = dict(zip(columns_name, row))
+        if row is not None:
+            print json.dumps(result, indent=4, ensure_ascii=False, default=self.__default)
+        else:
+            print '没有记录'
 
 
-def test():
+def test_51job():
     """
     测试Mysql类
     :return:
@@ -159,21 +171,34 @@ def test():
     # 实例化wl_crawl库的连接
     wl_crawl = Postgres(db_config_current, 'wl_crawl')
     # 查询总数
-    count = wl_crawl.get_count('origin_company')
-    print '总记录数：%s' % count
+    count = wl_crawl.get_count('origin_position', ['source_type=2'])
+    print '51job职位 原始总记录数：%s\n' % count
+    count = wl_crawl.get_count('origin_company', ['source_type=2'])
+    print '51job公司 原始总记录数：%s\n' % count
     # 关闭数据库连接
     # wl_crawl.close_conn()
     # 查询单条记录
-    columns_name = wl_crawl.get_columns_name('origin_company')
-    row = wl_crawl.get_row('origin_company', ['id=69011'])
-    result = dict(zip(columns_name, row))
-    if row is not None:
-        print json.dumps(result, indent=4, ensure_ascii=False, default=__default)
-    else:
-        print '没有记录'
+    # wl_crawl.output_row('origin_company', ['id=69011'])
+    # 关闭数据库连接(测试再次关闭)
+    wl_crawl.close_conn()
+
+
+def test_china_hr():
+    # 实例化wl_crawl库的连接
+    wl_crawl = Postgres(db_config_current, 'wl_crawl')
+    # 查询总数
+    count = wl_crawl.get_count('origin_position', ['source_type=6'])
+    print 'china_hr职位 原始总记录数：%s\n' % count
+    count = wl_crawl.get_count('origin_company', ['source_type=6'])
+    print 'china_hr公司 原始总记录数：%s\n' % count
+    # 关闭数据库连接
+    # wl_crawl.close_conn()
+    # 查询单条记录
+    # wl_crawl.output_row('origin_company', ['source_type=6'])
     # 关闭数据库连接(测试再次关闭)
     wl_crawl.close_conn()
 
 
 if __name__ == '__main__':
-    test()
+    test_51job()
+    test_china_hr()
