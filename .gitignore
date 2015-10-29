@@ -1,3 +1,4 @@
 .idea/
 *.pyc
 pyenv/*
+zxy_*.py

@@ -79,7 +79,7 @@ class Postgres(object):
         if self.is_conn_open() is True:
             self.conn.close()
 
-    def get_columns_name(self, table_name=None):
+    def get_columns_name(self, table_name):
         """
         获取数据表的字段名称
         :param table_name:
@@ -87,8 +87,12 @@ class Postgres(object):
         """
         if self.is_conn_open() is False:
             print '连接已断开'
-            return None
+            return []
         try:
+            # 参数判断
+            if table_name is None:
+                print '查询表名缺少参数'
+                return []
             cursor = self.conn.cursor()
             sql = "select column_name from information_schema.columns where table_name = '%s'" % table_name
             print sql
@@ -100,7 +104,7 @@ class Postgres(object):
         except Exception, e:
             print e
 
-    def get_row(self, table_name=None, condition=None):
+    def get_row(self, table_name, condition=None):
         """
         获取单行数据
         :return:
@@ -109,14 +113,22 @@ class Postgres(object):
             print '连接已断开'
             return None
         try:
-            cursor = self.conn.cursor()
-            if condition is not None:
+            # 参数判断
+            if table_name is None:
+                print '查询表名缺少参数'
+                return None
+            if condition and not isinstance(condition, list):
+                print '查询条件参数格式错误'
+                return None
+            # 组装查询条件
+            if condition:
                 sql_condition = 'where '
                 sql_condition += ' and '.join(condition)
             else:
                 sql_condition = ''
             sql = 'select * from %s %s limit 1' % (table_name, sql_condition)
             print sql
+            cursor = self.conn.cursor()
             cursor.execute(sql)
             row = cursor.fetchone()
             cursor.close()
@@ -124,24 +136,64 @@ class Postgres(object):
         except Exception, e:
             print e
 
-    def get_count(self, table_name=None, condition=None):
+    def get_rows(self, table_name, condition=None, limit='limit 10 offset 0'):
+        """
+        获取多行数据
+        con_obj.get_rows('company', ["type='6'"], 'limit 10 offset 0')
+        con_obj.get_rows('company', ["type='6'"], 'limit 10')
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return None
+        try:
+            # 参数判断
+            if table_name is None:
+                print '查询表名缺少参数'
+                return None
+            if condition and not isinstance(condition, list):
+                print '查询条件参数格式错误'
+                return None
+            # 组装查询条件
+            if condition:
+                sql_condition = 'where '
+                sql_condition += ' and '.join(condition)
+            else:
+                sql_condition = ''
+            sql = 'select * from %s %s %s' % (table_name, sql_condition, limit)
+            print sql
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            cursor.close()
+            return rows
+        except Exception, e:
+            print e
+
+    def get_count(self, table_name, condition=None):
         """
         获取记录总数
         :return:
         """
         if self.is_conn_open() is False:
             print '连接已断开'
-            return None
-        if table_name is None:
             return 0
         try:
-            cursor = self.conn.cursor()
-            if condition is not None:
+            # 参数判断
+            if table_name is None:
+                print '查询表名缺少参数'
+                return 0
+            if condition and not isinstance(condition, list):
+                print '查询条件参数格式错误'
+                return 0
+            # 组装查询条件
+            if condition:
                 sql_condition = 'where '
                 sql_condition += ' and '.join(condition)
             else:
                 sql_condition = ''
             sql = 'select count(*) from %s %s' % (table_name, sql_condition)
+            print sql
+            cursor = self.conn.cursor()
             cursor.execute(sql)
             row = cursor.fetchone()
             count = row[0]
@@ -150,17 +202,145 @@ class Postgres(object):
         except Exception, e:
             print e
 
-    def output_row(self, table_name=None, condition=None):
+    def output_row(self, table_name, condition=None, style=0):
         """
         格式化输出单个记录
+        style=0 键值对齐风格
+        style=1 JSON缩进风格
         """
+        # 参数判断
+        if not table_name:
+            print '查询数据缺少参数'
+            return None
+        if condition and not isinstance(condition, list):
+            print '查询条件参数格式错误'
+            return None
         columns_name = self.get_columns_name(table_name)
         row = self.get_row(table_name, condition)
-        result = dict(zip(columns_name, row))
-        if row is not None:
-            print json.dumps(result, indent=4, ensure_ascii=False, default=self.__default)
+        if not columns_name:
+            print '表名不存在'
+            return None
+        if not row:
+            print '记录不存在'
+            return None
+        if style == 0:
+            # 获取字段名称最大的长度值作为缩进依据
+            max_len_column = max([len(each_column) for each_column in columns_name])
+            str_format = '{0: >%s}' % max_len_column
+            columns_name = [str_format.format(each_column) for each_column in columns_name]
+            result = dict(zip(columns_name, row))
+            print '**********  表名[%s]  **********' % table_name
+            for key, item in result.items():
+                print key, ':', item
         else:
-            print '没有记录'
+            result = dict(zip(columns_name, row))
+            print json.dumps(result, indent=4, ensure_ascii=False, default=self.__default)
+
+    def output_rows(self, table_name, condition=None, limit='limit 10 offset 0', style=0):
+        """
+        格式化输出批量记录
+        style=0 键值对齐风格
+        style=1 JSON缩进风格
+        """
+        # 参数判断
+        if not table_name:
+            print '查询数据缺少参数'
+            return None
+        if condition and not isinstance(condition, list):
+            print '查询条件参数格式错误'
+            return None
+        columns_name = self.get_columns_name(table_name)
+        rows = self.get_rows(table_name, condition, limit)
+        if not columns_name:
+            print '表名不存在'
+            return None
+        if not rows:
+            print '记录不存在'
+            return None
+        if style == 0:
+            # 获取字段名称最大的长度值作为缩进依据
+            max_len_column = max([len(each_column) for each_column in columns_name])
+            str_format = '{0: >%s}' % max_len_column
+            columns_name = [str_format.format(each_column) for each_column in columns_name]
+            count = 0
+            total = len(rows)
+            for row in rows:
+                result = dict(zip(columns_name, row))
+                count += 1
+                print '**********  表名[%s]  [%d/%d]  **********' % (table_name, count, total)
+                for key, item in result.items():
+                    print key, ':', item
+        else:
+            for row in rows:
+                result = dict(zip(columns_name, row))
+                print json.dumps(result, indent=4, ensure_ascii=False, default=self.__default)
+
+    def update(self, table_name, update_field, condition=None):
+        """
+        更新数据
+        con_obj.update('company', ["title='标题'", "flag='2'"], ["type='6'"])
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return False
+        try:
+            # 参数判断
+            if not table_name or not update_field:
+                print '更新数据缺少参数'
+                return False
+            if not isinstance(update_field, list) or (condition and not isinstance(condition, list)):
+                print '更新数据参数格式错误'
+                return False
+            # 组装更新字段
+            if update_field:
+                sql_update_field = 'set '
+                sql_update_field += ' and '.join(update_field)
+            else:
+                sql_update_field = ''
+            # 组装更新条件
+            if condition:
+                sql_condition = 'where '
+                sql_condition += ' and '.join(condition)
+            else:
+                sql_condition = ''
+            # 拼接sql语句
+            sql = 'update %s %s %s' % (table_name, sql_update_field, sql_condition)
+            print sql
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            cursor.close()
+            return True
+        except Exception, e:
+            print e
+
+    def delete(self, table_name, condition=None):
+        """
+        删除数据
+        con_obj.delete('company', ["type='6'", "flag='2'"])
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return False
+        try:
+            # 参数判断
+            if condition and not isinstance(condition, list):
+                print '删除数据参数格式错误'
+                return False
+            # 组装删除条件
+            if condition:
+                sql_condition = 'where '
+                sql_condition += ' and '.join(condition)
+            else:
+                sql_condition = ''
+            # 拼接sql语句
+            sql = 'delete %s %s' % (table_name, sql_condition)
+            print sql
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            cursor.close()
+            return True
+        except Exception, e:
+            print e
 
 
 def test_51job():
@@ -191,14 +371,21 @@ def test_china_hr():
     print 'china_hr职位 原始总记录数：%s\n' % count
     count = wl_crawl.get_count('origin_company', ['source_type=6'])
     print 'china_hr公司 原始总记录数：%s\n' % count
+    count = wl_crawl.get_count('online_position', ['source_type=6'])
+    print 'china_hr职位 清洗总记录数：%s\n' % count
+    count = wl_crawl.get_count('online_company', ['source_type=6'])
+    print 'china_hr公司 清洗总记录数：%s\n' % count
     # 关闭数据库连接
     # wl_crawl.close_conn()
     # 查询单条记录
     # wl_crawl.output_row('origin_company', ['source_type=6'])
+    # wl_crawl.output_row('origin_position', ['source_type=6', 'id=157789'])
+    # wl_crawl.output_row('online_position', ['source_type=6', 'id=157789'])
+    wl_crawl.output_rows('online_position', ['source_type=2'])
     # 关闭数据库连接(测试再次关闭)
     wl_crawl.close_conn()
 
 
 if __name__ == '__main__':
-    test_51job()
+    # test_51job()
     test_china_hr()
