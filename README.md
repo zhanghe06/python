@@ -713,6 +713,8 @@ $ sudo /etc/init.d/elasticsearch restart
 
 [http://localhost:9200/_plugin/marvel/](http://localhost:9200/_plugin/marvel/)
 
+测试搜索界面：[http://192.168.2.188:9200/_plugin/marvel/sense/index.html](http://192.168.2.188:9200/_plugin/marvel/sense/index.html)
+
 安装Python客户端驱动
 ```
 $ pip install elasticsearch
