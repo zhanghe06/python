@@ -14,6 +14,9 @@ user_agent = 'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, lik
 url_list = [root_url]  # 爬虫待访问url列表
 url_visited_list = []  # 爬虫已访问url列表
 
+file_path = 'sohu.txt'
+url_file = open(file_path, 'a')
+
 
 def read_src(src_url=None):
     """
@@ -46,15 +49,21 @@ def print_static(src):
     if src.startswith('http://') and src.startswith('/') and (src.endswith('.jpg') or src.endswith('.gif') or src.endswith('.png')):
         if src.startswith('/'):
             src = ''.join([root_url, src])
-        print '图片：%s' % src
+            url_file.write(src)
+            url_file.write('\n')
+            print '图片：%s' % src
     if src.endswith('.js'):
         if src.startswith('/'):
             src = ''.join([root_url, src])
-        print 'js文件：%s' % src
+            url_file.write(src)
+            url_file.write('\n')
+            print 'js文件：%s' % src
     if src.endswith('.css'):
         if src.startswith('/'):
             src = ''.join([root_url, src])
-        print 'css文件：%s' % src
+            url_file.write(src)
+            url_file.write('\n')
+            print 'css文件：%s' % src
 
 
 def run():
@@ -62,9 +71,14 @@ def run():
     主程序
     """
     try:
+        count = 0
         while len(url_list) > 0:
             read_src(url_list.pop(0))
+            count += 1
+            if count % 10 == 0:
+                url_file.flush()
     except KeyboardInterrupt:
+        url_file.close()
         print '程序退出'
 
 
