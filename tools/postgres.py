@@ -308,6 +308,8 @@ class Postgres(object):
             print sql
             cursor = self.conn.cursor()
             cursor.execute(sql)
+            self.conn.commit()
+            print '更新行数：%s' % cursor.rowcount
             cursor.close()
             return True
         except Exception, e:
@@ -333,11 +335,68 @@ class Postgres(object):
             else:
                 sql_condition = ''
             # 拼接sql语句
-            sql = 'delete %s %s' % (table_name, sql_condition)
+            sql = 'delete from %s %s' % (table_name, sql_condition)
             print sql
             cursor = self.conn.cursor()
             cursor.execute(sql)
+            self.conn.commit()
+            print '删除行数：%s' % cursor.rowcount
             cursor.close()
+            print '删除成功'
+            return True
+        except Exception, e:
+            print e
+
+    def query_by_sql(self, sql=None):
+        """
+        根据sql语句查询
+        :return:
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return None
+        if sql is None:
+            print 'sql语句不能为空'
+            return None
+        # 安全性校验
+        sql = sql.lower()
+        if not sql.startswith('select'):
+            print '未授权的操作'
+            return None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            cursor.close()
+            # print rows
+            return rows
+        except Exception, e:
+            print e
+
+    def update_by_sql(self, sql=None):
+        """
+        根据sql语句[增删改]
+        :return:
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return False
+        if sql is None:
+            print 'sql语句不能为空'
+            return False
+        # 安全性校验
+        sql = sql.lower()
+        if not (sql.startswith('update') or sql.startswith('insert') or sql.startswith('delete')):
+            print '未授权的操作'
+            return False
+        try:
+            print sql
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            self.conn.commit()
+            print '影响行数：%s' % cursor.rowcount
+            cursor.close()
+            print '执行成功'
             return True
         except Exception, e:
             print e
@@ -345,8 +404,7 @@ class Postgres(object):
 
 def test_51job():
     """
-    测试Mysql类
-    :return:
+    测试51job
     """
     # 实例化wl_crawl库的连接
     wl_crawl = Postgres(db_config_current, 'wl_crawl')
@@ -364,8 +422,12 @@ def test_51job():
 
 
 def test_china_hr():
+    """
+    测试china_hr
+    """
     # 实例化wl_crawl库的连接
     wl_crawl = Postgres(db_config_current, 'wl_crawl')
+
     # 查询总数
     count = wl_crawl.get_count('origin_position', ['source_type=6'])
     print 'china_hr职位 原始总记录数：%s\n' % count
@@ -375,13 +437,33 @@ def test_china_hr():
     print 'china_hr职位 清洗总记录数：%s\n' % count
     count = wl_crawl.get_count('online_company', ['source_type=6'])
     print 'china_hr公司 清洗总记录数：%s\n' % count
-    # 关闭数据库连接
-    # wl_crawl.close_conn()
+
     # 查询单条记录
     # wl_crawl.output_row('origin_company', ['source_type=6'])
     # wl_crawl.output_row('origin_position', ['source_type=6', 'id=157789'])
     # wl_crawl.output_row('online_position', ['source_type=6', 'id=157789'])
-    wl_crawl.output_rows('online_position', ['source_type=2'])
+    # wl_crawl.output_rows('origin_position', ['source_type=6', 'clean_flag=0'])
+    # wl_crawl.output_rows('online_position', ['source_type=6'])
+    # wl_crawl.output_rows('origin_company', ['source_type=6'])
+    # wl_crawl.output_rows('online_company', ['source_type=6', 'id=134064'])
+    # wl_crawl.output_rows('online_company', ['source_type=6'])
+
+    # 还原清洗状态
+    if 0:
+        wl_crawl.delete('online_position', ['source_type=6'])
+        wl_crawl.update('origin_position', ['clean_flag=0'], ['source_type=6', 'clean_flag>0'])
+        wl_crawl.delete('online_company', ['source_type=6'])
+        wl_crawl.update('origin_company', ['clean_flag=0'], ['source_type=6', 'clean_flag>0'])
+
+    # 还原数据导出状态
+    if 0:
+        wl_crawl.update('online_position', ['export_flag=0'])
+    # 检查字段分类集合
+    if 0:
+        sql = 'select distinct(salary_from) from origin_position where source_type=6'
+        result = wl_crawl.query_by_sql(sql)
+        print json.dumps(result, indent=4, ensure_ascii=False)
+
     # 关闭数据库连接(测试再次关闭)
     wl_crawl.close_conn()
 
