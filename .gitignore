@@ -1,4 +1,6 @@
 .idea/
 *.pyc
 pyenv/*
+*.rdb
+*.log
 zxy_*.py
