@@ -66,9 +66,10 @@ class Logger:
     日志工具类
     按照不同等级分别向终端显示和文件写入
     """
-    def __init__(self, logger_name, logger_filename):
+    def __init__(self, logger_name, logger_filename, logger_level='DEBUG'):
         self.logger_name = logger_name
         self.logger_filename = logger_filename
+        self.logger_level = logger_level
         self.logger_fmt = '%(asctime)s - %(name)s - %(filename)s - [line:%(lineno)d] - %(levelname)s - %(message)s'
         self.logger_date_fmt = '%Y-%m-%d %H:%M:%S'
         self.file_handler_level = logging.INFO
@@ -81,22 +82,25 @@ class Logger:
         """
         配置logger
         """
-        # 给logger设置相对较低的日志等级（否则小于logger的默认WARNING级别的信息将被忽略，可能会使handler设置无效）
-        self.logger.setLevel(logging.DEBUG)  # 这里输出所有信息，将日志等级控制权限交给handler
-        # 分别创建两个handler，用于写入日志文件和输出到控制台
-        file_handler = logging.FileHandler(self.logger_filename)
-        stream_handler = logging.StreamHandler()
-        # 给handler设置日志等级
-        file_handler.setLevel(self.file_handler_level)
-        stream_handler.setLevel(self.stream_handler_level)
-        # 定义handler的输出格式formatter
-        formatter = logging.Formatter(self.logger_fmt, self.logger_date_fmt)
-        # 设置日志输出格式
-        file_handler.setFormatter(formatter)
-        stream_handler.setFormatter(formatter)
-        # 给logger添加handler
-        self.logger.addHandler(file_handler)
-        self.logger.addHandler(stream_handler)
+        try:
+            # 给logger设置相对较低的日志等级（否则小于logger的默认WARNING级别的信息将被忽略，可能会使handler设置无效）
+            self.logger.setLevel(eval('logging.%s' % self.logger_level))  # 这里输出所有信息，将日志等级控制权限交给handler
+            # 分别创建两个handler，用于写入日志文件和输出到控制台
+            file_handler = logging.FileHandler(self.logger_filename)
+            stream_handler = logging.StreamHandler()
+            # 给handler设置日志等级
+            file_handler.setLevel(self.file_handler_level)
+            stream_handler.setLevel(self.stream_handler_level)
+            # 定义handler的输出格式formatter
+            formatter = logging.Formatter(self.logger_fmt, self.logger_date_fmt)
+            # 设置日志输出格式
+            file_handler.setFormatter(formatter)
+            stream_handler.setFormatter(formatter)
+            # 给logger添加handler
+            self.logger.addHandler(file_handler)
+            self.logger.addHandler(stream_handler)
+        except Exception, e:
+            return e
 
     def get_memory_usage(self):
         """
