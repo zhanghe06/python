@@ -1,7 +1,8 @@
 # encoding: utf-8
 __author__ = 'zhanghe'
 
-
+import sys
+sys.path.append('..')
 from tools.log import Log
 
 # 实例化，修改日志文件名称，加载新配置
