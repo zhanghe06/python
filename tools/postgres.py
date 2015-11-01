@@ -5,6 +5,10 @@ from psycopg2 import *
 import json
 from datetime import date, datetime
 
+from log import Logger
+logger = Logger('postgres', 'postgres.log')
+# logger.get_memory_usage()
+
 
 # 本地环境
 db_config_local = {
@@ -44,7 +48,7 @@ class Postgres(object):
                 port=self.db_config['port']
             )
         except Exception, e:
-            print e
+            logger.error(e)
 
     @staticmethod
     def __default(obj):
@@ -86,23 +90,23 @@ class Postgres(object):
         :return:
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return []
         try:
             # 参数判断
             if table_name is None:
-                print '查询表名缺少参数'
+                logger.error('查询表名缺少参数')
                 return []
             cursor = self.conn.cursor()
             sql = "select column_name from information_schema.columns where table_name = '%s'" % table_name
-            print sql
+            logger.info(sql)
             cursor.execute(sql)
             result = cursor.fetchall()
             row = [item[0] for item in result]
             cursor.close()
             return row
         except Exception, e:
-            print e
+            logger.error(e)
 
     def get_row(self, table_name, condition=None):
         """
@@ -110,15 +114,15 @@ class Postgres(object):
         :return:
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return None
         try:
             # 参数判断
             if table_name is None:
-                print '查询表名缺少参数'
+                logger.error('查询表名缺少参数')
                 return None
             if condition and not isinstance(condition, list):
-                print '查询条件参数格式错误'
+                logger.error('查询条件参数格式错误')
                 return None
             # 组装查询条件
             if condition:
@@ -127,14 +131,14 @@ class Postgres(object):
             else:
                 sql_condition = ''
             sql = 'select * from %s %s limit 1' % (table_name, sql_condition)
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             row = cursor.fetchone()
             cursor.close()
             return row
         except Exception, e:
-            print e
+            logger.error(e)
 
     def get_rows(self, table_name, condition=None, limit='limit 10 offset 0'):
         """
@@ -143,15 +147,15 @@ class Postgres(object):
         con_obj.get_rows('company', ["type='6'"], 'limit 10')
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return None
         try:
             # 参数判断
             if table_name is None:
-                print '查询表名缺少参数'
+                logger.error('查询表名缺少参数')
                 return None
             if condition and not isinstance(condition, list):
-                print '查询条件参数格式错误'
+                logger.error('查询条件参数格式错误')
                 return None
             # 组装查询条件
             if condition:
@@ -160,14 +164,14 @@ class Postgres(object):
             else:
                 sql_condition = ''
             sql = 'select * from %s %s %s' % (table_name, sql_condition, limit)
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             rows = cursor.fetchall()
             cursor.close()
             return rows
         except Exception, e:
-            print e
+            logger.error(e)
 
     def get_count(self, table_name, condition=None):
         """
@@ -175,15 +179,15 @@ class Postgres(object):
         :return:
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return 0
         try:
             # 参数判断
             if table_name is None:
-                print '查询表名缺少参数'
+                logger.error('查询表名缺少参数')
                 return 0
             if condition and not isinstance(condition, list):
-                print '查询条件参数格式错误'
+                logger.error('查询条件参数格式错误')
                 return 0
             # 组装查询条件
             if condition:
@@ -192,7 +196,7 @@ class Postgres(object):
             else:
                 sql_condition = ''
             sql = 'select count(*) from %s %s' % (table_name, sql_condition)
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             row = cursor.fetchone()
@@ -200,7 +204,7 @@ class Postgres(object):
             cursor.close()
             return count
         except Exception, e:
-            print e
+            logger.error(e)
 
     def output_row(self, table_name, condition=None, style=0):
         """
@@ -210,18 +214,18 @@ class Postgres(object):
         """
         # 参数判断
         if not table_name:
-            print '查询数据缺少参数'
+            logger.error('查询数据缺少参数')
             return None
         if condition and not isinstance(condition, list):
-            print '查询条件参数格式错误'
+            logger.error('查询条件参数格式错误')
             return None
         columns_name = self.get_columns_name(table_name)
         row = self.get_row(table_name, condition)
         if not columns_name:
-            print '表名不存在'
+            logger.error('表名不存在')
             return None
         if not row:
-            print '记录不存在'
+            logger.error('记录不存在')
             return None
         if style == 0:
             # 获取字段名称最大的长度值作为缩进依据
@@ -244,18 +248,18 @@ class Postgres(object):
         """
         # 参数判断
         if not table_name:
-            print '查询数据缺少参数'
+            logger.error('查询数据缺少参数')
             return None
         if condition and not isinstance(condition, list):
-            print '查询条件参数格式错误'
+            logger.error('查询条件参数格式错误')
             return None
         columns_name = self.get_columns_name(table_name)
         rows = self.get_rows(table_name, condition, limit)
         if not columns_name:
-            print '表名不存在'
+            logger.error('表名不存在')
             return None
         if not rows:
-            print '记录不存在'
+            logger.error('记录不存在')
             return None
         if style == 0:
             # 获取字段名称最大的长度值作为缩进依据
@@ -281,15 +285,15 @@ class Postgres(object):
         con_obj.update('company', ["title='标题'", "flag='2'"], ["type='6'"])
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return False
         try:
             # 参数判断
             if not table_name or not update_field:
-                print '更新数据缺少参数'
+                logger.error('更新数据缺少参数')
                 return False
             if not isinstance(update_field, list) or (condition and not isinstance(condition, list)):
-                print '更新数据参数格式错误'
+                logger.error('更新数据参数格式错误')
                 return False
             # 组装更新字段
             if update_field:
@@ -305,15 +309,15 @@ class Postgres(object):
                 sql_condition = ''
             # 拼接sql语句
             sql = 'update %s %s %s' % (table_name, sql_update_field, sql_condition)
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             self.conn.commit()
-            print '更新行数：%s' % cursor.rowcount
+            logger.info('更新行数：%s' % cursor.rowcount)
             cursor.close()
             return True
         except Exception, e:
-            print e
+            logger.error(e)
 
     def delete(self, table_name, condition=None):
         """
@@ -321,12 +325,12 @@ class Postgres(object):
         con_obj.delete('company', ["type='6'", "flag='2'"])
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return False
         try:
             # 参数判断
             if condition and not isinstance(condition, list):
-                print '删除数据参数格式错误'
+                logger.error('删除数据参数格式错误')
                 return False
             # 组装删除条件
             if condition:
@@ -336,16 +340,16 @@ class Postgres(object):
                 sql_condition = ''
             # 拼接sql语句
             sql = 'delete from %s %s' % (table_name, sql_condition)
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             self.conn.commit()
-            print '删除行数：%s' % cursor.rowcount
+            logger.info('删除行数：%s' % cursor.rowcount)
             cursor.close()
-            print '删除成功'
+            logger.info('删除成功')
             return True
         except Exception, e:
-            print e
+            logger.error(e)
 
     def query_by_sql(self, sql=None):
         """
@@ -353,25 +357,25 @@ class Postgres(object):
         :return:
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return None
         if sql is None:
-            print 'sql语句不能为空'
+            logger.error('sql语句不能为空')
             return None
         # 安全性校验
         sql = sql.lower()
         if not sql.startswith('select'):
-            print '未授权的操作'
+            logger.error('未授权的操作')
             return None
         try:
             cursor = self.conn.cursor()
+            logger.info(sql)
             cursor.execute(sql)
             rows = cursor.fetchall()
             cursor.close()
-            # print rows
             return rows
         except Exception, e:
-            print e
+            logger.error(e)
 
     def update_by_sql(self, sql=None):
         """
@@ -379,27 +383,27 @@ class Postgres(object):
         :return:
         """
         if self.is_conn_open() is False:
-            print '连接已断开'
+            logger.error('连接已断开')
             return False
         if sql is None:
-            print 'sql语句不能为空'
+            logger.error('sql语句不能为空')
             return False
         # 安全性校验
         sql = sql.lower()
         if not (sql.startswith('update') or sql.startswith('insert') or sql.startswith('delete')):
-            print '未授权的操作'
+            logger.error('未授权的操作')
             return False
         try:
-            print sql
+            logger.info(sql)
             cursor = self.conn.cursor()
             cursor.execute(sql)
             self.conn.commit()
-            print '影响行数：%s' % cursor.rowcount
+            logger.info('影响行数：%s' % cursor.rowcount)
             cursor.close()
-            print '执行成功'
+            logger.info('执行成功')
             return True
         except Exception, e:
-            print e
+            logger.error(e)
 
 
 def test_51job():
