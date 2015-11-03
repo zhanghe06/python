@@ -5,30 +5,15 @@ from psycopg2 import *
 import json
 from datetime import date, datetime
 
+# 数据库日志专用配置
 from log import Logger
-logger = Logger('postgres', 'postgres.log')
-# logger.get_memory_usage()
-
-
-# 本地环境
-db_config_local = {
-    'database': '',
-    'user': 'xxxx',
-    'password': 'xxxxxxxx',
-    'host': '192.168.1.1',
-    'port': 3306
-}
-
-# 线上环境
-db_config_online = {
-    'database': '',
-    'user': 'xxxx',
-    'password': 'xxxxxxxx',
-    'host': '192.168.1.2',
-    'port': 3306
-}
-
-db_config_current = db_config_local
+my_logger = Logger('postgres', 'postgres.log', 'DEBUG')
+my_logger.set_file_level('DEBUG')
+my_logger.set_stream_level('WARNING')  # WARNING DEBUG
+my_logger.set_stream_handler_fmt('%(message)s')
+my_logger.load()
+logger = my_logger.logger
+# my_logger.get_memory_usage()
 
 
 class Postgres(object):
@@ -82,6 +67,31 @@ class Postgres(object):
         """
         if self.is_conn_open() is True:
             self.conn.close()
+
+    def truncate(self, table_name):
+        """
+        清空表
+        :param table_name:
+        :return:
+        """
+        if self.is_conn_open() is False:
+            logger.error('连接已断开')
+            return []
+        try:
+            # 参数判断
+            if table_name is None:
+                logger.error('查询表名缺少参数')
+                return []
+            sql = 'truncate table %s' % table_name
+            logger.info(sql)
+            cursor = self.conn.cursor()
+            cursor.execute(sql)
+            self.conn.commit()
+            logger.info('更新行数：%s' % cursor.rowcount)
+            cursor.close()
+            return True
+        except Exception, e:
+            logger.error(e)
 
     def get_columns_name(self, table_name):
         """
@@ -404,74 +414,3 @@ class Postgres(object):
             return True
         except Exception, e:
             logger.error(e)
-
-
-def test_51job():
-    """
-    测试51job
-    """
-    # 实例化wl_crawl库的连接
-    wl_crawl = Postgres(db_config_current, 'wl_crawl')
-    # 查询总数
-    count = wl_crawl.get_count('origin_position', ['source_type=2'])
-    print '51job职位 原始总记录数：%s\n' % count
-    count = wl_crawl.get_count('origin_company', ['source_type=2'])
-    print '51job公司 原始总记录数：%s\n' % count
-    # 关闭数据库连接
-    # wl_crawl.close_conn()
-    # 查询单条记录
-    # wl_crawl.output_row('origin_company', ['id=69011'])
-    # 关闭数据库连接(测试再次关闭)
-    wl_crawl.close_conn()
-
-
-def test_china_hr():
-    """
-    测试china_hr
-    """
-    # 实例化wl_crawl库的连接
-    wl_crawl = Postgres(db_config_current, 'wl_crawl')
-
-    # 查询总数
-    count = wl_crawl.get_count('origin_position', ['source_type=6'])
-    print 'china_hr职位 原始总记录数：%s\n' % count
-    count = wl_crawl.get_count('origin_company', ['source_type=6'])
-    print 'china_hr公司 原始总记录数：%s\n' % count
-    count = wl_crawl.get_count('online_position', ['source_type=6'])
-    print 'china_hr职位 清洗总记录数：%s\n' % count
-    count = wl_crawl.get_count('online_company', ['source_type=6'])
-    print 'china_hr公司 清洗总记录数：%s\n' % count
-
-    # 查询单条记录
-    # wl_crawl.output_row('origin_company', ['source_type=6'])
-    # wl_crawl.output_row('origin_position', ['source_type=6', 'id=157789'])
-    # wl_crawl.output_row('online_position', ['source_type=6', 'id=157789'])
-    # wl_crawl.output_rows('origin_position', ['source_type=6', 'clean_flag=0'])
-    # wl_crawl.output_rows('online_position', ['source_type=6'])
-    # wl_crawl.output_rows('origin_company', ['source_type=6'])
-    # wl_crawl.output_rows('online_company', ['source_type=6', 'id=134064'])
-    # wl_crawl.output_rows('online_company', ['source_type=6'])
-
-    # 还原清洗状态
-    if 0:
-        wl_crawl.delete('online_position', ['source_type=6'])
-        wl_crawl.update('origin_position', ['clean_flag=0'], ['source_type=6', 'clean_flag>0'])
-        wl_crawl.delete('online_company', ['source_type=6'])
-        wl_crawl.update('origin_company', ['clean_flag=0'], ['source_type=6', 'clean_flag>0'])
-
-    # 还原数据导出状态
-    if 0:
-        wl_crawl.update('online_position', ['export_flag=0'])
-    # 检查字段分类集合
-    if 0:
-        sql = 'select distinct(salary_from) from origin_position where source_type=6'
-        result = wl_crawl.query_by_sql(sql)
-        print json.dumps(result, indent=4, ensure_ascii=False)
-
-    # 关闭数据库连接(测试再次关闭)
-    wl_crawl.close_conn()
-
-
-if __name__ == '__main__':
-    # test_51job()
-    test_china_hr()
