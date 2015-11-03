@@ -65,6 +65,12 @@ class Logger:
     """
     日志工具类
     按照不同等级分别向终端显示和文件写入
+    使用方式：
+    from log import Logger
+    my_logger = Logger('logger_name', 'log_name.log', 'DEBUG')
+    my_logger.load()
+    logger = my_logger.logger
+    my_logger.get_memory_usage()
     """
     def __init__(self, logger_name, logger_filename, logger_level='DEBUG'):
         self.logger_name = logger_name
@@ -72,15 +78,18 @@ class Logger:
         self.logger_level = logger_level
         self.logger_fmt = '%(asctime)s - %(name)s - %(filename)s - [line:%(lineno)d] - %(levelname)s - %(message)s'
         self.logger_date_fmt = '%Y-%m-%d %H:%M:%S'
+        self.file_handler_fmt = None
+        self.file_handler_date_fmt = None
+        self.stream_handler_fmt = None
+        self.stream_handler_date_fmt = None
         self.file_handler_level = logging.INFO
         self.stream_handler_level = logging.DEBUG
         self.memory_usage = '0.00M'
         self.logger = logging.getLogger(self.logger_name)
-        self.set_logger()
 
-    def set_logger(self):
+    def load(self):
         """
-        配置logger
+        加载logger配置
         """
         try:
             # 给logger设置相对较低的日志等级（否则小于logger的默认WARNING级别的信息将被忽略，可能会使handler设置无效）
@@ -92,15 +101,43 @@ class Logger:
             file_handler.setLevel(self.file_handler_level)
             stream_handler.setLevel(self.stream_handler_level)
             # 定义handler的输出格式formatter
-            formatter = logging.Formatter(self.logger_fmt, self.logger_date_fmt)
+            # formatter = logging.Formatter(self.logger_fmt, self.logger_date_fmt)
+            if self.file_handler_fmt is None:
+                self.file_handler_fmt = self.logger_fmt
+            if self.stream_handler_fmt is None:
+                self.stream_handler_fmt = self.logger_fmt
+            if self.file_handler_date_fmt is None:
+                self.file_handler_date_fmt = self.logger_date_fmt
+            if self.stream_handler_date_fmt is None:
+                self.stream_handler_date_fmt = self.logger_date_fmt
+            file_handler_formatter = logging.Formatter(self.file_handler_fmt, self.file_handler_date_fmt)
+            stream_handler_formatter = logging.Formatter(self.stream_handler_fmt, self.stream_handler_date_fmt)
             # 设置日志输出格式
-            file_handler.setFormatter(formatter)
-            stream_handler.setFormatter(formatter)
+            file_handler.setFormatter(file_handler_formatter)
+            stream_handler.setFormatter(stream_handler_formatter)
             # 给logger添加handler
             self.logger.addHandler(file_handler)
             self.logger.addHandler(stream_handler)
         except Exception, e:
             return e
+
+    def set_file_level(self, level):
+        """
+        设置文件写入等级
+        """
+        self.file_handler_level = eval('logging.%s' % level)
+
+    def set_stream_level(self, level):
+        """
+        设置终端输出等级
+        """
+        self.stream_handler_level = eval('logging.%s' % level)
+
+    def set_stream_handler_fmt(self, fmt='%(message)s'):
+        """
+        设置终端输出格式
+        """
+        self.stream_handler_fmt = fmt
 
     def get_memory_usage(self):
         """
@@ -118,23 +155,8 @@ class Logger:
         else:
             memory_usage_value = int(result.strip())
         memory_usage_format = memory_usage_value/1024.0
-        print '内存使用%.2fM' % memory_usage_format
+        print '[pid:%s]内存使用%.2fM' % (pid, memory_usage_format)
         self.memory_usage = '%.2fM' % memory_usage_format
-
-    def critical(self, msg):
-        self.logger.critical(msg)
-
-    def error(self, msg):
-        self.logger.error(msg)
-
-    def warning(self, msg):
-        self.logger.warning(msg)
-
-    def info(self, msg):
-        self.logger.info(msg)
-
-    def debug(self, msg):
-        self.logger.debug(msg)
 
 
 def test_log():
@@ -152,13 +174,15 @@ def test_logger():
     """
     测试Logger工具类
     """
-    logger = Logger('my_logger', 'my_app.log')
+    my_logger = Logger('my_logger', 'my_app.log')
+    my_logger.load()
+    logger = my_logger.logger
     logger.debug('debug message')
     logger.info('info message')
     logger.warning('warning message')
     logger.error('error message')
     logger.critical('critical message')
-    logger.get_memory_usage()
+    my_logger.get_memory_usage()
 
 
 if __name__ == '__main__':
