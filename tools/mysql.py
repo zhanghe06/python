@@ -2,25 +2,10 @@
 __author__ = 'zhanghe'
 
 
-from MySQLdb import *
-
-# 本地环境
-db_config_local = {
-    'host': '192.168.1.1',
-    'user': 'xxxx',
-    'passwd': 'xxxxxxxx',
-    'db': '',
-    'port': 3306
-}
-
-# 线上环境
-db_config_online = {
-    'host': '192.168.1.2',
-    'user': 'xxxx',
-    'passwd': 'xxxxxxxx',
-    'db': '',
-    'port': 3306
-}
+try:
+    from MySQLdb import *
+except ImportError:
+    from pymysql import *
 
 
 class Mysql(object):
@@ -103,7 +88,7 @@ class Mysql(object):
             print '连接已断开'
             return None
         if table_name is None:
-            print 0
+            # print 0
             return 0
         try:
             cursor = self.conn.cursor()
@@ -112,8 +97,53 @@ class Mysql(object):
             row = cursor.fetchone()
             count = row[0]
             cursor.close()
-            print count
+            # print count
             return count
+        except Exception, e:
+            print e
+
+    def get_count_by_sql(self, sql=None):
+        """
+        获取记录总数
+        :return:
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return None
+        if sql is None:
+            print 'sql语句不能为空'
+            return None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("set NAMES UTF8")  # 解决乱码
+            cursor.execute(sql)
+            row = cursor.fetchone()
+            count = row[0]
+            cursor.close()
+            # print count
+            return count
+        except Exception, e:
+            print e
+
+    def get_rows_by_sql(self, sql=None):
+        """
+        获取记录总数
+        :return:
+        """
+        if self.is_conn_open() is False:
+            print '连接已断开'
+            return None
+        if sql is None:
+            print 'sql语句不能为空'
+            return None
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("set NAMES UTF8")  # 解决乱码
+            cursor.execute(sql)
+            rows = cursor.fetchall()
+            cursor.close()
+            # print rows
+            return rows
         except Exception, e:
             print e
 
@@ -123,6 +153,23 @@ def test():
     测试Mysql类
     :return:
     """
+    # 本地环境
+    db_config_local = {
+        'host': '192.168.1.1',
+        'user': 'xxxx',
+        'passwd': 'xxxxxxxx',
+        'db': '',
+        'port': 3306
+    }
+
+    # 线上环境
+    db_config_online = {
+        'host': '192.168.1.2',
+        'user': 'xxxx',
+        'passwd': 'xxxxxxxx',
+        'db': '',
+        'port': 3306
+    }
     # 实例化db_company库的连接
     mysql_company = Mysql(db_config_local, 'db_company')
     # 查询总数
