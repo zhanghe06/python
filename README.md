@@ -538,6 +538,12 @@ $ sudo pip install MySQL-python
 
 再次测试安装状态，不报错即可
 
+如果报错 EnvironmentError: mysql_config not found
+执行以下命令（可惜没有成功）
+```
+$ sudo apt-get install libmysqlclient-dev python-dev
+```
+
 说明：
 python版本的MySQL库（不建议使用这个）
 ```
@@ -548,7 +554,7 @@ $ sudo pip install PyMySQL
 ```
 try:
     import MySQLdb
-except:
+except ImportError:
     import pymysql
 ```
 
