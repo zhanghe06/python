@@ -80,3 +80,17 @@ if __name__ == '__main__':
     # print post('http://www.wealink.com/passport/login', 'username=123456&password=123456')
     # print get_headers('http://jump.zhineng.58.com/clk?target=mv7V0A-b5HThmvqfpv--5HTdmYw-w-ICXjF_E1KpuNG7EhnoEy0q5iubpgPGujYQrj01P19knWTQrjbvnHc1PjEYrHT3nWDdPj0h0vQfIjd_pgPYUARhIaubpgPYUHYQPjEvPWcLn19YnHndFMF-uWdCIZwkrBtf0v98PH98mvqVsvF6UhGGmith0vqd0hP-5HDhIh-1Iy-b5HThIh-1Iy-k5HDkni3zn1D8nH9dsWmvFhR8IZwk5HTh0A7zmyYqFh-1ug6YuyOb5yu6UZP-FMK_uWYVniuGUyRG5iudpyEqnWb3nHcQP1TQP1T1P1NhmvQopyEquynQrH--uWcVmHnkmBYYnhmLsyF-mymVuH0QnAcYrjK6nvPBFMKGujYQFhR8IA-b5HEYnWnzPHTYnjm3Pjn1PHDkPau-UMwY0jY1FMKzpyP-5HDYrHmh0hRbpgcqpZwY0jCfsLIfI1NzPi3drjN3shPfUiubpgPkULnqniu1IyFGujYQnH9vn1n3PzuW0hR6IARb5HDYPHNLn1ndnHT1rjTknaukmgF6Uy-b5iubpgPWmHYOPBu1uyQhmvDqrHmhuA-1UAtqnBu1uyQhUAtqnBuQ5HD8njD1nWTLPjbOrjnLn1TvPBukmyI-UMRV5HDhmh-b5HDdnjThIv-_uAP60hEqniu60ZK-Uhwoug-LULFb5HTh0hRWmyQ_uhQfI1YkFh7BIjYznjDdnjnQnRqCIy78uL--g17tnE&adact=3&psid=187378020189612344490821547&entinfo=442325040684335104_3&PGTID=187378020189612344490821547&ClickID=1&iuType=q_2')
     print json.dumps(get_headers('http://www.baidu.com'), indent=4)
+
+
+"""
+保存请求页面结果
+$ url -o page.html http://www.linuxidc.com
+通过代理访问
+$ curl -x 123.45.67.89:1080 -o page.html http://www.linuxidc.com
+上传文件
+$ curl --form "fileupload=@filename.txt" http://hostname/resource
+网络限速，下载速度最大不会超过1000B/second
+$ curl --limit-rate 1000B -O http://www.gnu.org/software/gettext/manual/gettext.html
+断点续传
+$ curl -C -O http://www.gnu.org/software/gettext/manual/gettext.html
+"""
