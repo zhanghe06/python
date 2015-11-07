@@ -17,6 +17,18 @@ xrange() 类似 range() , 不过当你有一个很大的范围列表时, xrange(
 同样地, 你可以想到, 它的性能远高出 range(), 因为它不生成整个列表。
 ```
 
+## python中%r和%s的区别
+```
+%r用rper()方法处理对象
+%s用str()方法处理对象
+>>> import datetime
+>>> d = datetime.date.today()
+>>> print "%s" % d
+2015-10-30
+>>> print "%r" % d
+datetime.date(2015, 10, 30)
+```
+
 ## print语句换行
 ```
 print 语句默认在输出内容末尾后加一个换行符, 而在语句后加一个逗号就可以避免这个行为。
