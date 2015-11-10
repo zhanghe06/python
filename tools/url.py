@@ -31,3 +31,6 @@ def test():
 
 if __name__ == '__main__':
     test()
+    test_url = 'http://suining.58.com/zhongdiangong/?sort=pingfen'
+    print urlparse(test_url).hostname.rstrip('.58.com')
+    print urlparse(test_url).path.strip('/')
