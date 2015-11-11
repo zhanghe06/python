@@ -24,7 +24,7 @@ class ExportBulk(object):
         """
         文件写入
         """
-        self.bulk_fp.write(json.dumps({"index": {"_index": self._index, '_type': self._type, 'id': index_id}})+"\n")
+        self.bulk_fp.write(json.dumps({"index": {"_index": self._index, '_type': self._type, '_id': index_id}})+"\n")
         self.bulk_fp.write(json.dumps(body)+"\n")
 
     def close(self):
