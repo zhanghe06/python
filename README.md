@@ -731,6 +731,22 @@ $ pip install elasticsearch
 $ pip install pyes
 ```
 
+角色关系对照
+
+ElasticSearch 跟 MySQL 中定义资料格式的角色关系对照表如下
+```
+MySQL                   ElasticSearch
+database                _index
+table                   _type
+id(primary key)         _id
+```
+
+table schema mapping
+```
+row                     document
+field                   field
+```
+
 参考文档:
 
 [ElasticSearch中文指南](http://www.elasticsearch.cn/guide/)
