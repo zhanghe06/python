@@ -3,6 +3,8 @@ __author__ = 'zhanghe'
 
 
 import json
+import os
+import glob
 from elasticsearch import Elasticsearch
 from elasticsearch import exceptions
 es = Elasticsearch()
@@ -99,8 +101,44 @@ def test_get():
         print e
 
 
+def load_bulk(bulk_file, es_url='localhost:9200'):
+    """
+    加载bulk文件
+    :param bulk_file:
+    :param es_url:
+    :return:
+    """
+    cmd = 'curl -s -X POST %s/_bulk?pretty=1 --data-binary @%s' % (es_url, bulk_file)
+    output = os.popen(cmd)
+    result = output.read()
+    print result
+
+
+def upload_bulk(bulk_dir, suffix='bulk'):
+    """
+    bulk文件导入ES
+    :param bulk_dir:
+    :return:
+    """
+    bulk_dir = ''.join([bulk_dir.rstrip('/'), '/'])
+    suffix = suffix.lstrip('.')
+    try:
+        for file_name in glob.glob(r'%s*.%s' % (bulk_dir, suffix)):
+            print('导入bulk文件：%s' % file_name)
+            # 导入bulk文件
+            load_bulk(file_name)
+            # 导入成功修改bulk文件名称，防止下一次重复导入
+            os.rename(file_name, ''.join([file_name, '.bak']))
+    except OSError:
+        print('读取文件失败')
+    except Exception, e:
+        print(e)
+
+
 if __name__ == "__main__":
     # test_index()
     # test_update()
     # test_delete()
-    test_get()
+    # test_get()
+    load_bulk('/data/export/bulk_1447149152.71.bulk')
+    upload_bulk('/data/export/bulk/')
