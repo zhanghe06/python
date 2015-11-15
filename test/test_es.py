@@ -101,6 +101,45 @@ def test_get():
         print e
 
 
+def test_search():
+    """
+    测试搜索索引
+    """
+    try:
+        res = es.search(index='user', doc_type='user_info', q='user_name:Lynda')
+        print json.dumps(res, indent=4)
+        # {
+        #     "hits": {
+        #         "hits": [
+        #             {
+        #                 "_score": 1.0,
+        #                 "_type": "user_info",
+        #                 "_id": "AVCfrGw0nWFCzxDkZOGk",
+        #                 "_source": {
+        #                     "user_id": 1,
+        #                     "user_phone": "123456",
+        #                     "user_name": "Lynda"
+        #                 },
+        #                 "_index": "user"
+        #             }
+        #         ],
+        #         "total": 1,
+        #         "max_score": 1.0
+        #     },
+        #     "_shards": {
+        #         "successful": 5,
+        #         "failed": 0,
+        #         "total": 5
+        #     },
+        #     "took": 777,
+        #     "timed_out": false
+        # }
+    except exceptions.NotFoundError:
+        print '文档不存在，或已被删除'
+    except Exception, e:
+        print e
+
+
 def load_bulk(bulk_file, es_url='localhost:9200'):
     """
     加载bulk文件
@@ -140,5 +179,6 @@ if __name__ == "__main__":
     # test_update()
     # test_delete()
     # test_get()
-    load_bulk('/data/export/bulk_1447149152.71.bulk')
-    upload_bulk('/data/export/bulk/')
+    test_search()
+    # load_bulk('/data/export/bulk_1447149152.71.bulk')
+    # upload_bulk('/data/export/bulk/')
