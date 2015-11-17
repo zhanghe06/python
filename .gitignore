@@ -3,4 +3,5 @@
 pyenv/*
 *.rdb
 *.log
-zxy_*.py
+zxy/*
+wealink/*
