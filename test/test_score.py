@@ -2,6 +2,9 @@
 __author__ = 'zhanghe'
 
 
+import math
+
+
 def test_01(score, test_range):
     """
     测试期望工资与薪资范围的匹配程度
@@ -13,6 +16,14 @@ def test_01(score, test_range):
     if score not in test_range:
         result = 1-min(abs(score-test_range[0]), abs(score-test_range[1]))/(score+sum(test_range)/2.0)
     print '评分：%.2f\n' % result
+
+
+def test_02(score, test_range):
+    """
+    测试二(欧氏距离)
+    """
+    avg_rang = sum(test_range)/2.0
+    print math.sqrt(abs(score**2-avg_rang**2))
 
 
 if __name__ == '__main__':
