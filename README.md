@@ -645,6 +645,39 @@ psql (PostgreSQL) 9.3.9
 ```
 
 
+## Python MongoDB
+
+mongo数据库安装（包含服务端/客户端）
+```
+$ sudo apt-get install mongodb
+```
+
+mongo仅客户端安装
+```
+$ sudo apt-get install mongodb-clients
+```
+
+pymongo安装(虚拟环境不需要sudo)
+```
+$ sudo pip install pymongo
+```
+
+命令行简单命令：
+```
+> show dbs
+> use [db]
+> show tables
+> show collections
+> db.[table/collection].find().pretty()
+```
+
+参考：
+
+[pymongo安装](http://api.mongodb.org/python/current/installation.html)
+
+[官网教程](http://api.mongodb.org/python/current/tutorial.html)
+
+
 ## ElasticSearch
 
 [ElasticSearch安装](https://www.elastic.co/guide/en/elasticsearch/reference/current/setup-repositories.html)
