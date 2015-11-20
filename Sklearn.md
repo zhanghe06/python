@@ -18,3 +18,7 @@ $ nosetests -v sklearn
 
 Support vector machines (SVMs)
 [http://scikit-learn.org/stable/modules/svm.html](http://scikit-learn.org/stable/modules/svm.html)
+
+
+Matplotlib是一个Python的图形框架
+[http://matplotlib.org/](http://matplotlib.org/)
