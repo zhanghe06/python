@@ -2,32 +2,84 @@
 __author__ = 'zhanghe'
 
 
-from pymongo import MongoClient
+import sys
+sys.path.append('..')
+from tools.mongo import Mongodb
 
 
-client = MongoClient("localhost", 27017)
+db_config = {
+    'host': 'localhost',
+    'port': 27017,
+    'database': 'test_user'
+}
 
-# 显示数据库名称列表
-print client.database_names()
 
-# 获取数据库对象
-db = client.get_database('local')
-# db = client.local
-# db = client['local']
-print db
+test_date = [
+    {
+        '_id': 1,
+        'id': 1,
+        'name': 'Lily',
+        'sex': 'F',
+        'age': 20,
+        'city': 'shanghai',
+    },
+    {
+        '_id': 2,
+        'id': 2,
+        'name': 'Tom',
+        'sex': 'M',
+        'age': 22,
+        'city': 'shanghai',
+    },
+    {
+        '_id': 3,
+        'id': 3,
+        'name': 'Jerry',
+        'sex': 'M',
+        'age': 22,
+        'city': 'beijing',
+    }
+]
 
-# 显示local库下的所有文档集合（数据表）的名称列表
-print db.collection_names()
-print db.collection_names(include_system_collections=False)
 
-# 获得文档集合的对象
-collection = db.get_collection('startup_log')
-# collection = db.startup_log
-# collection = db['startup_log']
-print collection
+def test():
+    try:
+        conn = Mongodb(db_config)
+        print conn.db
+        print conn.find_one('user')
+        print conn.insert('user', test_date)
+        conn.output_rows('user')
+    except Exception, e:
+        print e
 
-# 查询一条记录
-print collection.find_one()
 
-# 查询集合记录的总数
-print collection.count()
+if __name__ == '__main__':
+    test()
+
+
+"""
+Database(MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=False, connect=True), u'test_user')
+None
+[1, 2, 3]
+**********  表名[user]  [1/3]  **********
+city : shanghai
+name : Lily
+ sex : F
+ age : 20
+  id : 1
+ _id : 1
+**********  表名[user]  [2/3]  **********
+city : shanghai
+name : Tom
+ sex : M
+ age : 22
+  id : 2
+ _id : 2
+**********  表名[user]  [3/3]  **********
+city : beijing
+name : Jerry
+ sex : M
+ age : 22
+  id : 3
+ _id : 3
+"""
