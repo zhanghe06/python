@@ -2,6 +2,7 @@
 __author__ = 'zhanghe'
 
 import re
+import json
 
 
 def replace_html(input_html, reg_expression=r'', replace_text=''):
@@ -82,15 +83,19 @@ def read_file(file_path):
         return f.read()
 
 
-def read_file_each_line(file_path):
+def read_file_each_line(file_path, file_type='json'):
     """
     逐行读取文件
     :param file_path:
+    :param file_type:
     :return:
     """
     with open(file_path, 'r') as f:
         for each_line in f:
-            yield each_line
+            if file_type == 'json':
+                yield json.loads(each_line)
+            if file_type == 'csv':
+                yield each_line
 
 
 def save_file(file_path, text, save_type='w'):
