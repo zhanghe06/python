@@ -38,6 +38,90 @@ def multiply(x, y):
     return result
 
 
+def get_reversed_polish(exp):
+    """
+    获取逆波兰式
+    """
+    priority = {
+        '(': 1,
+        ')': 1,
+        '*': 2,
+        '/': 2,
+        '%': 2,
+        '+': 3,
+        '-': 3,
+    }
+    r_list = []
+    s_list = []
+    for i in exp:
+        if i.isdigit():
+            r_list.append(i)
+        if i in priority.keys():
+            if i == '(' or not s_list:
+                s_list.append(i)
+            elif i == ')':
+                for sign in s_list[::-1]:
+                    if sign == '(':
+                        s_list.pop()
+                        break
+                    else:
+                        r_list.append(s_list.pop())
+            else:
+                for sign in s_list[::-1]:
+                    if priority.get(i) > sign:
+                        r_list.append(s_list.pop())
+                    else:
+                        s_list.append(i)
+                        break
+    if s_list:
+        for sign in s_list[::-1]:
+            r_list.append(s_list.pop())
+    return r_list
+
+
+def expression(exp):
+    """
+    计算表达式
+    """
+    exp = get_reversed_polish(exp)
+    s_list = []
+    for i in exp:
+        if i.isdigit():
+            s_list.append(i)
+        else:
+            s_list.append(eval('%s %s %s' % (s_list.pop(-2), i, s_list.pop(-1))))
+    return s_list[0]
+
+
+def test_get_reversed_polish():
+    """
+    测试逆波兰式
+    """
+    exp_01 = '2+3*(5-2)'  # 2 3 5 2 - * +
+    print get_reversed_polish(exp_01)
+    exp_02 = '2*(1+2/2)'  # 2 1 2 2 / + *
+    print get_reversed_polish(exp_02)
+    exp_03 = '2*(1+2/2)*(1+2)'  # 2 1 2 2 / + 1 2 + * *
+    print get_reversed_polish(exp_03)
+
+
+def test_expression():
+    """
+    表达式测试
+    """
+    exp_01 = '2+3*(5-2)'
+    print expression(exp_01)
+    print eval(exp_01)
+
+    exp_02 = '2*(1+2/2)'
+    print expression(exp_02)
+    print eval(exp_02)
+
+    exp_03 = '2*(1+2/2)*(1+2)'
+    print expression(exp_03)
+    print eval(exp_03)
+
+
 def test_add():
     """
     加法测试
@@ -85,5 +169,7 @@ def test_multiply():
     print int(a_3)*int(b_3)
 
 if __name__ == '__main__':
-    test_add()
-    test_multiply()
+    # test_add()
+    # test_multiply()
+    test_get_reversed_polish()
+    test_expression()
