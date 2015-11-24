@@ -671,7 +671,17 @@ $ sudo pip install pymongo
 > db.[table/collection].find().pretty()
 ```
 
+最新版安装记录(3.0版本不支持32位系统，最后一步无法安装)
+```
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+$ echo "deb http://repo.mongodb.org/apt/ubuntu "$(lsb_release -sc)"/mongodb-org/3.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-3.0.list
+$ sudo apt-get update
+$ sudo apt-get install -y mongodb-org
+```
+
 参考：
+
+[mongo最新版安装](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
 
 [pymongo安装](http://api.mongodb.org/python/current/installation.html)
 
