@@ -34,9 +34,9 @@ class ExportBulk(object):
         self.bulk_fp.close()
 
 
-class ExportJson(object):
+class ExportFile(object):
     """
-    导出json文件工具类
+    导出json/csv文件工具类
     """
     def __init__(self, file_name):
         if file_name is None:
@@ -46,11 +46,14 @@ class ExportJson(object):
             os.mkdir(file_path)
         self.json_fp = open(file_name, 'a')
 
-    def write(self, data):
+    def write(self, data, file_type='json'):
         """
         文件写入
         """
-        self.json_fp.write(json.dumps(data).decode('raw_unicode_escape')+"\n")
+        if file_type == 'json':
+            self.json_fp.write(json.dumps(data).decode('raw_unicode_escape')+"\n")
+        if file_type == 'csv':
+            self.json_fp.write(','.join(data)+"\n")
 
     def close(self):
         """
