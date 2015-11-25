@@ -38,6 +38,27 @@ def multiply(x, y):
     return result
 
 
+def split_exp(exp_str):
+    """
+    分解运算表达式
+    """
+    r_list = []
+    t_list = []
+    for i in exp_str:
+        if i.isdigit() or i == '.':
+            t_list.append(i)
+        elif t_list:
+            r_list.append(''.join(t_list))
+            t_list = []
+            r_list.append(i)
+        else:
+            r_list.append(i)
+    if t_list:
+        r_list.append(''.join(t_list))
+        del t_list[:]
+    return r_list
+
+
 def get_reversed_polish(exp):
     """
     获取逆波兰式
@@ -54,7 +75,7 @@ def get_reversed_polish(exp):
     r_list = []
     s_list = []
     for i in exp:
-        if i.isdigit():
+        if type(eval(i)) in [int, float]:
             r_list.append(i)
         if i in priority.keys():
             if i == '(' or not s_list:
@@ -79,11 +100,12 @@ def get_reversed_polish(exp):
     return r_list
 
 
-def expression(exp):
+def calculate_exp(exp_str):
     """
     计算表达式
     """
-    exp = get_reversed_polish(exp)
+    exp_list = split_exp(exp_str)  # 分解表达式
+    exp = get_reversed_polish(exp_list)  # 获取逆波兰式
     s_list = []
     for i in exp:
         if i.isdigit():
@@ -110,15 +132,15 @@ def test_expression():
     表达式测试
     """
     exp_01 = '2+3*(5-2)'
-    print expression(exp_01)
+    print calculate_exp(exp_01)
     print eval(exp_01)
 
     exp_02 = '2*(1+2/2)'
-    print expression(exp_02)
+    print calculate_exp(exp_02)
     print eval(exp_02)
 
     exp_03 = '2*(1+2/2)*(1+2)'
-    print expression(exp_03)
+    print calculate_exp(exp_03)
     print eval(exp_03)
 
 
