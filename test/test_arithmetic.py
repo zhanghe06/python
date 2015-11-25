@@ -75,8 +75,6 @@ def get_reversed_polish(exp):
     r_list = []
     s_list = []
     for i in exp:
-        if type(eval(i)) in [int, float]:
-            r_list.append(i)
         if i in priority.keys():
             if i == '(' or not s_list:
                 s_list.append(i)
@@ -94,9 +92,10 @@ def get_reversed_polish(exp):
                     else:
                         s_list.append(i)
                         break
-    if s_list:
-        for sign in s_list[::-1]:
-            r_list.append(s_list.pop())
+        elif type(eval(i)) in [int, float]:
+            r_list.append(i)
+    while s_list:
+        r_list.append(s_list.pop())
     return r_list
 
 
@@ -104,14 +103,15 @@ def calculate_exp(exp_str):
     """
     计算表达式
     """
+    symbol = ['+', '-', '*', '/', '%']
     exp_list = split_exp(exp_str)  # 分解表达式
     exp = get_reversed_polish(exp_list)  # 获取逆波兰式
     s_list = []
     for i in exp:
-        if i.isdigit():
-            s_list.append(i)
-        else:
+        if i in symbol:
             s_list.append(eval('%s %s %s' % (s_list.pop(-2), i, s_list.pop(-1))))
+        elif type(eval(i)) in [int, float]:
+            s_list.append(i)
     return s_list[0]
 
 
@@ -125,6 +125,8 @@ def test_get_reversed_polish():
     print get_reversed_polish(exp_02)
     exp_03 = '2*(1+2/2)*(1+2)'  # 2 1 2 2 / + 1 2 + * *
     print get_reversed_polish(exp_03)
+    exp_04 = '(2+0.5)*(1+2/2)*(1+2)'  # 2.5 1 2 2 / + 1 2 + * *
+    print get_reversed_polish(exp_04)
 
 
 def test_expression():
@@ -142,6 +144,11 @@ def test_expression():
     exp_03 = '2*(1+2/2)*(1+2)'
     print calculate_exp(exp_03)
     print eval(exp_03)
+
+    # 小数测试
+    exp_04 = '(2+0.5)*(1+2/2)*(1+2)'
+    print calculate_exp(exp_04)
+    print eval(exp_04)
 
 
 def test_add():
@@ -193,5 +200,5 @@ def test_multiply():
 if __name__ == '__main__':
     # test_add()
     # test_multiply()
-    test_get_reversed_polish()
+    # test_get_reversed_polish()
     test_expression()
