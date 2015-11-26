@@ -862,6 +862,33 @@ python的内存虽然会自动回收，但是回收完之后的内存并不是�
 所以最根本的解决方法就是如何尽量少的让python从系统申请内存和复用自身的内存池资源。
 
 
+## Flask
+
+全局安装（虚拟环境不需要sudo）
+```
+$ sudo pip install Flask
+```
+
+官网[http://flask.pocoo.org/](http://flask.pocoo.org/)
+中文指南[http://docs.jinkan.org/docs/flask/](http://docs.jinkan.org/docs/flask/)
+
+
+## jieba “结巴”中文分词
+
+全局安装
+```
+$ sudo pip install jieba
+```
+
+github项目地址：
+[https://github.com/fxsjy/jieba](https://github.com/fxsjy/jieba)
+
+
+## web-application-frameworks排行榜
+
+[github排名](https://github.com/showcases/web-application-frameworks?s=stars)
+
+
 ## TODO
 
 多线程
