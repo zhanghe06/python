@@ -7,6 +7,15 @@ $ sudo apt-get install python-matplotlib
 $ sudo apt-get install python-sklearn
 ```
 
+最新版安装(推荐)
+```
+$ cd ~
+$ git clone https://github.com/scikit-learn/scikit-learn.git
+$ cd scikit-learn/
+$ sudo pip install Cython
+$ sudo python setup.py install
+```
+
 测试
 ```
 $ nosetests -v sklearn
