@@ -109,17 +109,21 @@ class Mongodb(object):
             logger.error('插入错误：%s' % e)
             return None
 
-    def update(self, table_name, condition, update_data):
+    def update(self, table_name, condition, update_data, update_type='set'):
         """
         批量更新数据
         upsert : 如果不存在update的记录，是否插入；true为插入，默认是false，不插入。
         :param table_name:
         :param condition:
         :param update_data:
+        :param update_type: 范围：['inc', 'set', 'unset', 'push', 'pushAll', 'addToSet', 'pop', 'pull', 'pullAll', 'rename']
         :return:
         """
+        if update_type not in ['inc', 'set', 'unset', 'push', 'pushAll', 'addToSet', 'pop', 'pull', 'pullAll', 'rename']:
+            logger.error('更新类型错误：%s' % update_type)
+            return None
         try:
-            result = self.db.get_collection(table_name).update_many(condition, update_data)
+            result = self.db.get_collection(table_name).update_many(condition, {'$%s' % update_type: update_data})
             logger.info('匹配数量：%s；更新数量：%s' % (result.matched_count, result.modified_count))
             return result.modified_count  # 返回更新数量，仅支持MongoDB 2.6及以上版本
         except Exception, e:
