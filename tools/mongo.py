@@ -107,6 +107,7 @@ class Mongodb(object):
             return ids
         except Exception, e:
             logger.error('插入错误：%s' % e)
+            return None
 
     def update(self, table_name, condition, update_data):
         """
@@ -117,7 +118,13 @@ class Mongodb(object):
         :param update_data:
         :return:
         """
-        return self.db.get_collection(table_name).update_many(condition, update_data)
+        try:
+            result = self.db.get_collection(table_name).update_many(condition, update_data)
+            logger.info('匹配数量：%s；更新数量：%s' % (result.matched_count, result.modified_count))
+            return result.modified_count  # 返回更新数量，仅支持MongoDB 2.6及以上版本
+        except Exception, e:
+            logger.error('更新失败：%s' % e)
+            return None
 
     def remove(self, table_name, condition=None):
         """
@@ -128,10 +135,11 @@ class Mongodb(object):
         """
         result = self.db.get_collection(table_name).remove(condition)
         if result.get('err') is None:
-            logger.info('删除成功，删除行数%s' % result.get('n'))
+            logger.info('删除成功，删除行数%s' % result.get('n', 0))
+            return result.get('n', 0)
         else:
             logger.error('删除失败：%s' % result.get('err'))
-        return result
+            return None
 
     def output_row(self, table_name, condition=None, style=0):
         """
