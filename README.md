@@ -679,9 +679,26 @@ $ sudo apt-get update
 $ sudo apt-get install -y mongodb-org
 ```
 
+32位系统安装最新版（最高支持到2.6）方式：
+```
+$ sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 7F0CEB10
+$ echo 'deb http://downloads-distro.mongodb.org/repo/ubuntu-upstart dist 10gen' | sudo tee /etc/apt/sources.list.d/mongodb.list
+$ sudo apt-get update
+$ sudo apt-get install -y mongodb-org
+```
+
+服务启动关闭重启
+```
+$ sudo service mongod start
+$ sudo service mongod stop
+$ sudo service mongod restart
+```
+
 参考：
 
-[mongo最新版安装](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
+[mongo最新版安装，仅支持64位](https://docs.mongodb.org/manual/tutorial/install-mongodb-on-ubuntu/)
+
+[mongo最新版安装，32位系统](https://docs.mongodb.org/v2.6/tutorial/install-mongodb-on-ubuntu/)
 
 [pymongo安装](http://api.mongodb.org/python/current/installation.html)
 
