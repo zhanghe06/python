@@ -47,7 +47,9 @@ def test():
         conn = Mongodb(db_config)
         print conn.db
         print conn.find_one('user')
+        print conn.remove('user')
         print conn.insert('user', test_date)
+        print conn.update('user', {'id': 1}, {'$set': {'age': 28}})
         conn.output_rows('user')
     except Exception, e:
         print e
