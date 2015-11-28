@@ -106,7 +106,7 @@ class Mongodb(object):
             ids = self.db.get_collection(table_name).insert(data)
             return ids
         except Exception, e:
-            logger.error('插入错误：%s' % e)
+            logger.error('插入失败：%s' % e)
             return None
 
     def update(self, table_name, condition, update_data, update_type='set'):
@@ -120,11 +120,11 @@ class Mongodb(object):
         :return:
         """
         if update_type not in ['inc', 'set', 'unset', 'push', 'pushAll', 'addToSet', 'pop', 'pull', 'pullAll', 'rename']:
-            logger.error('更新类型错误：%s' % update_type)
+            logger.error('更新失败，类型错误：%s' % update_type)
             return None
         try:
             result = self.db.get_collection(table_name).update_many(condition, {'$%s' % update_type: update_data})
-            logger.info('匹配数量：%s；更新数量：%s' % (result.matched_count, result.modified_count))
+            logger.info('更新成功，匹配数量：%s；更新数量：%s' % (result.matched_count, result.modified_count))
             return result.modified_count  # 返回更新数量，仅支持MongoDB 2.6及以上版本
         except Exception, e:
             logger.error('更新失败：%s' % e)

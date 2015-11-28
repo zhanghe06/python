@@ -50,7 +50,9 @@ def test():
         print conn.find_one(table_name)
         print conn.remove(table_name)  # 清空记录
         print conn.insert(table_name, test_date)  # 插入记录
+        print conn.distinct(table_name, 'age')  # 统计年龄范围
         print conn.update(table_name, {'id': 3}, {'age': 24})  # id=3的记录年龄更新为24
+        print conn.distinct(table_name, 'age')  # 统计年龄范围
         conn.output_rows(table_name)
         print conn.update(table_name, {}, {'age': 1}, 'inc')  # 所有记录年龄增加1岁
         conn.output_rows(table_name)
@@ -67,7 +69,9 @@ Database(MongoClient(host=['localhost:27017'], document_class=dict, tz_aware=Fal
 None
 0
 [1, 2, 3]
+[20, 22]
 1
+[20, 22, 24]
 **********  表名[user]  [1/3]  **********
 city : shanghai
 name : Lily
