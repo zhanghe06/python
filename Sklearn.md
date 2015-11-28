@@ -16,6 +16,22 @@ $ sudo pip install Cython
 $ sudo python setup.py install
 ```
 
+pip方式安装scikit-learn（适用虚拟环境）
+```
+$ pip install numpy
+$ pip install scipy  # 这个安装时间有点长，差点不耐烦了
+$ pip install -U scikit-learn
+```
+
+pip方式安装matplotlib（安装成功，但是虚拟环境运行没有图像出来）
+```
+$ sudo apt-get install libpng-dev
+$ sudo apt-get install libfreetype6-dev
+$ pip install matplotlib
+```
+
+Matplotlib的官网地址[http://matplotlib.org/](http://matplotlib.org/)
+
 测试
 ```
 $ nosetests -v sklearn
