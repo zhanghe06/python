@@ -22,6 +22,7 @@ test_date = [
         'sex': 'F',
         'age': 20,
         'city': 'shanghai',
+        'skill': ['word', 'excel']
     },
     {
         '_id': 2,
@@ -30,6 +31,7 @@ test_date = [
         'sex': 'M',
         'age': 22,
         'city': 'shanghai',
+        'skill': ['php', 'java']
     },
     {
         '_id': 3,
@@ -38,6 +40,7 @@ test_date = [
         'sex': 'M',
         'age': 22,
         'city': 'beijing',
+        'skill': ['php', 'python']
     }
 ]
 
@@ -55,6 +58,11 @@ def test():
         print conn.distinct(table_name, 'age')  # 统计年龄范围
         conn.output_rows(table_name)
         print conn.update(table_name, {}, {'age': 1}, 'inc')  # 所有记录年龄增加1岁
+        conn.output_rows(table_name)
+        # print conn.update(table_name, {'id': 3}, {'skill': 'mysql'}, 'push')  # 向数组字段中添加单个元素
+        # print conn.update(table_name, {'id': 3}, {'skill': 'mysql'}, 'pull')  # 向数组字段中删除单个元素
+        print conn.update(table_name, {'id': 3}, {'skill': ['ruby', 'c#']}, 'pushAll')  # 向数组字段中添加多个元素
+        print conn.update(table_name, {'id': 3}, {'skill': ['ruby', 'c#']}, 'pullAll')  # 向数组字段中删除多个元素
         conn.output_rows(table_name)
     except Exception, e:
         print e
