@@ -32,6 +32,8 @@ $ pip install matplotlib
 
 Matplotlib的官网地址[http://matplotlib.org/](http://matplotlib.org/)
 
+Matplotlib绘图示例[http://matplotlib.org/1.2.1/examples/index.html](http://matplotlib.org/1.2.1/examples/index.html)
+
 测试
 ```
 $ nosetests -v sklearn
