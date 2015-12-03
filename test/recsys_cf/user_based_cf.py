@@ -10,8 +10,9 @@ class UserBasedCF:
     基于用户的协同过滤算法
     """
     def __init__(self, datafile=None):
-        self.user_sim_best = dict()  # 优化后的用户相似度集合
-        self.user_sim = dict()  # 用户相似度集合
+        self.user_sim_best = {}  # 优化后的用户相似度集合
+        self.user_sim_cos = {}  # 用户相似度集合
+        self.user_sim_jaccard = {}  # 用户相似度集合
         self.train_data = {}  # 用户-物品的评分表
         self.test_data = {}  # 测试集
         self.data = []
@@ -31,10 +32,7 @@ class UserBasedCF:
     def split_data(self, k, seed, data=None, m=8):
         """
         拆分数据集为两部分：测试集合，训练集合
-        split the data set
-        test_data is a test data set
-        train_data is a train set
-        test data set / train data set is 1:M-1
+        测试集合，训练集合 比例为 1：m-1
         """
         data = data or self.data
         random.seed(seed)
@@ -46,36 +44,53 @@ class UserBasedCF:
                 self.train_data.setdefault(user, {})
                 self.train_data[user][item] = record
 
-    def user_similarity(self, train=None):
+    def user_similarity_jaccard(self, train=None):
         """
-        用户相似度矩阵
-        基于余弦相似度
-        One method of getting user similarity matrix
+        用户相似度矩阵 - 基于杰卡德相似系数
         """
         train = train or self.train_data
         for u in train.keys():
             for v in train.keys():
                 if u == v:
                     continue
-                self.user_sim.setdefault(u, {})
-                self.user_sim[u][v] = len(set(train[u].keys()) & set(train[v].keys()))
-                self.user_sim[u][v] /= math.sqrt(len(train[u]) * len(train[v]) * 1.0)
+                self.user_sim_jaccard.setdefault(u, {})
+                self.user_sim_jaccard[u][v] = len(set(train[u].keys()) & set(train[v].keys()))
+                self.user_sim_jaccard[u][v] /= math.sqrt(len(train[u]) * len(train[v]) * 1.0)
+
+    def user_similarity_cos(self, train=None):
+        """
+        用户相似度矩阵 - 基于余弦相似度(推荐)
+        值域[-1, 1]
+        如果训练集合分值均为正数，相似度也都是正数。
+        余弦相似度对数值的不敏感导致了结果的误差，
+        需要修正这种不合理性就出现了调整余弦相似度，
+        即所有维度上的数值都减去一个均值，更加符合现实场景。
+        """
+        train = train or self.train_data
+        for u in train.keys():
+            for v in train.keys():
+                if u == v:
+                    continue
+                self.user_sim_cos.setdefault(u, {})
+                items = set(train[u].keys()) & set(train[v].keys())
+                sum_of_products = sum([train[u].get(item) * train[v].get(item) for item in items])
+                sq_u = math.sqrt(sum([pow(score, 2) for score in train[u].values()]))
+                sq_v = math.sqrt(sum([pow(score, 2) for score in train[v].values()]))
+                self.user_sim_cos[u][v] = float(sum_of_products) / (sq_u * sq_v)
 
     def user_similarity_best(self, train=None):
         """
-        优化后的用户相似度矩阵
-        the other method of getting user similarity which is better than above
-        you can get the method on page 46
-        In this experiment，we use this method
+        用户相似度矩阵 - 基于杰卡德相似系数（优化）
+        提高稀疏矩阵的运算效率
         """
         train = train or self.train_data
-        item_users = dict()  # 所有训练集合中的物品-用户集合
+        item_users = {}  # 所有训练集合中的物品-用户集合
         for u, item in train.items():
             for i in item.keys():
                 item_users.setdefault(i, set())
                 item_users[i].add(u)  # item_users[物品] = [用户1,用户2,用户3……]
-        user_item_count = dict()  # 单个用户评价的物品数量
-        count = dict()  # 用户-用户之间评价相同物品数量矩阵
+        user_item_count = {}  # 单个用户评价的物品数量
+        count = {}  # 用户-用户之间评价相同物品数量矩阵
         # 遍历所有被用户评价过的物品及对应的用户
         for item, users in item_users.items():
             # 遍历某个物品下所有评价过的用户
@@ -95,13 +110,13 @@ class UserBasedCF:
 
     def recommend(self, user, train=None, k=8, n_item=40):
         """
-        推荐
+        推荐（这里采用余弦相似度）
         """
         train = train or self.train_data
-        rank = dict()  # 排序
+        rank = {}  # 排序
         interacted_items = train.get(user, {})  # 获取指定用户下所有的物品-评分信息
         # 遍历相似度最高的前k个用户相似度集合
-        for v, wuv in sorted(self.user_sim_best[user].items(), key=lambda x: x[1], reverse=True)[0:k]:
+        for v, wuv in sorted(self.user_sim_cos[user].items(), key=lambda x: x[1], reverse=True)[0:k]:
             # 遍历这k个用户下所有的物品-评分信息
             for i, rvi in train[v].items():
                 if i in interacted_items:
@@ -115,8 +130,6 @@ class UserBasedCF:
         """
         召回率和准确率
         train为训练集合，test为验证集合，给每个用户推荐n_item个物品
-        Get the recall and precision, the method you want to know is listed
-        in the page 43
         """
         train = train or self.train_data
         test = test or self.test_data
@@ -152,12 +165,10 @@ class UserBasedCF:
     def popularity(self, train=None, test=None, k=8, n_item=10):
         """
         流行度
-        Get the popularity
-        the algorithm on page 44
         """
         train = train or self.train_data
         test = test or self.test_data
-        item_popularity = dict()  # 物品流行次数集合
+        item_popularity = {}  # 物品流行次数集合
         for user, items in train.items():
             for item in items.keys():
                 item_popularity.setdefault(item, 0)
@@ -191,7 +202,7 @@ def test_recommend():
     通过测试集合分别测试不同K值的推荐情况
     """
     ub_cf = UserBasedCF('u.data')
-    ub_cf.user_similarity_best()
+    ub_cf.user_similarity_cos()
     user = '345'
     for k in [5, 10, 20, 40, 80, 160]:
         rank = ub_cf.recommend(user, train=None, k=k, n_item=5)
@@ -226,7 +237,7 @@ $ wc -l u.data
 
 设定不同的k值重新进行训练，最后取误差率最小的k值
 
-推荐情况测试结果：
+基于杰卡德相似系数 推荐情况测试结果：
 ------------ [user=  345  K=  5] ------------
  item          similarity              record
    98              2.2329              5.0000
@@ -270,6 +281,9 @@ $ wc -l u.data
   181             42.5909              4.0000
   117             40.6466              4.0000
 
+
+余弦相似度 比 Jaccard系数(杰卡德相似系数) 的优势：
+适用于 用户偏好类别 优于 用户偏好程度 的场景
 
 
 参考链接：
