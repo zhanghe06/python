@@ -10,9 +10,11 @@ class UserBasedCF:
     基于用户的协同过滤算法
     """
     def __init__(self, datafile=None):
-        self.user_sim_best = {}  # 优化后的用户相似度集合
-        self.user_sim_cos = {}  # 用户相似度集合
-        self.user_sim_jaccard = {}  # 用户相似度集合
+
+        self.user_sim_cos = {}  # 用户相似度集合 - 基于余弦相似度
+        self.user_sim_jaccard = {}  # 用户相似度集合 - 基于杰卡德相似系数
+        self.user_sim_cos_best = {}  # 优化后的用户相似度集合 - 基于余弦相似度
+        self.user_sim_jaccard_best = {}  # 优化后的用户相似度集合 - 基于杰卡德相似系数
         self.train_data = {}  # 用户-物品的评分表
         self.test_data = {}  # 测试集
         self.data = []
@@ -26,7 +28,8 @@ class UserBasedCF:
         """
         self.datafile = datafile or self.datafile
         for line in open(self.datafile):
-            user_id, item_id, record, _ = line.split()
+            # user_id, item_id, record, _ = line.split()
+            user_id, item_id, record = line.split()[:3]  # 兼容仅3列数据的数据集
             self.data.append((user_id, item_id, int(record)))
 
     def split_data(self, k, seed, data=None, m=8):
@@ -73,12 +76,15 @@ class UserBasedCF:
                     continue
                 self.user_sim_cos.setdefault(u, {})
                 items = set(train[u].keys()) & set(train[v].keys())
-                sum_of_products = sum([train[u].get(item) * train[v].get(item) for item in items])
-                sq_u = math.sqrt(sum([pow(score, 2) for score in train[u].values()]))
-                sq_v = math.sqrt(sum([pow(score, 2) for score in train[v].values()]))
-                self.user_sim_cos[u][v] = float(sum_of_products) / (sq_u * sq_v)
+                if not items:
+                    self.user_sim_cos[u][v] = 0.0
+                else:
+                    sum_of_products = sum([train[u].get(item) * train[v].get(item) for item in items])
+                    sq_u = math.sqrt(sum([pow(score, 2) for score in train[u].values()]))
+                    sq_v = math.sqrt(sum([pow(score, 2) for score in train[v].values()]))
+                    self.user_sim_cos[u][v] = float(sum_of_products) / (sq_u * sq_v)
 
-    def user_similarity_best(self, train=None):
+    def user_similarity_jaccard_best(self, train=None):
         """
         用户相似度矩阵 - 基于杰卡德相似系数（优化）
         提高稀疏矩阵的运算效率
@@ -104,9 +110,9 @@ class UserBasedCF:
                     count[u].setdefault(v, 0)
                     count[u][v] += 1
         for u, related_users in count.items():
-            self.user_sim_best.setdefault(u, dict())
+            self.user_sim_jaccard_best.setdefault(u, dict())
             for v, cuv in related_users.items():
-                self.user_sim_best[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)
+                self.user_sim_jaccard_best[u][v] = cuv / math.sqrt(user_item_count[u] * user_item_count[v] * 1.0)
 
     def recommend(self, user, train=None, k=8, n_item=40):
         """
@@ -188,7 +194,7 @@ def test_user_based_cf():
     测试基于用户的协同过滤不同k值下的推荐评测指标
     """
     ub_cf = UserBasedCF('u.data')
-    ub_cf.user_similarity_best()
+    ub_cf.user_similarity_cos()
     print "%3s%20s%20s%20s%20s" % ('K', 'recall', 'precision', 'coverage', 'popularity')
     for k in [5, 10, 20, 40, 80, 160]:
         recall, precision = ub_cf.recall_and_precision(k=k)
@@ -201,17 +207,24 @@ def test_recommend():
     """
     通过测试集合分别测试不同K值的推荐情况
     """
+    import time
+    start_time = time.time()
     ub_cf = UserBasedCF('u.data')
     ub_cf.user_similarity_cos()
+    train_time = time.time()
+    print '训练耗时：%sS' % (train_time-start_time)
     user = '345'
     for k in [5, 10, 20, 40, 80, 160]:
+        rec_start = time.time()
         rank = ub_cf.recommend(user, train=None, k=k, n_item=5)
+        rec_end = time.time()
         print "%s [user=%5s  K=%3s] %s" % ('-'*12, user, k, '-'*12)
         print "%5s%20s%20s" % ('item', 'similarity', 'record')
         for i, rvi in rank.items():
             items = ub_cf.test_data.get(user, {})
             record = items.get(i, 0)
             print "%5s%20.4f%20.4f" % (i, rvi, record)
+        print '[k=%3s]推荐耗时：%sS' % (k, rec_end-rec_start)
 
 
 if __name__ == "__main__":
