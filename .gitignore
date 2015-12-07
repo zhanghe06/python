@@ -5,3 +5,4 @@ pyenv/*
 *.log
 zxy/*
 wealink/*
+password.py
