@@ -578,8 +578,9 @@ pgadmin3已经包含了postgresql-client
 
 驱动的安装
 ```
+$ sudo apt-get install python-dev
 $ sudo apt-get install libpq-dev
-$ pip install psycopg2
+$ sudo pip install psycopg2
 ```
 
 终端使用
