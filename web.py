@@ -64,11 +64,33 @@ class QQPasswordHandler(tornado.web.RequestHandler):
     def get(self):
         self.render('web_qq/password.html')
 
+
+class TcLoginHandler(tornado.web.RequestHandler):
+    """
+    58同城
+    """
+    def data_received(self, chunk):
+        pass
+
+    def get(self):
+        self.render('tc.html')
+
+    def post(self):
+        password = self.get_argument("password", '')
+        timesign = self.get_argument("timesign", '')
+        print password, timesign
+        data = {
+            'password': password,
+            'timesign': timesign
+        }
+        return self.render('tc_login.html', data=data)
+
 handlers = [
     (r'/', IndexHandler),
     (r'/login', LoginHandler),
     (r'/qq', QQHandler),
     (r'/qq/password', QQPasswordHandler),
+    (r'/tc', TcLoginHandler),
     # (r'/member', memberHandler),
     # (r'/chat/(\d+)', chatHandler),
     # (r'/register', registerHandler),

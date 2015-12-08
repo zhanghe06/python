@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="/static/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="{{ static_url('js/58.js') }}"></script>
+    <script type="text/javascript" src="{{ static_url('js/58_encrypt.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("#p1").text(getm32str($("#password").text(), $("#timesign").text() + ""));
+            $("#p2").text(getm16str($("#password").text(), $("#timesign").text() + ""));
+            $("#p3").text(encryptString($("#timesign").text() + encodeURIComponent($("#password").text()), "010001", "008baf14121377fc76eaf7794b8a8af17085628c3590df47e6534574efcfd81ef8635fcdc67d141c15f51649a89533df0db839331e30b8f8e4440ebf7ccbcc494f4ba18e9f492534b8aafc1b1057429ac851d3d9eb66e86fce1b04527c7b95a2431b07ea277cde2365876e2733325df04389a9d891c5d36b7bc752140db74cb69f"));
+        });
+        $(document).ready(function(){
+            $("#p1").text(getm32str($("#password").text(), $("#timesign").text() + ""));
+            $("#p2").text(getm16str($("#password").text(), $("#timesign").text() + ""));
+            $("#p3").text(encryptString($("#timesign").text() + encodeURIComponent($("#password").text()), "010001", "008baf14121377fc76eaf7794b8a8af17085628c3590df47e6534574efcfd81ef8635fcdc67d141c15f51649a89533df0db839331e30b8f8e4440ebf7ccbcc494f4ba18e9f492534b8aafc1b1057429ac851d3d9eb66e86fce1b04527c7b95a2431b07ea277cde2365876e2733325df04389a9d891c5d36b7bc752140db74cb69f"));
+        });
+    </script>
+</head>
+<body>
+<div id="">
+<!--<div id="timesign">{{data['timesign']}}</div>-->
+<!--<div id="password">{{data['password']}}</div>-->
+<!--<div id="p1"></div>-->
+<!--<div id="p2"></div>-->
+<!--<div id="p3"></div>-->
+</body>
+</html>
