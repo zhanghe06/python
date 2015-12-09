@@ -6,7 +6,7 @@ import requests
 import re
 import sys
 sys.path.append('..')
-from tools.export import ExportJson
+from tools.export import ExportFile
 
 
 # 伪装成浏览器
@@ -16,7 +16,7 @@ header = {
 }
 
 s = requests.session()
-export_json = ExportJson('./tech_brood_title.json')
+export_json = ExportFile('./tech_brood_title.json')
 
 
 def get_title_list():

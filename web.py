@@ -2,6 +2,7 @@
 __author__ = 'zhanghe'
 
 import os
+import sys
 import tornado.httpserver
 import tornado.web
 import tornado.ioloop
@@ -85,12 +86,24 @@ class TcLoginHandler(tornado.web.RequestHandler):
         }
         return self.render('tc_login.html', data=data)
 
+
+class FutureHandler(tornado.web.RequestHandler):
+    """
+    HTML5 超酷的太空战舰操控仪表盘
+    """
+    def data_received(self, chunk):
+        pass
+
+    def get(self):
+        self.render('future.html')
+
 handlers = [
     (r'/', IndexHandler),
     (r'/login', LoginHandler),
     (r'/qq', QQHandler),
     (r'/qq/password', QQPasswordHandler),
     (r'/tc', TcLoginHandler),
+    (r'/future', FutureHandler),
     # (r'/member', memberHandler),
     # (r'/chat/(\d+)', chatHandler),
     # (r'/register', registerHandler),
@@ -107,9 +120,13 @@ settings = {
 
 
 if __name__ == '__main__':
-    tornado.options.parse_command_line()
-    app = tornado.web.Application(handlers, **settings)
-    # http_server = tornado.httpserver.HTTPServer(app)
-    # http_server.listen(options.port)
-    app.listen(options.port)  # 貌似这一句可以替代上面两句，待研究
-    tornado.ioloop.IOLoop.instance().start()
+    try:
+        tornado.options.parse_command_line()
+        app = tornado.web.Application(handlers, **settings)
+        # http_server = tornado.httpserver.HTTPServer(app)
+        # http_server.listen(options.port)
+        app.listen(options.port)  # 貌似这一句可以替代上面两句，待研究
+        tornado.ioloop.IOLoop.instance().start()
+    except KeyboardInterrupt:
+        print '服务关闭'
+        sys.exit(1)
