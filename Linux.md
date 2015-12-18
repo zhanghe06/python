@@ -1,5 +1,8 @@
 ## Linux Ubuntu 使用
 
+关于版本选择，参考官网
+[https://wiki.ubuntu.com/Releases](https://wiki.ubuntu.com/Releases)
+
 安装全新系统需要更换国内镜像源以保证速度
 ```
 $ sudo cp /etc/apt/sources.list /etc/apt/sources.list_backup
@@ -52,7 +55,14 @@ ubuntu
 显示cpu
 ```
 $ sudo uname --p
-i686
+i686    32位
+x86_64  64位
 ```
 
 [Ubuntu设置系统防火墙](https://help.ubuntu.com/community/UFW)
+
+
+刻录镜像文件制作U盘启动盘
+```
+$ dd if=ubuntu-14.04.1-desktop-amd64.iso of=/dev/sdb
+```
