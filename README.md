@@ -484,6 +484,9 @@ requests的编码检测是不符标准的，他有两个编码，一个是http h
 header['Accept-Encoding'] = 'gzip, deflate, sdch'
 纯属扯淡，Requests会自动为你解码 gzip 和 deflate 传输编码的响应数据。
 ```
+```
+如果保存文件的编码与文档定义的编码一致，还是乱码，需要删除这个文件，再次保存。
+```
 
 参考：
 [python 模块 chardet](http://pypi.python.org/pypi/chardet "python 模块 chardet")
