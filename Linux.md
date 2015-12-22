@@ -66,3 +66,27 @@ x86_64  64位
 ```
 $ dd if=ubuntu-14.04.1-desktop-amd64.iso of=/dev/sdb
 ```
+
+ubuntu 14.04 没有笔记本wifi
+
+查看硬件设备
+```
+$ lspci -vnn | grep Network
+03:00.0 Network controller [0280]: Realtek Semiconductor Co., Ltd. RTL8192EE PCIe Wireless Network Adapter [10ec:818b]
+```
+
+安装驱动
+```
+$ git clone git@github.com:lwfinger/rtlwifi_new.git
+$ cd rtlwifi_new
+$ make
+$ sudo make install
+```
+
+关闭ubuntu桌面上的错误报告
+```
+$ sudo vim /etc/default/apport
+enabled=1
+修改为
+enabled=0
+```
