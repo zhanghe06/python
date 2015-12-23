@@ -29,8 +29,17 @@ file -->> setting -->> inspections -->> PEP 8 coding style violation
 
 ### 三、PyCharm设置显示行号
 
-1、临时设置。右键单击行号处，勾选 Show Line Numbers。
+1、临时设置。
+```
+右键单击行号处，勾选 Show Line Numbers。
+```
 
-2、临时设置。View >> Active Editor，勾选 Show Line Numbers。
+2、临时设置。
+```
+View -->> Active Editor，勾选 Show Line Numbers。
+```
 
-3、永久设置。File >> Settings >> Editor >> Appearance ，勾选 Show Line Numbers。
+3、永久设置。
+```
+File -->> Settings -->> Editor -->> Appearance ，勾选 Show Line Numbers。
+```
