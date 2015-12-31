@@ -5,6 +5,7 @@
 __author__ = 'zhanghe'
 
 friend_dict = {
+    # 'QQ号': '姓名',
     'A_f': 'info_a',
     'B_f': 'info_b',
     'C_f': 'info_c',
@@ -12,6 +13,7 @@ friend_dict = {
 }
 
 group_dict = {
+    # '群号': '群名',
     'A_g': 'info_a',
     'B_g': 'info_b',
     'C_g': 'info_c',
@@ -20,26 +22,47 @@ group_dict = {
 
 
 def show_list(dict_info):
-    for i in dict_info:
-        print i, dict_info[i]
+    for key, value in dict_info.iteritems():
+        print key, value
 
-send_type = None
+
+def get_msg():
+    print '最新消息'
+
+
+msg_type = None
 while 1:
-    print '\n-------------'
-    print '1、发送好友消息'
-    print '2、发送群组消息'
-    print 'q、退出程序'
-    command = raw_input("请输入类型: ")
-    if command == '1':
-        show_list(friend_dict)  # 显示好友列表
-        raw_input_msg = raw_input("输入好友消息: ")
-        print raw_input_msg
-        continue
-    if command == '2':
-        show_list(group_dict)  # 显示群组列表
-        raw_input_msg = raw_input("输入群组消息: ")
-        print raw_input_msg
-        continue
-    if command == 'q':
+    try:
+        if msg_type in ['?', '？', '', '#', None]:  # ? 直接回车 回到菜单 初始进入 显示帮助
+            print '\n-------------'
+            print '0、接收最新消息'
+            print '1、发送好友消息'
+            print '2、发送群组消息'
+            print 'q、退出程序'
+            msg_type = raw_input('请选择类型: \n')
+            continue
+        if msg_type == '0':  # 接收最新消息
+            get_msg()
+            continue
+        if msg_type == '1':
+            show_list(friend_dict)  # 显示好友列表
+            raw_input_msg = raw_input("输入好友消息: \n")
+            if raw_input_msg == '#':
+                msg_type = '#'
+            else:
+                print raw_input_msg
+            continue
+        if msg_type == '2':
+            show_list(group_dict)  # 显示群组列表
+            raw_input_msg = raw_input("输入群组消息: \n")
+            if raw_input_msg == '#':
+                msg_type = '#'
+            else:
+                print raw_input_msg
+            continue
+        if msg_type == 'q':
+            print '程序已退出'
+            break
+    except KeyboardInterrupt:
         print '程序已退出'
         break
