@@ -183,10 +183,10 @@ class WebQQ:
         """
         获取sessionId
         """
-        session_id_url = 'http://d.web2.qq.com/channel/login2'
-        self.header['Host'] = 'd.web2.qq.com'
-        self.header['Origin'] = 'http://d.web2.qq.com'
-        self.header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+        session_id_url = 'http://d1.web2.qq.com/channel/login2'
+        self.header['Host'] = 'd1.web2.qq.com'
+        self.header['Origin'] = 'http://d1.web2.qq.com'
+        self.header['Referer'] = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
         session_id_dict = {
             "ptwebqq": self.qq_cookie['ptwebqq'],
             "clientid": self.ClientID,
@@ -331,8 +331,12 @@ class WebQQ:
         }
         group_msg_payload = {'r': json.dumps(group_msg_dict)}
         response = self.s.post(group_msg_url, data=group_msg_payload, headers=self.header)
-        print json.loads(response.content)
-        return json.loads(response.content)
+        group_msg_result = json.loads(response.content)
+        # {"errCode":0,"msg":"send ok"}
+        if group_msg_result.get('errCode') == 0 and group_msg_result.get('msg') == 'send ok':
+            print '发送成功'
+        else:
+            print '发送失败，错误码：%s' % group_msg_result.get('errCode')
 
     def get_friends_qq_by_uin(self, friends_uin):
         """
@@ -374,9 +378,9 @@ class WebQQ:
         :param msg:
         :return:
         """
-        qq_msg_url = 'http://d.web2.qq.com/channel/send_buddy_msg2'
-        self.header['Host'] = 'd.web2.qq.com'
-        self.header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+        qq_msg_url = 'http://d1.web2.qq.com/channel/send_buddy_msg2'
+        self.header['Host'] = 'd1.web2.qq.com'
+        self.header['Referer'] = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
         qq_msg_dict = {
             "to": self.get_uin_by_qq(qq),
             "content": "[\""+str(msg)+"\",[\"font\",{\"name\":\"宋体\",\"size\":10,\"style\":[0,0,0],\"color\":\"000000\"}]]",
@@ -388,19 +392,20 @@ class WebQQ:
         qq_msg_payload = {'r': json.dumps(qq_msg_dict)}
         response = self.s.post(qq_msg_url, data=qq_msg_payload, headers=self.header)
         qq_msg_result = json.loads(response.content)
-        if qq_msg_result['retcode'] == 0 and qq_msg_result['result'] == 'ok':
+        # {"errCode":0,"msg":"send ok"}
+        if qq_msg_result.get('errCode') == 0 and qq_msg_result.get('msg') == 'send ok':
             print '发送成功'
         else:
-            print '发送失败'
+            print '发送失败，错误码：%s' % qq_msg_result.get('errCode')
 
     def get_new_msg(self):
         """
         获取最新消息（轮询）
         备注：请求到返回时间大概10S
         """
-        new_msg_url = 'http://d.web2.qq.com/channel/poll2'
-        self.header['Host'] = 'd.web2.qq.com'
-        self.header['Referer'] = 'http://d.web2.qq.com/proxy.html?v=20130916001&callback=1&id=2'
+        new_msg_url = 'http://d1.web2.qq.com/channel/poll2'
+        self.header['Host'] = 'd1.web2.qq.com'
+        self.header['Referer'] = 'http://d1.web2.qq.com/proxy.html?v=20151105001&callback=1&id=2'
         new_msg_dict = {
             "ptwebqq": self.qq_cookie['ptwebqq'],
             "clientid": self.ClientID,
