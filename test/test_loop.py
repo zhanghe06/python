@@ -4,6 +4,10 @@
 """
 __author__ = 'zhanghe'
 
+
+import time
+
+
 friend_dict = {
     # 'QQ号': '姓名',
     'A_f': 'info_a',
@@ -27,20 +31,13 @@ def show_list(dict_info):
 
 
 def get_msg():
-    print '最新消息'
+    print '最新消息[%s]' % time.ctime()
+    time.sleep(2)
 
 
 msg_type = None
 while 1:
     try:
-        if msg_type in ['?', '？', '', '#', None]:  # ? 直接回车 回到菜单 初始进入 显示帮助
-            print '\n-------------'
-            print '0、接收最新消息'
-            print '1、发送好友消息'
-            print '2、发送群组消息'
-            print 'q、退出程序'
-            msg_type = raw_input('请选择类型: \n')
-            continue
         if msg_type == '0':  # 接收最新消息
             get_msg()
             continue
@@ -61,8 +58,23 @@ while 1:
                 print raw_input_msg
             continue
         if msg_type == 'q':
-            print '程序已退出'
-            break
+            print '确认退出（Y）'
+            print '取消操作（N）'
+            raw_input_msg = raw_input("程序即将退出: \n")
+            if raw_input_msg in ['y', 'Y']:
+                print '程序已退出'
+                break
+            else:
+                msg_type = ''
+                continue
+        else:  # ? 直接回车 回到菜单 初始进入 显示帮助
+            print '\n-------------'
+            print '0、接收最新消息'
+            print '1、发送好友消息'
+            print '2、发送群组消息'
+            print 'q、退出程序'
+            msg_type = raw_input('请选择类型: \n')
+            continue
     except KeyboardInterrupt:
         print '程序已退出'
         break
