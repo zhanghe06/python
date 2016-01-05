@@ -1,6 +1,6 @@
 .idea/
 *.pyc
-pyenv/*
+
 *.rdb
 *.log
 zxy/*
