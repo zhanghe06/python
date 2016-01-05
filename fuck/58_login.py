@@ -17,7 +17,7 @@ logging.basicConfig(level=logging.DEBUG)
 
 s = requests.session()
 # 伪装成浏览器
-header = {
+s.headers = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'}
 
 
@@ -78,7 +78,7 @@ def login():
         'mcresult': None,
     }
     print form_data
-    login_response = s.post(url, data=form_data, headers=header)
+    login_response = s.post(url, data=form_data)
     print login_response.text
     login_status = check_login_status(login_response.text)
     print login_status
