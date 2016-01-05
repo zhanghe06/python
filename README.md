@@ -78,6 +78,9 @@
     安装依赖库
     pip install -r requirements.txt
 
+    离开 虚拟环境
+    deactivate
+
 
 ## ubuntu下python 图片识别pytesseract安装记录
 
