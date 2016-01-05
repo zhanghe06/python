@@ -903,6 +903,22 @@ $ sudo pip install Flask
 [Flask-Login](http://docs.jinkan.org/docs/flask-login/) 为 Flask 提供了会话管理。它处理日常的登入、登出并长期保留用户会话。
 
 
+## PyExecJS
+
+从Python运行JavaScript代码，默认需要nodejs环境支持
+
+nodejs环境
+```
+$ sudo apt-get install nodejs
+$ sudo apt-get install npm
+```
+[https://nodejs.org](https://nodejs.org)
+
+安装PyExecJS
+```
+$ pip install PyExecJS
+```
+
 ## jieba “结巴”中文分词
 
 全局安装
