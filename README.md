@@ -891,7 +891,16 @@ $ sudo pip install Flask
 ```
 
 官网[http://flask.pocoo.org/](http://flask.pocoo.org/)
+
 中文指南[http://docs.jinkan.org/docs/flask/](http://docs.jinkan.org/docs/flask/)
+
+常用组件：
+
+[Flask-WTF](http://docs.jinkan.org/docs/flask-wtf/) Flask 的简单 WTForms 集成，包含 CSRF、文件上传和 Recaptcha 集成。
+
+[Flask-SQLAlchemy](http://www.pythondoc.com/flask-sqlalchemy/) 是一个为您的 Flask 应用增加 SQLAlchemy 支持的扩展。
+
+[Flask-Login](http://docs.jinkan.org/docs/flask-login/) 为 Flask 提供了会话管理。它处理日常的登入、登出并长期保留用户会话。
 
 
 ## jieba “结巴”中文分词
