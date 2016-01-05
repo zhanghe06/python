@@ -891,8 +891,25 @@ $ sudo pip install Flask
 ```
 
 官网[http://flask.pocoo.org/](http://flask.pocoo.org/)
+
 中文指南[http://docs.jinkan.org/docs/flask/](http://docs.jinkan.org/docs/flask/)
 
+
+## PyExecJS
+
+从Python运行JavaScript代码，默认需要nodejs环境支持
+
+nodejs环境
+```
+$ sudo apt-get install nodejs
+$ sudo apt-get install npm
+```
+[https://nodejs.org](https://nodejs.org)
+
+安装PyExecJS
+```
+$ pip install PyExecJS
+```
 
 ## jieba “结巴”中文分词
 
