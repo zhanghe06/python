@@ -7,16 +7,34 @@
 File -->> setting -->> File Encodings -->> IDE encoding：utf-8 
 ```
 
-2、设置模板文件编码类型：
+2、设置Pycharm文件模板：
 ```
-File -->> Setting -->> File and Code Templates
+File -->> Setting -->> Editor -->> File and Code Templates -->> Python Script
 ```
 
 在模块里顶部加入下面语句
-```
-#!/usr/bin/env python
-# coding=utf-8
-```
+
+    #!/usr/bin/env python
+    # encoding: utf-8
+
+    """
+    @author: ${USER}
+    @software: ${PRODUCT_NAME}
+    @file: ${NAME}.py
+    @time: ${DATE} ${TIME}
+    """
+
+    def func():
+        pass
+
+
+    class Main(object):
+        def __init__(self):
+            pass
+
+
+    if __name__ == '__main__':
+        pass
 
 
 
