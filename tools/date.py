@@ -72,6 +72,9 @@ def test():
     print datetime.datetime.now().timetuple()  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=22, tm_min=18, tm_sec=22, tm_wday=0, tm_yday=250, tm_isdst=-1)
     print type(datetime.datetime.now().timetuple())  # <type 'time.struct_time'>
 
+    # 字符串日期转星期(星期（0-6），星期天为星期的开始)
+    print time.strftime('%w', time.strptime('2016-01-17', '%Y-%m-%d'))
+
 
 if __name__ == "__main__":
     test()
