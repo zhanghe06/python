@@ -26,6 +26,10 @@ $ sudo rm -rf /var/lib/apt/lists/partial/*
 $ sudo apt-get update
 ```
 
+查看系统版本
+```
+$ cat /proc/version
+```
 
 显示操作系统32还是64位
 ```
@@ -89,4 +93,36 @@ $ sudo vim /etc/default/apport
 enabled=1
 修改为
 enabled=0
+```
+
+ubuntu 连接 vpn 失败的解决办法
+```
+打开：网络链接，选择VPN标签，编辑选择的VPN，在VPN标签里，选择“高级”。
+选中“使用点到点加密(MPPE)”
+```
+
+tree 显示目录树形结构
+```
+$ sudo apt-get install tree
+$ tree ./
+```
+
+shell获取当前执行脚本的路径
+```
+file_path=$(cd "$(dirname "$0")"; pwd)
+或者
+file_path=$(cd `dirname $0`; pwd)
+```
+脚本文件的绝对路径存在了环境变量 file_path 中，可以用
+```
+echo $file_path
+```
+查看完整路径
+
+在shell中：
+```
+$0: 获取当前脚本的名称
+$#: 传递给脚本的参数个数
+$$: shell脚本的进程号
+$1, $2, $3...：脚本程序的参数
 ```
