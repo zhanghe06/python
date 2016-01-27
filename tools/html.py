@@ -173,6 +173,36 @@ def test_replace_all():
     print replace_all('ffff\n\r\ngggg\ndfdf', replacements)
 
 
+def get_form(html, form_index=0, filter_tag_name_list=None, skip_tag_name_list=None):
+    """
+    获取表单
+    :param html:
+    :param form_index:
+    :param filter_tag_name_list:设置需要的标签名称列表
+    :param skip_tag_name_list:设置取消的标签名称列条
+    :return:
+    """
+    from lxml.html import fromstring
+    forms = fromstring(html).forms
+    form = forms[form_index]
+    data = {}
+    for name, value in form.fields.iteritems():
+        # 跳过
+        if skip_tag_name_list:
+            if name in skip_tag_name_list:
+                continue
+        # 字符串
+        if value is None:
+            value = ''
+        # 过滤
+        if filter_tag_name_list:
+            if name in filter_tag_name_list:
+                data[name] = value
+        else:
+            data[name] = value
+    return data
+
+
 if __name__ == '__main__':
     test_html = '''<h2>多云</h2>  '''
     print replace_html(test_html)
