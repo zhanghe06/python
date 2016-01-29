@@ -126,3 +126,40 @@ $#: 传递给脚本的参数个数
 $$: shell脚本的进程号
 $1, $2, $3...：脚本程序的参数
 ```
+
+
+ubuntu shell 终端中以窗口形式打开一个文件夹
+```
+$ nautilus
+$ nautilus /tmp
+```
+
+可以用 alias 命令来给 nautilus 命令设置别名
+```
+$ alias opendir='nautilus'
+```
+
+但是这样操作只能在本次打开的shell终端中有用，下次启动shell终端命令失效，
+可以将命令写入配置文件中
+```
+$ vim ~/.bashrc
+```
+打开配置文件后将 alias opendir='nautilus' 添加到配置文件中:
+```
+alias openpdf='xdg-open'
+alias opendir='nautilus'
+```
+这样在下次启动 shell 时命令还能使用
+
+
+linux 终端打开图片文件（图片需要完整路径才能打开）
+```
+$ eog example.png
+```
+eog 全称：eye of gnome，是 linux 下内置的图片查看器。
+
+
+linux 终端打开 Google Chrome 浏览器
+```
+$ google-chrome
+```
