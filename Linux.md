@@ -163,3 +163,11 @@ linux 终端打开 Google Chrome 浏览器
 ```
 $ google-chrome
 ```
+
+ubuntu 解压 RAR
+```
+# 安装
+$ sudo apt-get install rar
+# 解压
+$ rar x FileName.rar
+```
