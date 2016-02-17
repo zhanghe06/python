@@ -70,3 +70,9 @@ $ sudo su
 $ sudo subl /etc/rc.local
 在exit 0前面 添加以上两句配置
 ```
+
+## Python 对象之间赋值
+
+Python 中的对象之间赋值时是按引用传递的，如果需要拷贝对象，需要使用标准库中的 copy 模块。
+1. copy.copy 浅拷贝 只拷贝父对象，不会拷贝对象的内部的子对象。
+2. copy.deepcopy 深拷贝 拷贝对象及其子对象。
