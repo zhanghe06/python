@@ -76,3 +76,16 @@ $ sudo subl /etc/rc.local
 Python 中的对象之间赋值时是按引用传递的，如果需要拷贝对象，需要使用标准库中的 copy 模块。
 1. copy.copy 浅拷贝 只拷贝父对象，不会拷贝对象的内部的子对象。
 2. copy.deepcopy 深拷贝 拷贝对象及其子对象。
+
+
+## 关于自定义模块相对路径引入报错
+```
+(.env)zhanghe@ThinkPad-X240:~/code/flask_project$ python app/tools/db.py
+Traceback (most recent call last):
+  File "app/tools/db.py", line 13, in <module>
+    from ..database import db_session
+ValueError: Attempted relative import in non-package
+```
+原因分析: from ..database import db_session 这样的写法是显式相对引用, 这种引用方式只能用于 package 中, 而不能用于主模块中。
+因为主 module 的 name 总是为 main , 并没有层次结构, 也就无从谈起相对引用了。
+换句话, if __name__=="__main__": 和相对引用是不能并存的。
