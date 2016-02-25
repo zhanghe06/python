@@ -171,3 +171,18 @@ $ sudo apt-get install rar
 # 解压
 $ rar x FileName.rar
 ```
+
+统计当前目录下指定后缀名的文件总个数命令
+```
+$ find . -name "*.html" | wc -l
+```
+
+统计项目目录中代码行数
+```
+# 指定后缀
+$ find . -type f -name "*.py" | xargs wc -l
+# 指定后缀(方式二)
+$ find . -name "*.py" | xargs wc -l
+# 过滤某些后缀
+$ find . -type f ! -name "*.pyc" | xargs wc -l
+```
