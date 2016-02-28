@@ -164,6 +164,11 @@ linux 终端打开 Google Chrome 浏览器
 $ google-chrome
 ```
 
+linux 终端通过代理打开 Google Chrome 浏览器
+```
+$ google-chrome　--proxy-server="socks5://192.168.2.157"
+```
+
 ubuntu 解压 RAR
 ```
 # 安装
