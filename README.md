@@ -921,6 +921,14 @@ ZF：zero fill 填充0 例如字段内容是1 int(4), 则内容显示为0001
 AI：auto increment 自增
 ```
 
+## web 性能测试
+
+```
+$ sudo apt-get install apache2-utils
+$ ab -n 100 -c 10 http://www.flask_app.com/
+$ ab -n 10000 -c 100 http://www.flask_app.com/blog/new/
+```
+
 ## Google Image Search API (Deprecated)
 
 [Google Image Search API (Deprecated)](https://developers.google.com/image-search/v1/jsondevguide?csw=1)
