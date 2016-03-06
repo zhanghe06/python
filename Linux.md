@@ -63,6 +63,181 @@ i686    32位
 x86_64  64位
 ```
 
+查看 cpu 逻辑核心数，型号
+```
+$ cat /proc/cpuinfo | grep name | cut -f2 -d: | uniq -c
+      4  Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+```
+
+查看物理 cpu 颗数
+```
+$ cat /proc/cpuinfo | grep physical | uniq -c
+      1 physical id	: 0
+      1 address sizes	: 39 bits physical, 48 bits virtual
+      1 physical id	: 0
+      1 address sizes	: 39 bits physical, 48 bits virtual
+      1 physical id	: 0
+      1 address sizes	: 39 bits physical, 48 bits virtual
+      1 physical id	: 0
+      1 address sizes	: 39 bits physical, 48 bits virtual
+```
+
+查看 cpu 运行模式
+```
+$ getconf LONG_BIT
+64
+```
+如果显示32，说明当前 CPU 运行在32bit模式下, 但不代表 CPU 不支持64bit
+
+查看 cpu 是否支持64bit
+```
+$ cat /proc/cpuinfo | grep flags | grep ' lm ' | wc -l
+4
+```
+结果大于0, 说明支持64bit计算. lm指long mode, 支持lm则是64bit
+
+查看 cpu 信息概要
+```
+$ lscpu
+```
+
+    Architecture:          x86_64
+    CPU 运行模式：    32-bit, 64-bit
+    Byte Order:            Little Endian
+    CPU(s):                4
+    On-line CPU(s) list:   0-3
+    每个核的线程数：2
+    每个座的核数：  2
+    Socket(s):             1
+    NUMA 节点：         1
+    厂商 ID：           GenuineIntel
+    CPU 系列：          6
+    型号：              69
+    步进：              1
+    CPU MHz：             759.000
+    BogoMIPS:              4589.28
+    虚拟化：           VT-x
+    L1d 缓存：          32K
+    L1i 缓存：          32K
+    L2 缓存：           256K
+    L3 缓存：           3072K
+    NUMA node0 CPU(s):     0-3
+
+
+查看 cpu 详情
+```
+$ cat /proc/cpuinfo
+```
+    
+    processor	: 0
+    vendor_id	: GenuineIntel
+    cpu family	: 6
+    model		: 69
+    model name	: Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+    stepping	: 1
+    microcode	: 0x17
+    cpu MHz		: 759.000
+    cache size	: 3072 KB
+    physical id	: 0
+    siblings	: 4
+    core id		: 0
+    cpu cores	: 2
+    apicid		: 0
+    initial apicid	: 0
+    fpu		: yes
+    fpu_exception	: yes
+    cpuid level	: 13
+    wp		: yes
+    flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 fma cx16 xtpr pdcm pcid sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid
+    bogomips	: 4589.28
+    clflush size	: 64
+    cache_alignment	: 64
+    address sizes	: 39 bits physical, 48 bits virtual
+    power management:
+    
+    processor	: 1
+    vendor_id	: GenuineIntel
+    cpu family	: 6
+    model		: 69
+    model name	: Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+    stepping	: 1
+    microcode	: 0x17
+    cpu MHz		: 759.000
+    cache size	: 3072 KB
+    physical id	: 0
+    siblings	: 4
+    core id		: 0
+    cpu cores	: 2
+    apicid		: 1
+    initial apicid	: 1
+    fpu		: yes
+    fpu_exception	: yes
+    cpuid level	: 13
+    wp		: yes
+    flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 fma cx16 xtpr pdcm pcid sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid
+    bogomips	: 4589.28
+    clflush size	: 64
+    cache_alignment	: 64
+    address sizes	: 39 bits physical, 48 bits virtual
+    power management:
+    
+    processor	: 2
+    vendor_id	: GenuineIntel
+    cpu family	: 6
+    model		: 69
+    model name	: Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+    stepping	: 1
+    microcode	: 0x17
+    cpu MHz		: 759.000
+    cache size	: 3072 KB
+    physical id	: 0
+    siblings	: 4
+    core id		: 1
+    cpu cores	: 2
+    apicid		: 2
+    initial apicid	: 2
+    fpu		: yes
+    fpu_exception	: yes
+    cpuid level	: 13
+    wp		: yes
+    flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 fma cx16 xtpr pdcm pcid sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid
+    bogomips	: 4589.28
+    clflush size	: 64
+    cache_alignment	: 64
+    address sizes	: 39 bits physical, 48 bits virtual
+    power management:
+    
+    processor	: 3
+    vendor_id	: GenuineIntel
+    cpu family	: 6
+    model		: 69
+    model name	: Intel(R) Core(TM) i5-4200U CPU @ 1.60GHz
+    stepping	: 1
+    microcode	: 0x17
+    cpu MHz		: 759.000
+    cache size	: 3072 KB
+    physical id	: 0
+    siblings	: 4
+    core id		: 1
+    cpu cores	: 2
+    apicid		: 3
+    initial apicid	: 3
+    fpu		: yes
+    fpu_exception	: yes
+    cpuid level	: 13
+    wp		: yes
+    flags		: fpu vme de pse tsc msr pae mce cx8 apic sep mtrr pge mca cmov pat pse36 clflush dts acpi mmx fxsr sse sse2 ss ht tm pbe syscall nx pdpe1gb rdtscp lm constant_tsc arch_perfmon pebs bts rep_good nopl xtopology nonstop_tsc aperfmperf eagerfpu pni pclmulqdq dtes64 monitor ds_cpl vmx est tm2 ssse3 fma cx16 xtpr pdcm pcid sse4_1 sse4_2 movbe popcnt tsc_deadline_timer aes xsave avx f16c rdrand lahf_lm abm ida arat epb xsaveopt pln pts dtherm tpr_shadow vnmi flexpriority ept vpid fsgsbase tsc_adjust bmi1 avx2 smep bmi2 erms invpcid
+    bogomips	: 4589.28
+    clflush size	: 64
+    cache_alignment	: 64
+    address sizes	: 39 bits physical, 48 bits virtual
+    power management:
+
+查看内存信息
+```
+$ cat /proc/meminfo
+```
+
 [Ubuntu设置系统防火墙](https://help.ubuntu.com/community/UFW)
 
 
