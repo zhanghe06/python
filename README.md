@@ -549,6 +549,10 @@ $ sudo pip install MySQL-python
 ```
 $ sudo apt-get install libmysqlclient-dev python-dev
 ```
+原因：安装的是 mariadb 服务，所以需要安装：
+```
+$ sudo apt-get install libmariadbclient-dev
+```
 
 说明：
 python版本的MySQL库（不建议使用这个）
