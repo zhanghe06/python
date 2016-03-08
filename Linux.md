@@ -56,6 +56,24 @@ $ sudo uname --n
 ubuntu
 ```
 
+主机名一般存放在 /etc/hostname；
+但是 Fedora 发行版将主机名存放在 /etc/sysconfig/network
+
+修改主机名称
+```
+$ vim /etc/hostname
+```
+保存，重启系统
+
+需要同时修改 hosts
+```
+$ vim /etc/hosts
+```
+
+```
+127.0.1.1       ubuntu
+```
+
 显示cpu
 ```
 $ sudo uname --p
@@ -341,7 +359,7 @@ $ google-chrome
 
 linux 终端通过代理打开 Google Chrome 浏览器
 ```
-$ google-chrome　--proxy-server="socks5://192.168.2.157"
+$ google-chrome --proxy-server="socks5://192.168.2.157"
 ```
 
 ubuntu 解压 RAR
