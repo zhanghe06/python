@@ -648,12 +648,38 @@ psql (PostgreSQL) 9.3.9
 \?：查看psql命令列表。
 \l：列出所有数据库。
 \c [database_name]：连接其他数据库。
-\d：列出当前数据库的所有表格。
+\d：列出当前数据库的所有表，包括模式。
+\dt：列出当前数据库的所有表。
 \d [table_name]：列出某一张表格的结构。
 \du：列出所有用户。
 \e：打开文本编辑器。
 \conninfo：列出当前数据库和连接的信息。
 ```
+
+终端远程连接 postgres 命令
+```
+$ psql -h [ip] -p[port] -U [user] -d [database]
+```
+
+打开扩展，格式化显示查询结果，使用 \x 切换显示效果
+```
+wl_crawl=# \x
+Expanded display is on.
+wl_crawl=# select * from [table] limit 10;
+wl_crawl=# \x
+Expanded display is off.
+wl_crawl=# select * from [table] limit 10;
+```
+
+psql 是一个普通的 PostgreSQL 客户端应用。
+
+为了与一个数据库联接，你需要知道你的目标数据库， 服务器的主机名和端口号以及你希望以哪个用户的身份进行联接等信息。
+
+我们可以通过命令行参数告诉 psql 这些信息，分别是 -d， -h，-p，和 -U。
+
+如果有个参数不属于任何选项开关， 那么它会被解释成数据库名（或者是用户名——如果数据库名称已经给出了。）
+
+所以，上面远程连接可以有很多写法，是很方便，但是建议指明参数，后面调试起来方便。
 
 
 ## Python MongoDB

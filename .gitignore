@@ -6,3 +6,4 @@ pyenv/*
 zxy/*
 wealink/*
 password.py
+*.env
