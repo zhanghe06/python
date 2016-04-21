@@ -384,3 +384,16 @@ $ find . -name "*.py" | xargs wc -l
 # 过滤某些后缀
 $ find . -type f ! -name "*.pyc" | xargs wc -l
 ```
+
+SSH 免密登陆远程主机
+
+将本机公钥添加到对方 authorized_keys 中
+```
+$ ssh user@host 'mkdir -p .ssh && cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
+```
+注意权限设置:
+```
+1) .ssh目录的权限必须是700
+2) .ssh/authorized_keys文件权限必须是600
+$ chmod 600 authorized_keys
+```
