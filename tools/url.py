@@ -1,7 +1,7 @@
 # encoding: utf-8
 __author__ = 'zhanghe'
 
-from urlparse import urlparse
+from urlparse import urlparse, parse_qs
 from urlparse import urlunparse
 from urlparse import urljoin
 
@@ -25,6 +25,20 @@ def get_next_url(current_url, next_url):
     return urljoin(current_url, next_url)
 
 
+def get_url_param_value(url, param_key):
+    """
+    获取链接查询参数值
+    :param url:
+    :param param_key:
+    :return:
+    """
+    result = urlparse(url)
+    params = parse_qs(result.query, True)
+    param_value = params.get(param_key)
+    print result, '\n', params, '\n', param_value
+    return ','.join(param_value)
+
+
 def test():
     print get_next_url('http://www.163.com/mail/index.htm', 'http://www.163.com/about.htm')
     print urljoin('http://www.163.com/mail/index.htm', 'http://www.163.com/about.htm')
@@ -40,10 +54,12 @@ def test():
 
 
 if __name__ == '__main__':
-    test()
-    test_url = 'http://suining.58.com/zhongdiangong/?sort=pingfen'
-    print urlparse(test_url).hostname.rstrip('.58.com')
-    print urlparse(test_url).path.strip('/')
+    # test()
+    # test_url = 'http://suining.58.com/zhongdiangong/?sort=pingfen'
+    # print urlparse(test_url).hostname.rstrip('.58.com')
+    # print urlparse(test_url).path.strip('/')
+    test_url = 'http://localhost/test.py?a=hello&b=world'
+    print get_url_param_value(test_url, 'a')
 
 
 """
