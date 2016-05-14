@@ -397,3 +397,84 @@ $ ssh user@host 'mkdir -p .ssh && cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.p
 2) .ssh/authorized_keys文件权限必须是600
 $ chmod 600 authorized_keys
 ```
+
+查看系统所有 shell 版本
+```
+$ cat /etc/shells
+# /etc/shells: valid login shells
+/bin/sh
+/bin/dash
+/bin/bash
+/bin/rbash
+```
+
+查看当前 shell 版本
+```
+$ echo $SHELL
+/bin/bash
+```
+
+安装 zsh
+```
+$ sudo apt-get install zsh
+```
+
+安装 oh-my-zsh
+Oh My Zsh 只是一个对 zsh 命令行环境的配置包装框架，但它不提供命令行窗口，更不是一个独立的 APP。
+Oh My Zsh 并不是某个命令行工具的替代品，而是和它们互为补充。
+```
+$ wget --no-check-certificate https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | sh
+```
+
+[http://ohmyz.sh](http://ohmyz.sh)
+
+替换bash为zsh：
+```
+$ chsh -s /bin/zsh
+or
+$ chsh -s $(which zsh)
+```
+
+查看 zsh 当前的版本号
+```
+zsh --version
+```
+
+将主题设置为随机
+```
+$ vim ~/.zshrc
+ZSH_THEME="random"
+```
+
+命令输出当前主题的名称
+```
+$ echo $ZSH_THEME
+```
+
+pip 安装时默认访问 pypi 的，但是 pypi 的速度对于国内来说有点慢，还在国内也有一些 pip 的镜像源，造福广大程序员
+```
+pipy 国内镜像目前有：
+http://pypi.douban.com/ 豆瓣
+http://pypi.hustunique.com/ 华中理工大学
+http://pypi.sdutlinux.org/ 山东理工大学
+http://pypi.mirrors.ustc.edu.cn/ 中国科学技术大学
+```
+
+安装时我们可以手动指定 pip 源
+```
+$ pip -i http://pypi.douban.com/simple install Flask
+```
+
+或者修改 pip 源配置
+```
+$ mkdir ~/.pip
+$ vim ~/.pip/pip.conf
+```
+
+```
+[global]
+trusted-host = pypi.douban.com
+index-url = http://pypi.douban.com/simple
+#index-url = http://mirrors.aliyun.com/pypi/simple/
+```
+由于最新的 pip 安装需要使用的 https 加密，所以在此需要添加 trusted-host
