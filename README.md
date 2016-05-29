@@ -658,7 +658,7 @@ psql (PostgreSQL) 9.3.9
 
 终端远程连接 postgres 命令
 ```
-$ psql -h [ip] -p[port] -U [user] -d [database]
+$ psql -h [ip] -p [port] -U [user] -d [database]
 ```
 
 打开扩展，格式化显示查询结果，使用 \x 切换显示效果
@@ -669,6 +669,18 @@ wl_crawl=# select * from [table] limit 10;
 wl_crawl=# \x
 Expanded display is off.
 wl_crawl=# select * from [table] limit 10;
+```
+
+建立索引
+```
+create index idx_tab_col on tab(col);
+tab: 表名
+col: 字段名
+```
+
+删除索引
+```
+drop index idx_tab_col
 ```
 
 psql 是一个普通的 PostgreSQL 客户端应用。
