@@ -258,6 +258,11 @@ $ cat /proc/meminfo
 
 [Ubuntu设置系统防火墙](https://help.ubuntu.com/community/UFW)
 
+格式化U盘(需卸载/取消挂载后才能格式化)
+```
+$ sudo fdisk -l
+$ sudo mkfs.vfat -F 32 /dev/sdb1即可将u盘格式化为fat32格式
+```
 
 刻录镜像文件制作U盘启动盘
 ```
@@ -478,3 +483,10 @@ index-url = http://pypi.douban.com/simple
 #index-url = http://mirrors.aliyun.com/pypi/simple/
 ```
 由于最新的 pip 安装需要使用的 https 加密，所以在此需要添加 trusted-host
+
+
+pip 安装 gnureadline 报错： /usr/bin/ld: cannot find -lncurses
+```
+$ sudo apt-cache search ncurses- | grep ncurses
+$ sudo apt-get install libncurses5-dev
+```
