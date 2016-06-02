@@ -4,6 +4,7 @@ __author__ = 'zhanghe'
 import json
 import time
 import os
+from datetime import datetime, date
 
 
 class ExportBulk(object):
@@ -14,18 +15,33 @@ class ExportBulk(object):
         self._index = index_name
         self._type = type_name
         if file_name is None:
-            file_name = 'bulk_%s.bulk' % time.time()
+            file_name = './es_%s_%s_%s.bulk' % (index_name, type_name, time.time())
         file_path = os.path.dirname(file_name)
         if not os.path.isdir(file_path):
             os.mkdir(file_path)
         self.bulk_fp = open(file_name, 'a')
+
+    @staticmethod
+    def __default(obj):
+        """
+        支持datetime的json encode
+        TypeError: datetime.datetime(2015, 10, 21, 8, 42, 54) is not JSON serializable
+        :param obj:
+        :return:
+        """
+        if isinstance(obj, datetime):
+            return obj.strftime('%Y-%m-%d %H:%M:%S')
+        elif isinstance(obj, date):
+            return obj.strftime('%Y-%m-%d')
+        else:
+            raise TypeError('%r is not JSON serializable' % obj)
 
     def write(self, index_id, body):
         """
         文件写入
         """
         self.bulk_fp.write(json.dumps({"index": {"_index": self._index, '_type': self._type, '_id': index_id}})+"\n")
-        self.bulk_fp.write(json.dumps(body)+"\n")
+        self.bulk_fp.write(json.dumps(body, ensure_ascii=False, default=self.__default)+"\n")
 
     def close(self):
         """
@@ -38,7 +54,7 @@ class ExportFile(object):
     """
     导出json/csv文件工具类
     """
-    def __init__(self, file_name):
+    def __init__(self, file_name=None):
         if file_name is None:
             file_name = 'json_%s.json' % time.time()
         file_path = os.path.dirname(file_name)
