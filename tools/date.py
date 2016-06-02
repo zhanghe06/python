@@ -18,6 +18,23 @@ def add_time(time_str, second):
     return time.strftime('%Y-%m-%d %H:%M:%S', new_time_stamp)
 
 
+def interval_time(interval_type='year'):
+    """
+    获取时间差
+    """
+    # 方法一
+    old_date = datetime.date(*time.strptime('2009-09-07', '%Y-%m-%d')[:3])
+    new_date = datetime.date(*time.localtime()[:3])
+    diff_days = (new_date-old_date).days
+    print '%d' % round((diff_days if diff_days > 0 else 0)/365.0, 0)
+    # 方法二
+    diff_seconds = time.time() - time.mktime(time.strptime('2008-09-07', '%Y-%m-%d'))
+    diff_years = '%d' % round((diff_seconds if diff_seconds > 0 else 0)/(365*24*3600), 0)
+    print diff_years
+    # diff_years = 0
+    print (u'%s年工作经验' % diff_years) if int(diff_years) > 0 else u'无工作经验'
+
+
 def test():
     """
     测试代码
@@ -75,6 +92,15 @@ def test():
     # 字符串日期转星期(星期（0-6），星期天为星期的开始)
     print time.strftime('%w', time.strptime('2016-01-17', '%Y-%m-%d'))
 
+    # 格式转换
+    print time.strftime('%Y-%m-%d %H:%M:%S', time.strptime('5/6/2016 10:02:47 PM', '%m/%d/%Y %I:%M:%S %p'))
+
+    # 当前年份(4位)
+    print datetime.datetime.now().year
+
+    # 获取2个月之后的日期
+    print datetime.datetime.now() + datetime.timedelta(days=60)
+
 
 if __name__ == "__main__":
     test()
@@ -92,7 +118,7 @@ if __name__ == "__main__":
 
 3.python中时间日期格式化符号：
     %y 两位数的年份表示（00-99）
-    %Y 四位数的年份表示（000-9999）
+    %Y 四位数的年份表示（0000-9999）
     %m 月份（01-12）
     %d 月内中的一天（0-31）
     %H 24小时制小时数（0-23）
