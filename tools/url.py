@@ -34,7 +34,7 @@ def get_url_param_value(url, param_key):
     """
     result = urlparse(url)
     params = parse_qs(result.query, True)
-    param_value = params.get(param_key)
+    param_value = params.get(param_key, [])
     print result, '\n', params, '\n', param_value
     return ','.join(param_value)
 
@@ -60,6 +60,7 @@ if __name__ == '__main__':
     # print urlparse(test_url).path.strip('/')
     test_url = 'http://localhost/test.py?a=hello&b=world'
     print get_url_param_value(test_url, 'a')
+    print get_url_param_value(test_url, 'as')
 
 
 """
