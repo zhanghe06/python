@@ -64,7 +64,7 @@ def time_prety(delta_s):
         result += '%s分' % count
         delta_s -= count * 60
     if delta_s > 0:
-        count = delta_s
+        count = int(delta_s)
         result += '%s秒' % count
     return result
 
