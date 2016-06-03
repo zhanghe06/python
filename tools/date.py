@@ -35,6 +35,40 @@ def interval_time(interval_type='year'):
     print (u'%s年工作经验' % diff_years) if int(diff_years) > 0 else u'无工作经验'
 
 
+def time_prety(delta_s):
+    """
+    时间友好显示
+    :param delta_s:
+    :return:
+    """
+    delta_s *= 1.00
+    result = ''
+    if delta_s >= (365 * 24 * 60 * 60):
+        count = int(delta_s / (365 * 24 * 60 * 60))
+        result += '%s年' % count
+        delta_s -= count * 365 * 24 * 60 * 60
+    if delta_s >= (30 * 24 * 60 * 60):
+        count = int(delta_s / (30 * 24 * 60 * 60))
+        result += '%s月' % count
+        delta_s -= count * 30 * 24 * 60 * 60
+    if delta_s >= (24 * 60 * 60):
+        count = int(delta_s / (24 * 60 * 60))
+        result += '%s天' % count
+        delta_s -= count * 24 * 60 * 60
+    if delta_s >= (60 * 60):
+        count = int(delta_s / (60 * 60))
+        result += '%s小时' % count
+        delta_s -= count * 60 * 60
+    if delta_s >= 60:
+        count = int(delta_s / 60)
+        result += '%s分' % count
+        delta_s -= count * 60
+    if delta_s > 0:
+        count = delta_s
+        result += '%s秒' % count
+    return result
+
+
 def test():
     """
     测试代码
@@ -100,6 +134,9 @@ def test():
 
     # 获取2个月之后的日期
     print datetime.datetime.now() + datetime.timedelta(days=60)
+
+    # 显示友好时间
+    print time_prety(60 * 60 * 24 * 3 + 60 * 60 * 2 + 60 * 3)
 
 
 if __name__ == "__main__":
