@@ -35,7 +35,7 @@ def interval_time(interval_type='year'):
     print (u'%s年工作经验' % diff_years) if int(diff_years) > 0 else u'无工作经验'
 
 
-def time_prety(delta_s):
+def time_pretty(delta_s):
     """
     时间友好显示
     :param delta_s:
@@ -136,7 +136,12 @@ def test():
     print datetime.datetime.now() + datetime.timedelta(days=60)
 
     # 显示友好时间
-    print time_prety(60 * 60 * 24 * 3 + 60 * 60 * 2 + 60 * 3)
+    print time_pretty(60 * 60 * 24 * 3 + 60 * 60 * 2 + 60 * 3)
+
+    # 字符串转对象
+    print datetime.datetime.strptime('2016-06-06', "%Y-%m-%d").date(), type(datetime.datetime.strptime('2016-06-06', "%Y-%m-%d").date())
+    print datetime.datetime.strptime('2016-06-06 12:34:54', "%Y-%m-%d %H:%M:%S")
+    # print datetime.datetime.strptime('2016-06', "%Y-%m-%d %H:%M:%S")  # 异常ValueError
 
 
 if __name__ == "__main__":
