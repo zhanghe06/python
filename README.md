@@ -893,7 +893,6 @@ redis-cli -a password keys "*" | xargs redis-cli -a password del
 # 下面的命令指定数据序号为0，即默认数据库
 redis-cli -n 0 keys "*" | xargs redis-cli -n 0 del
 ```
-删除所有 Key
 删除所有 Key，可以使用 Redis 的 flushdb 和 flushall 命令
 ```
 # 删除当前数据库中的所有Key
@@ -1033,6 +1032,89 @@ github项目地址：
 
 [github排名](https://github.com/showcases/web-application-frameworks?s=stars)
 
+
+## json 序列化 反序列化
+
+直接对应：
+
+JSON类型 | Python类型
+----|------
+{} | dict
+[] | list
+"string" | 'str'或u'unicode'
+1234.56 | int或float
+true/false | True/False
+null | None
+
+需要特殊处理：
+
+JSON类型 | Python类型
+----|------
+"2016-07-09 23:02:12" | datetime.datetime
+"2016-07-09" | datetime.date
+"12.68" | decimal.Decimal
+
+
+```
+import json
+from datetime import date, datetime
+from decimal import Decimal
+
+
+def __default(obj):
+    """
+    支持 datetime Decimal 的 json encode
+    TypeError: datetime.datetime(2015, 10, 21, 8, 42, 54) is not JSON serializable
+    :param obj:
+    :return:
+    """
+    if isinstance(obj, datetime):
+        return obj.strftime('%Y-%m-%d %H:%M:%S')
+    elif isinstance(obj, date):
+        return obj.strftime('%Y-%m-%d')
+    elif isinstance(obj, Decimal):
+        return str(obj)
+    else:
+        raise TypeError('%r is not JSON serializable' % obj)
+
+
+row = {
+    'db': {
+        'host': '127.0.0.1',
+        'port': 3306
+    },
+    'proxy': [
+        'http://127.0.0.1:1080',
+        'https://127.0.0.1:1080'
+    ],
+    'test_none': None,
+    'test_bool': True,
+    'time': datetime.now(),
+    'price': Decimal('12.68'),
+    'time_list': [
+        datetime.now()
+    ]
+}
+
+print json.dumps(row, indent=4, ensure_ascii=False, default=__default)
+{
+    "time_list": [
+        "2016-07-09 23:02:12"
+    ],
+    "price": "12.68",
+    "db": {
+        "host": "127.0.0.1",
+        "port": 3306
+    },
+    "test_bool": true,
+    "test_none": null,
+    "proxy": [
+        "http://127.0.0.1:1080",
+        "https://127.0.0.1:1080"
+    ],
+    "time": "2016-07-09 23:02:12"
+}
+```
 
 ## 文档托管
 
