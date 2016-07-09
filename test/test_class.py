@@ -57,6 +57,14 @@ class DetailResume(object):
     """
     简历详细信息
     """
+    # 定义基本属性
+    edu_list = []   # 教育经历
+    work_list = []  # 工作经历
+    project_list = []   # 项目经历
+    train_list = []     # 培训经历
+    cert_list = []      # 证书
+    skill_list = []     # 技能
+
     # 定义构造方法
     def __init__(self, **kwargs):
         for key, value in kwargs.iteritems():
@@ -100,7 +108,7 @@ def test_03():
                 'name': 'Tom',
                 'sex': 'M'
             },
-            'edu': [
+            'edu_list': [
                 {
                     'school': 'S-ABC',
                     'degree': u'学历1',
@@ -112,7 +120,7 @@ def test_03():
                     'major': u'专业2'
                 }
             ],
-            'work': [
+            'work_list': [
                 {
                     'company': 'C-DGG',
                     'job': 'J-DGG'
@@ -125,7 +133,7 @@ def test_03():
         }
         detail_resume = DetailResume(**data)
         print isinstance(detail_resume, DetailResume)
-        print type(detail_resume.work), detail_resume.work
+        print type(detail_resume.work_list), detail_resume.work_list
     except Exception, e:
         print e.message
 
