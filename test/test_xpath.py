@@ -23,6 +23,7 @@ def test_doc_xpath():
     doc = lxml.html.fromstring(html)
 
     num_list = doc.xpath('//td[@style="padding-bottom: 5px;" and @nowrap="" and not(@align="right")]/text()')
+    print '-'*8
     print type(num_list[0])
     print num_list[0]
 
@@ -46,8 +47,13 @@ def test_etree_xpath():
     '''
     tree = etree.HTML(html)
     num_list = tree.xpath('//td[@style="padding-bottom: 5px;" and @nowrap="" and not(@align="right")]/text()')
+    num_element_list = tree.xpath('//td[@style="padding-bottom: 5px;" and @nowrap="" and not(@align="right")]')
+    print '-'*8
     print type(num_list[0])
-    print num_list[0]
+    print type(num_list[0]), num_list[0]
+    print '-'*8
+    print type(num_element_list[0])
+    print type(num_element_list[0].text), num_element_list[0].text
 
 
 if __name__ == '__main__':
@@ -56,8 +62,13 @@ if __name__ == '__main__':
 
 """
 测试结果：
+--------
 <type 'lxml.etree._ElementUnicodeResult'>
 数量: 1
+--------
 <type 'lxml.etree._ElementUnicodeResult'>
-数量: 1
+<type 'lxml.etree._ElementUnicodeResult'> 数量: 1
+--------
+<type 'lxml.etree._Element'>
+<type 'unicode'> 数量: 1
 """
