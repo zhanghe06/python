@@ -383,10 +383,7 @@ $ google-chrome --proxy-server="socks5://192.168.2.157"
 
 ubuntu 解压 RAR
 ```
-# 安装
-$ sudo apt-get install rar
-# 解压
-$ rar x FileName.rar
+$ sudo apt-get install p7zip-rar
 ```
 
 统计当前目录下指定后缀名的文件总个数命令

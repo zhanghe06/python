@@ -21,6 +21,31 @@ def hex_to_bytes(string):
     return bytes(tmp)
 
 
+def test_unescape():
+    # unicode编码后的汉字的解析
+    str_xx = '&#21152;&#20837;&#21040;&#34;&#25105;&#30340;&#20070;&#30446;&#36873;&#21333;&#34;&#20013;'
+    from HTMLParser import HTMLParser
+    h = HTMLParser()
+    print h.unescape(str_xx)
+
+
+def test_unicode():
+    a = '\u6211\u6765\u4e86'
+    print a.decode('raw_unicode_escape')  # 我来了
+
+    # =============
+    # 通用转换方法：
+
+    # python 2.x str 转 unicode:
+    # str_string.decode('original_encoding')
+    print repr('我来了'.decode('utf-8')), '我来了'.decode('utf-8')
+
+    # unicode 转 str:
+    # unicode_string.encode('target_encoding')
+    print repr(u'\u6211\u6765\u4e86'.encode('utf-8')), u'\u6211\u6765\u4e86'.encode('utf-8')  # 每个汉子占3个字节
+    print repr(u'\u6211\u6765\u4e86'.encode('GBK')), u'\u6211\u6765\u4e86'.encode('GBK')  # 每个汉子占2个字节
+
+
 def test():
     """
     转换测试
@@ -49,6 +74,8 @@ if __name__ == "__main__":
     test()
     print system_to_decimal('000000001b2025f6', 16)
     print system_to_decimal('0001000100010001', 2)
+    test_unescape()
+    test_unicode()
 
 
 """

@@ -127,7 +127,7 @@ class Mysql(object):
 
     def get_rows_by_sql(self, sql=None):
         """
-        获取记录总数
+        获取记录
         :return:
         """
         if self.is_conn_open() is False:
