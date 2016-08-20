@@ -143,6 +143,9 @@ def test():
     print datetime.datetime.strptime('2016-06-06 12:34:54', "%Y-%m-%d %H:%M:%S")
     # print datetime.datetime.strptime('2016-06', "%Y-%m-%d %H:%M:%S")  # 异常ValueError
 
+    # 显示毫秒
+    print datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+
 
 if __name__ == "__main__":
     test()
