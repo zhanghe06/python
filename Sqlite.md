@@ -67,7 +67,7 @@ Ctrl + d
 sqlite3 支持的数据类型 
 ```
 NULL：标识一个NULL值
-INTERGER：整数类型
+INTEGER：整数类型
 REAL：浮点数
 TEXT：字符串
 BLOB：二进制数
@@ -76,7 +76,7 @@ BLOB：二进制数
 但实际上，sqlite3 也接受如下的数据类型：
 ```
 smallint 16 位元的整数。
-interger 32 位元的整数。
+integer 32 位元的整数。
 decimal(p,s) p 精确值和 s 大小的十进位整数，精确值p是指全部有几个数(digits)大小值，s是指小数点後有几位数。如果没有特别指定，则系统会设为 p=5; s=0 。
 float  32位元的实数。
 double  64位元的实数。
