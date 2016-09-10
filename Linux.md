@@ -501,3 +501,62 @@ pip 安装 gnureadline 报错： /usr/bin/ld: cannot find -lncurses
 $ sudo apt-cache search ncurses- | grep ncurses
 $ sudo apt-get install libncurses5-dev
 ```
+
+帅气终端（亮点是快速分屏）
+```
+$ apt-get install terminator
+```
+首先设置等宽字体 mono 12号
+
+然后可以设置背景图片 透明度
+
+
+杀掉当前所有的MySQL连接
+```
+MariaDB [(none)]> select concat('KILL ',id,';') from information_schema.processlist where user='www' and db='test';
+```
+
+
+shadowsocks(python)
+
+[shadowsocks project](https://github.com/shadowsocks/shadowsocks/tree/master)
+
+[shadowsocks wiki](https://github.com/shadowsocks/shadowsocks/wiki)
+
+```
+pip install shadowsocks
+```
+
+[server config file](https://github.com/shadowsocks/shadowsocks/wiki/Configuration-via-Config-File)
+```
+{
+    "server":"my_server_ip",
+    "server_port":8388,
+    "local_address": "127.0.0.1",
+    "local_port":1080,
+    "password":"mypassword",
+    "timeout":300,
+    "method":"aes-256-cfb",
+    "fast_open": false
+}
+```
+
+To run in the foreground:
+```
+ssserver -c /etc/shadowsocks.json
+```
+To run in the background:
+```
+ssserver -c /etc/shadowsocks.json -d start
+ssserver -c /etc/shadowsocks.json -d stop
+```
+
+桌面版系统也可以安装图形版 shadowsocks-qt5
+
+[shadowsocks-qt5 wiki](https://github.com/shadowsocks/shadowsocks-qt5/wiki)
+```
+sudo add-apt-repository ppa:hzwhuang/ss-qt5
+sudo apt-get update
+sudo apt-get install shadowsocks-qt5
+```
+
