@@ -94,10 +94,16 @@ class Cart(object):
         """
         key = "%s:%s:*" % (self.prefix, self.uid)
         car_key_list = redis_client.keys(key)
-        cart_list = []
-        for item in car_key_list:
-            cart_list.append(redis_client.hgetall(item))
-        return cart_list
+        return [redis_client.hgetall(item) for item in car_key_list]
+
+    def clean(self):
+        """
+        清空购物车
+        :return: 0/int
+        """
+        key = "%s:%s:*" % (self.prefix, self.uid)
+        car_key_list = redis_client.keys(key)
+        return redis_client.delete(*car_key_list) if car_key_list else 0
 
 
 def test():
