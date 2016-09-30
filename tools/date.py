@@ -2,7 +2,8 @@
 __author__ = 'zhanghe'
 
 import time
-import datetime
+from datetime import datetime, timedelta
+from pytz import timezone, utc
 
 
 def add_time(time_str, second):
@@ -115,13 +116,13 @@ def test():
     # 日期时间元祖 datetime tuple(datetime obj)
     # MySql中DATETIME类型 对应的就是 python里的这种类型
     # 注意与时间元祖的区别
-    print datetime.datetime.now()  # 2015-09-07 22:15:03.419781
-    print type(datetime.datetime.now())  # <type 'datetime.datetime'>
+    print datetime.now()  # 2015-09-07 22:15:03.419781
+    print type(datetime.now())  # <type 'datetime.datetime'>
 
     # 日期时间元祖 转为 时间元祖
     # date.timetuple()：返回日期对应的time.struct_time对象
-    print datetime.datetime.now().timetuple()  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=22, tm_min=18, tm_sec=22, tm_wday=0, tm_yday=250, tm_isdst=-1)
-    print type(datetime.datetime.now().timetuple())  # <type 'time.struct_time'>
+    print datetime.now().timetuple()  # time.struct_time(tm_year=2015, tm_mon=9, tm_mday=7, tm_hour=22, tm_min=18, tm_sec=22, tm_wday=0, tm_yday=250, tm_isdst=-1)
+    print type(datetime.now().timetuple())  # <type 'time.struct_time'>
 
     # 字符串日期转星期(星期（0-6），星期天为星期的开始)
     print time.strftime('%w', time.strptime('2016-01-17', '%Y-%m-%d'))
@@ -130,21 +131,28 @@ def test():
     print time.strftime('%Y-%m-%d %H:%M:%S', time.strptime('5/6/2016 10:02:47 PM', '%m/%d/%Y %I:%M:%S %p'))
 
     # 当前年份(4位)
-    print datetime.datetime.now().year
+    print datetime.now().year
 
     # 获取2个月之后的日期
-    print datetime.datetime.now() + datetime.timedelta(days=60)
+    print datetime.now() + timedelta(days=60)
 
     # 显示友好时间
     print time_pretty(60 * 60 * 24 * 3 + 60 * 60 * 2 + 60 * 3)
 
     # 字符串转对象
-    print datetime.datetime.strptime('2016-06-06', "%Y-%m-%d").date(), type(datetime.datetime.strptime('2016-06-06', "%Y-%m-%d").date())
-    print datetime.datetime.strptime('2016-06-06 12:34:54', "%Y-%m-%d %H:%M:%S")
-    # print datetime.datetime.strptime('2016-06', "%Y-%m-%d %H:%M:%S")  # 异常ValueError
+    print datetime.strptime('2016-06-06', "%Y-%m-%d").date(), type(datetime.strptime('2016-06-06', "%Y-%m-%d").date())
+    print datetime.strptime('2016-06-06 12:34:54', "%Y-%m-%d %H:%M:%S")
+    # print datetime.strptime('2016-06', "%Y-%m-%d %H:%M:%S")  # 异常ValueError
 
     # 显示毫秒
-    print datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+    print datetime.now().strftime('%Y-%m-%d %H:%M:%S.%f')
+
+    # iso时间
+    print datetime.utcnow().isoformat()
+    print datetime.utcnow().date().isoformat()
+    print datetime(2002, 10, 27, 12, 0, 0, tzinfo=utc).strftime('%Y-%m-%dT%H:%M:%S%Z%z')
+    print datetime.now().replace(microsecond=0, tzinfo=utc)
+    print datetime.fromtimestamp(0, timezone('Asia/Shanghai'))
 
 
 if __name__ == "__main__":

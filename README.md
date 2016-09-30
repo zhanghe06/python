@@ -553,6 +553,13 @@ $ sudo apt-get install libmysqlclient-dev python-dev
 ```
 $ sudo apt-get install libmariadbclient-dev
 ```
+如果没有安装mysql/mariadb服务，还需要提前安装:
+```
+$ sudo apt-get install libmysqld-dev
+or
+$ sudo apt-get install libmariadbd-dev
+```
+
 
 说明：
 python版本的MySQL库（不建议使用这个）
@@ -599,6 +606,8 @@ $ sudo pip install psycopg2
 $ sudo su postgres
 或者
 $ sudo su - postgres
+# Mac下切换
+$ sudo su _postgres
 # 登录postgres数据库
 $ psql postgres
 # 提示如下：
@@ -859,6 +868,8 @@ field                   field
 参考文档:
 
 [ElasticSearch中文指南](http://www.elasticsearch.cn/guide/)
+
+[Elasticsearch 权威指南（中文版）](http://es.xiaoleilu.com/)
 
 [Python Elasticsearch Client](http://elasticsearch-py.readthedocs.org/en/latest/)
 

@@ -386,6 +386,12 @@ ubuntu 解压 RAR
 $ sudo apt-get install p7zip-rar
 ```
 
+ubuntu 解压 windows 的 zip 文件出现乱码
+```
+$ sudo apt-get install unar
+$ unar file.zip
+```
+
 统计当前目录下指定后缀名的文件总个数命令
 ```
 $ find . -name "*.html" | wc -l
@@ -405,6 +411,8 @@ SSH 免密登陆远程主机
 
 将本机公钥添加到对方 authorized_keys 中
 ```
+$ ssh-copy-id user@host
+or
 $ ssh user@host 'mkdir -p .ssh && cat >> .ssh/authorized_keys' < ~/.ssh/id_rsa.pub
 ```
 注意权限设置:
