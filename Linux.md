@@ -497,9 +497,18 @@ $ vim ~/.pip/pip.conf
 
 ```
 [global]
-trusted-host = pypi.douban.com
+index-url = http://mirrors.aliyun.com/pypi/simple/
+
+[install]
+trusted-host=mirrors.aliyun.com
+```
+或者
+```
+[global]
 index-url = http://pypi.douban.com/simple
-#index-url = http://mirrors.aliyun.com/pypi/simple/
+
+[install]
+trusted-host=pypi.douban.com
 ```
 由于最新的 pip 安装需要使用的 https 加密，所以在此需要添加 trusted-host
 
@@ -509,6 +518,17 @@ pip 安装 gnureadline 报错： /usr/bin/ld: cannot find -lncurses
 $ sudo apt-cache search ncurses- | grep ncurses
 $ sudo apt-get install libncurses5-dev
 ```
+
+
+添加 curl 代理 （curl/wget）
+```
+$ vim ~/.curlrc
+```
+添加
+```
+proxy = http://127.0.0.1:8087
+```
+
 
 帅气终端（亮点是快速分屏）
 ```
