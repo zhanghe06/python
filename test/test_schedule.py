@@ -36,4 +36,9 @@ if __name__ == '__main__':
 $ pip install schedule
 
 python 版本的定时调度
+
+注意：
+schedule.every().hour.do(job)
+调度器开始工作后1个小时开始执行 job
+
 """
