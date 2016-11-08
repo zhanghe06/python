@@ -14,27 +14,29 @@ File -->> Setting -->> Editor -->> File and Code Templates -->> Python Script
 
 在模块里顶部加入下面语句
 
-    #!/usr/bin/env python
-    # encoding: utf-8
+```
+#!/usr/bin/env python
+# encoding: utf-8
 
-    """
-    @author: ${USER}
-    @software: ${PRODUCT_NAME}
-    @file: ${NAME}.py
-    @time: ${DATE} ${TIME}
-    """
+"""
+@author: ${USER}
+@software: ${PRODUCT_NAME}
+@file: ${NAME}.py
+@time: ${DATE} ${TIME}
+"""
 
-    def func():
+def func():
+    pass
+
+
+class Main(object):
+    def __init__(self):
         pass
 
 
-    class Main(object):
-        def __init__(self):
-            pass
-
-
-    if __name__ == '__main__':
-        pass
+if __name__ == '__main__':
+    pass
+```
 
 
 
@@ -60,4 +62,10 @@ View -->> Active Editor，勾选 Show Line Numbers。
 3、永久设置。
 ```
 File -->> Settings -->> Editor -->> Appearance ，勾选 Show Line Numbers。
+```
+
+
+### 四、插件安装
+```
+Preferences -->> Plugins, 搜索，选择，安装
 ```
