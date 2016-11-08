@@ -711,6 +711,45 @@ psql 是一个普通的 PostgreSQL 客户端应用。
 所以，上面远程连接可以有很多写法，是很方便，但是建议指明参数，后面调试起来方便。
 
 
+postgresql 版本升级
+
+https://www.postgresql.org/download/linux/ubuntu/
+
+```
+$ sudo vim /etc/apt/sources.list.d/pgdg.list
+```
+添加以下内容并保存
+```
+deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main
+```
+
+Import the repository signing key, and update the package lists
+```
+$ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+$ sudo apt-get update
+```
+
+确认当前 postgresql 服务是否关闭，并卸载旧版本，安装新版
+```
+$ netstat -ant | grep 5432
+$ sudo service postgresql stop
+```
+
+修改旧版本端口号为5433, 再安装新版本, 新版本端口号才能为5432
+
+否则新版本端口号会默认为5433
+
+```
+$ sudo apt-get remove postgresql-9.3
+$ sudo apt-get install postgresql-9.5
+```
+
+```
+$ sudo vim /etc/postgresql/9.5/main/postgresql.conf
+$ sudo vim /etc/postgresql/9.5/main/pg_hba.conf
+```
+
+
 ## Python MongoDB
 
 mongo数据库安装（包含服务端/客户端）
