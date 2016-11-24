@@ -42,6 +42,17 @@ def test_03():
     print dict(zip(list_a[::-1], list_b))
 
 
+def test_04():
+    """
+     测试列表子元素算术运算
+    :return:
+    """
+    a = [1, 2, 3]
+    b = [4, 5, 6]
+    c = [a[i] + b[i] for i in range(min(len(a), len(b)))]
+    print c
+
+
 def test_group():
     """
     测试分组
@@ -99,6 +110,7 @@ if __name__ == '__main__':
     test_01()
     test_02()
     test_03()
+    test_04()
     test_group()
 
 
