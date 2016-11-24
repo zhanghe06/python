@@ -692,6 +692,14 @@ col: 字段名
 drop index idx_tab_col
 ```
 
+虽然索引的目的在于提高数据库的性能，有时间时，应避免。使用索引时，应重新考虑下列准则:
+
+- 索引不应该被用于小表上。
+- 有频繁的，大批量的更新或插入操作的表。
+- 索引不应使用含有大量的NULL值的列。
+- 频繁操作的列都将不建议使用索引。
+
+
 psql 是一个普通的 PostgreSQL 客户端应用。
 
 为了与一个数据库联接，你需要知道你的目标数据库， 服务器的主机名和端口号以及你希望以哪个用户的身份进行联接等信息。
@@ -701,6 +709,45 @@ psql 是一个普通的 PostgreSQL 客户端应用。
 如果有个参数不属于任何选项开关， 那么它会被解释成数据库名（或者是用户名——如果数据库名称已经给出了。）
 
 所以，上面远程连接可以有很多写法，是很方便，但是建议指明参数，后面调试起来方便。
+
+
+postgresql 版本升级
+
+https://www.postgresql.org/download/linux/ubuntu/
+
+```
+$ sudo vim /etc/apt/sources.list.d/pgdg.list
+```
+添加以下内容并保存
+```
+deb http://apt.postgresql.org/pub/repos/apt/ trusty-pgdg main
+```
+
+Import the repository signing key, and update the package lists
+```
+$ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+$ sudo apt-get update
+```
+
+确认当前 postgresql 服务是否关闭，并卸载旧版本，安装新版
+```
+$ netstat -ant | grep 5432
+$ sudo service postgresql stop
+```
+
+修改旧版本端口号为5433, 再安装新版本, 新版本端口号才能为5432
+
+否则新版本端口号会默认为5433
+
+```
+$ sudo apt-get remove postgresql-9.3
+$ sudo apt-get install postgresql-9.5
+```
+
+```
+$ sudo vim /etc/postgresql/9.5/main/postgresql.conf
+$ sudo vim /etc/postgresql/9.5/main/pg_hba.conf
+```
 
 
 ## Python MongoDB
