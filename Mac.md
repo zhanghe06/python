@@ -75,3 +75,23 @@ EF0C7F72D8917DB538A0245E46BFD6B1
 ```
 
 提示：Thanks for purchasing! 成功！
+
+
+## tree
+
+显示文件树形结构
+```
+✗ brew install tree
+✗ tree
+# 解决中文乱码
+✗ tree -N
+# 组合（仅显示目录，目录深度2）
+✗ tree -N -d -L 2
+```
+
+## 磁盘使用
+
+显示磁盘使用情况
+```
+✗ du -h -d 2
+```
