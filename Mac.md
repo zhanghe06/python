@@ -95,3 +95,11 @@ EF0C7F72D8917DB538A0245E46BFD6B1
 ```
 ✗ du -h -d 2
 ```
+
+## 提取系统安装文件
+```
+# 首先 App Store 下载完整系统文件
+✗ cd /Applications/
+✗ sudo mv Install\ macOS\ Sierra.app ~/tools/
+```
+然后可以制作U盘启动盘
