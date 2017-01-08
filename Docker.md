@@ -24,6 +24,10 @@ $ curl -sSL https://get.daocloud.io/daotools/set_mirror.sh | sudo sh -s http://1
 
 参考：https://docs.docker.com/engine/installation/
 
+入门：http://tuxknight-notes.readthedocs.io/en/latest/docker/docker_command.html
+
+笔记：https://blog.phpgao.com/docker-note1.html#%E6%9E%84%E5%BB%BA%E9%95%9C%E5%83%8F
+
 ```
 $ curl -sSL https://get.daocloud.io/docker | sh
 ```
@@ -209,3 +213,29 @@ accbcfa5e2e6        hello-world         "/hello"            15 hours ago        
 $ sudo docker rm angry_bhabha
 ```
 
+删除镜像
+```
+$ sudo docker rmi hello-world
+```
+
+删除所有正在运行的容器
+```
+$ sudo docker kill $(docker ps -a -q)
+```
+
+删除所有已经停止的容器
+```
+$ sudo docker rm $(docker ps -a -q)
+```
+
+删除所有镜像
+```
+$ sudo docker rmi $(docker images -q)
+```
+
+构建镜像
+```
+sudo docker build --rm=true -t zh/redis .
+
+sudo docker build --rm=true -t zh/redis -f redis.dockerfile
+```
