@@ -5,6 +5,7 @@ __author__ = 'zhanghe'
 import requests
 import re
 import json
+import lxml.html
 
 
 UserAgent = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'
@@ -29,6 +30,77 @@ def get_city_list():
     for item in city_list:
         city[item[0]] = item[1]
     print json.dumps(city, indent=4).decode('raw_unicode_escape')
+
+
+def parse_city_list():
+    """
+    解析城市列表(去除海外城市)
+    """
+    # 入口页的url
+    url = 'http://www.58.com/changecity.aspx'
+    header = {
+        'Host': 'www.58.com',
+        'Referer': 'http://sh.58.com/',
+        'User-Agent': UserAgent
+    }
+    response = requests.get(url, headers=header)
+    html = response.text
+    doc = lxml.html.fromstring(html)
+
+    # 省份
+    province_list = doc.xpath('//dl[@id="clist"]//dt[not(@class)]/text()')[:-1]
+    # for i in province_list:
+    #     print i
+
+    # 城市
+    city_rule = '<a href="http://.*?.58.com/" onclick="co\(\'(.*?)\'\)">(.*?)</a>'
+    city_list = doc.xpath('//dl[@id="clist"]//dd[not(@class)]')[:-1]
+
+    for index, city_item in enumerate(city_list):
+        city_link_list = city_item.xpath('./a')
+        for city_link in city_link_list:
+            city_link_html = lxml.html.tostring(city_link, encoding='utf-8')
+            city_result = re.compile(city_rule, re.S).findall(city_link_html)
+            print city_result[0][0], city_result[0][1], province_list[index]
+
+    # 校验省份城市数量
+    print len(province_list), len(city_list)
+
+
+def get_cate_list():
+    """
+    获取分类列表
+    """
+    # 入口页的url
+    url = 'http://sh.58.com/shenghuo.shtml'
+
+    header = {
+        'Host': 'sh.58.com',
+        'User-Agent': UserAgent
+    }
+    response = requests.get(url, headers=header)
+    html = response.text
+    doc = lxml.html.fromstring(html)
+
+    cate_list = doc.xpath('//div[@class="sublist"]//dl[@class="catecss-item"]')
+
+    cate_title_rule = '<dt><a href="http://sh.58.com/(.*?)(.shtml|/)" target="_blank".*?>(.*?)</a>'
+    cate_item_rule = '<a href="http://sh.58.com/(.*?)/" target="_blank".*?>(.*?)</a>'
+
+    for i in cate_list:
+        cate_title_html = lxml.html.tostring(i.xpath('./dt')[0], encoding='utf-8')
+        cate_item_html = lxml.html.tostring(i.xpath('./dd')[0], encoding='utf-8')
+        # 标题
+        cate_title_result = re.compile(cate_title_rule, re.S).findall(cate_title_html)
+        for cate_title_list in cate_title_result:
+            print '#', cate_title_list[0], cate_title_list[2]
+
+        # 明细
+        cate_item_result = re.compile(cate_item_rule, re.S).findall(cate_item_html)
+        cate = {}
+        for cate_item_list in cate_item_result:
+            cate[cate_item_list[0]] = cate_item_list[1].strip()
+        print json.dumps(cate, indent=4).decode('raw_unicode_escape')
 
 
 def get_contacts():
@@ -78,5 +150,7 @@ def get_promotion_info():
 
 if __name__ == '__main__':
     # get_city_list()
-    get_contacts()
-    get_promotion_info()
+    parse_city_list()
+    # get_cate_list()
+    # get_contacts()
+    # get_promotion_info()
