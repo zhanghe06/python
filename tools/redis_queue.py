@@ -11,6 +11,7 @@
 
 import sys
 import redis
+import json
 
 
 class RedisQueue(object):
@@ -60,10 +61,22 @@ def test_put():
     pass
 
 
+def test_put_dict():
+    q = RedisQueue('test')
+    q.put(json.dumps({'key': 1, 'value': 1}))
+    pass
+
+
 def test_get():
     q = RedisQueue('test')
     result = q.get()
-    print result
+    print result, type(result)
+
+
+def test_get_dict():
+    q = RedisQueue('test')
+    result = q.get()
+    print result, type(result), json.loads(result)
 
 
 def test_get_nowait():
