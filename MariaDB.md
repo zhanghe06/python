@@ -90,3 +90,28 @@ MariaDB [(none)]>
 ```
 $ mysql -h 192.168.0.101 -u root -p
 ```
+
+修改密码(先登录，后重置)
+```
+$ mysql -u root -p
+MariaDB [(none)]> SET PASSWORD FOR 'root'@'localhost' = PASSWORD('123456');
+```
+
+
+## InnoDB MyISAM 区别
+
+如果你需要事务处理或是外键，那么 InnoDB 可能是比较好的方式。
+
+如果你需要全文索引，那么通常来说 MyISAM 是好的选择，但是通常全文检索有其它的解决方案（例如ES）。
+
+COUNT() 在 MyISAM 表中会非常快，而在 InnoDB 表下可能会很痛苦。
+
+主键查询则在 InnoDB 下会相当相当的快，但需要小心的是如果我们的主键太长了也会导致性能问题。
+
+大批的 inserts 语句在 MyISAM 下会快一些
+
+updates 在 InnoDB 下会更快一些
+
+InnoDB 的表需要更多的内存和存储，转换100GB 的 MyISAM 表到 InnoDB 表可能会让你有非常坏的体验。
+
+所以通常采用 InnoDB 即可
