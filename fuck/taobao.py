@@ -6,13 +6,16 @@ import time
 import json
 import os
 import tools.html
+import sys
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 header = {
     'User-Agent': 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36',
     }
 
 s = requests.session()
-keywords_list = ['衣服']  # 爬虫待访问关键词列表
+keywords_list = ['童装']  # 爬虫待访问关键词列表
 keywords_visited_list = []  # 爬虫已访问关键词列表
 
 
@@ -64,7 +67,8 @@ def save(result_list, file_name):
     filename = file_path + file_name
     result_json = json.dumps(result_list, indent=4, ensure_ascii=False)
     with open(filename, 'wb') as f:
-        f.write(result_json.encode('utf-8'))
+        # f.write(result_json.encode('utf-8'))
+        f.write(result_json)
 
 
 def time_statistics(start_time):

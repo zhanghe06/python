@@ -68,6 +68,32 @@ def get_area(city_code):
             yield area
 
 
+def get_cate(cate_code):
+    """
+    获取区域
+    :return:
+    """
+    header = {
+        'Host': 'shanghai.baixing.com',
+        'User-Agent': UserAgent
+    }
+    cate_url = 'http://shanghai.baixing.com/%s/' % cate_code
+    # , proxies={'http': 'http://192.168.2.158:3128'}
+    response = requests.get(cate_url, headers=header)
+    html = response.text
+    # print html
+    doc = lxml.html.fromstring(html)
+    link_list = doc.xpath('//div[@class="links"]')
+    link_rule = u'<a href="/%s/(.*?)/">(.*?)</a>' % cate_code
+    # print link_list
+    for link in link_list:
+        link_html = lxml.html.tostring(link, encoding='utf-8')
+        # print link_html
+        cate_result = re.compile(link_rule, re.S).findall(link_html.decode('utf-8'))
+        for cate in cate_result:
+            yield cate
+
+
 def output_area():
     """
     输出地区
@@ -94,7 +120,16 @@ def test_city():
         print i[0], i[1]
 
 
+def test_cate(cate_code):
+    print '# %s' % ''
+    print '\'%s\': [' % cate_code
+    for cate in get_cate(cate_code):
+        print '\t\'%s\',  # %s' % (cate[0], cate[1])
+    print '],'
+
+
 if __name__ == '__main__':
     # output_area()
     # test_area('taian')
-    test_city()
+    # test_city()
+    test_cate('siyi')
