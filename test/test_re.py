@@ -86,13 +86,48 @@ def test_has_key(html=u''):
         print '正常职位'
 
 
+def test_group(line):
+    """
+    测试分组
+    test_group('ip地址：127.0.0.1；')
+    :return:
+    """
+    # reip = re.compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')
+    reip = re.compile(r'(?:\d{1,3}\.){3}\d{1,3}')
+    for ip in reip.findall(line):
+        print ip
+
+
+def test_group_02():
+    """
+    测试分组
+    :return:
+    """
+    line = u"""{rootcatentry:{dispid:'1',name:'房产信息',listname:'house'},catentry:{dispid:'14',name:'商铺租售/生意转让',listname:'shangpu'},locallist:[{dispid:'2', name:'上海', listname:'sh'},{dispid:'1399', name:'黄浦', listname:'huangpu'},{dispid:'1421', name:'人民广场', listname:'renminguangchang'}],infoid:'27083373898050',userid:'39050173763341',linkman:'李经理'"""
+    # reip = re.compile(r'(?<![\.\d])(?:\d{1,3}\.){3}\d{1,3}(?![\.\d])')
+    re_local = re.compile(ur'(?:dispid:\'\d+\', name:\'(.*?)\')')
+    for local in re_local.findall(line):
+        print local
+
+
+def test_03():
+    rule_company_name = ur'{"I":\d+,"V":"(.*?公司)"}'
+    company_name_re_compile = re.compile(rule_company_name, re.I)
+    for i in company_name_re_compile.findall(u'etwret{"I":123,"V":"上海啥啥啥有限公司"}werery'):
+        print i
+
+
 if __name__ == '__main__':
     # print re_html(test_html)
 
-    html_test = '''邮箱：yy_y.it@gabc-xx.com +zhang_he06@163.com .zhanG_he06@163.com -zhang_he06@163.com _zhang_he06@163.com @zhang_he06@163.com @zhang-he06@163.com zhanghe@baidu.com 地址：上海市'''
-    email_result = get_email(html_test)
-    print json.dumps(email_result, ensure_ascii=False, indent=4)
-    test_has_key(u'''某大型公司职位''')
+    # html_test = '''邮箱：yy_y.it@gabc-xx.com +zhang_he06@163.com .zhanG_he06@163.com -zhang_he06@163.com _zhang_he06@163.com @zhang_he06@163.com @zhang-he06@163.com zhanghe@baidu.com 地址：上海市'''
+    # email_result = get_email(html_test)
+    # print json.dumps(email_result, ensure_ascii=False, indent=4)
+    # test_has_key(u'''某大型公司职位''')
+    test_group('127.0.0.1')
+    test_group('ip地址：127.0.0.1；')
+    test_group_02()
+    test_03()
 
 """
 测试结果
