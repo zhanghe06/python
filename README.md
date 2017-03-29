@@ -1174,6 +1174,45 @@ print json.dumps(row, indent=4, ensure_ascii=False, default=__default)
 }
 ```
 
+## 分库分表
+
+单表数据过大时，影响查询效率，可以根据业务逻辑进行合理的分表，库的操作同理
+
+通常按照主键取模，为了便于扩展，这里对偶数取模
+
+```
+➜  ~ mysql.server start
+Starting MySQL
+. SUCCESS!
+➜  ~ mysql
+Welcome to the MariaDB monitor.  Commands end with ; or \g.
+Your MariaDB connection id is 3
+Server version: 10.1.17-MariaDB Homebrew
+
+Copyright (c) 2000, 2016, Oracle, MariaDB Corporation Ab and others.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+MariaDB [(none)]> select 1%4, 2%4, 3%4, 4%4, 5%4, 6%4, 7%4, 8%4;
++------+------+------+------+------+------+------+------+
+| 1%4  | 2%4  | 3%4  | 4%4  | 5%4  | 6%4  | 7%4  | 8%4  |
++------+------+------+------+------+------+------+------+
+|    1 |    2 |    3 |    0 |    1 |    2 |    3 |    0 |
++------+------+------+------+------+------+------+------+
+1 row in set (0.00 sec)
+
+MariaDB [(none)]> select 1%8, 2%8, 3%8, 4%8, 5%8, 6%8, 7%8, 8%8;
++------+------+------+------+------+------+------+------+
+| 1%8  | 2%8  | 3%8  | 4%8  | 5%8  | 6%8  | 7%8  | 8%8  |
++------+------+------+------+------+------+------+------+
+|    1 |    2 |    3 |    4 |    5 |    6 |    7 |    0 |
++------+------+------+------+------+------+------+------+
+1 row in set (0.00 sec)
+
+MariaDB [(none)]>
+```
+
+
 ## 文档托管
 
 Read the Docs
