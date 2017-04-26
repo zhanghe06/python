@@ -11,9 +11,11 @@ class TcpClient:
     PORT = 1122
     BUFSIZ = 1024
     ADDR = (HOST, PORT)
+    LOCAL_ADDR = ('', 2225)
 
     def __init__(self):
         self.client = socket(AF_INET, SOCK_STREAM)
+        # self.client.bind(self.LOCAL_ADDR)  # 绑定本地端口，可选
         self.client.connect(self.ADDR)
 
         while True:
