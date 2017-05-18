@@ -512,6 +512,7 @@ trusted-host=pypi.douban.com
 ```
 由于最新的 pip 安装需要使用的 https 加密，所以在此需要添加 trusted-host
 
+参考：http://mirrors.aliyun.com/help/pypi
 
 pip 安装 gnureadline 报错： /usr/bin/ld: cannot find -lncurses
 ```

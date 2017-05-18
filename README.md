@@ -1213,6 +1213,13 @@ MariaDB [(none)]>
 ```
 
 
+## strace 调试跟踪
+
+```
+strace -p [pid] -tt -s 1024 -o /tmp/[pid].log
+```
+
+
 ## 文档托管
 
 Read the Docs
