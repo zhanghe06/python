@@ -47,6 +47,23 @@ class RedisPubSub(object):
             # yield item
             yield item.get('data')
 
+    def p_sub(self, k):
+        """
+        PSub
+        订阅一个或多个符合给定模式的频道
+        每个模式以 * 作为匹配符
+        注意 psubscribe 与 subscribe 区别
+        :param k:
+        :return:
+        """
+        ps = self.__db.pubsub()
+        ch = '%s:%s' % (self.key, k)
+        ps.psubscribe(ch)
+        for item in ps.listen():
+            # {'pattern': None, 'type': 'subscribe', 'channel': 'queue:test:hh', 'data': 1L}
+            # yield item
+            yield item.get('data')
+
     def sub_not_loop(self, k):
         """
         Sub 非无限循环，取到结果即退出
@@ -62,13 +79,20 @@ class RedisPubSub(object):
 
 
 def test_pub():
-    q = RedisPubSub('test')
+    q = RedisPubSub('test:aa')
     q.pub('hh', '123')
 
 
 def test_sub():
-    q = RedisPubSub('test')
+    q = RedisPubSub('test:aa')
     r = q.sub('hh')
+    for i in r:
+        print i
+
+
+def test_p_sub():
+    q = RedisPubSub('test:*')
+    r = q.p_sub('hh')
     for i in r:
         print i
 
@@ -102,6 +126,14 @@ if __name__ == '__main__':
 ✗ python redis_pub_sub.py test_sub
 终端二：
 ✗ python redis_pub_sub.py test_pub
+
+
+测试模式订阅
+终端一：
+✗ python redis_pub_sub.py test_p_sub
+终端二：
+✗ python redis_pub_sub.py test_pub
+
 
 
 测试非无限循环模式

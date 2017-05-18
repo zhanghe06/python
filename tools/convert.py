@@ -24,6 +24,7 @@ def hex_to_bytes(string):
 def test_unescape():
     # unicode编码后的汉字的解析
     str_xx = '&#21152;&#20837;&#21040;&#34;&#25105;&#30340;&#20070;&#30446;&#36873;&#21333;&#34;&#20013;'
+    str_xx = '\xe5\xbd\x93\xe5\x89\x8d\xe5\xb7\xb2\xe8\xbe\xbe\xe5\x88\xb0\xe6\x8a\x93\xe5\x8f\x96\xe9\x85\x8d\xe7\xbd\xae\xe7\x9a\x84\xe6\x9c\x80\xe5\xa4\xa7\xe9\xa1\xb5\xe7\xa0\x81'
     from HTMLParser import HTMLParser
     h = HTMLParser()
     print h.unescape(str_xx)
@@ -44,6 +45,7 @@ def test_unicode():
     # unicode_string.encode('target_encoding')
     print repr(u'\u6211\u6765\u4e86'.encode('utf-8')), u'\u6211\u6765\u4e86'.encode('utf-8')  # 每个汉子占3个字节
     print repr(u'\u6211\u6765\u4e86'.encode('GBK')), u'\u6211\u6765\u4e86'.encode('GBK')  # 每个汉子占2个字节
+    print repr('没有新数据，停止翻页')
 
 
 def test():
