@@ -589,3 +589,8 @@ sudo apt-get update
 sudo apt-get install shadowsocks-qt5
 ```
 
+查看网络出口IP
+```
+$ curl ifconfig.me
+101.231.185.66
+```
