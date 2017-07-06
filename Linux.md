@@ -616,3 +616,82 @@ chkconfig --list     | systemctl list-unit-files --type=service (推荐) ls /etc
 chkconfig frobozz --list | ls /etc/systemd/system/*.wants/frobozz.service | 用来列出该服务在哪些运行级别下启用和禁用。
 chkconfig frobozz --add  | systemctl daemon-reload | 当您创建新服务文件或者变更设置时使用。
 
+
+## 网络调试
+
+
+```bash
+telnet IP PORT
+```
+
+调试TCP
+```bash
+nc -l ip port   # 开启监听
+nc ip port      # 连接服务
+```
+
+调试UDP
+```bash
+nc -u -l ip port    # 开启监听
+nc -u ip port       # 连接服务
+```
+
+
+## 网络服务
+
+快速开启网络web服务
+
+```bash
+php -S 0:8888
+```
+http://0.0.0.0:8888
+
+```bash
+python -m SimpleHTTPServer 8866
+```
+http://0.0.0.0:8866
+
+
+区别，PHP版本需要index.php, 而python版本直接返回目录
+
+
+## CentOs
+
+SELinux 全称 Security Enhanced Linux (安全强化 Linux)
+
+是 MAC (Mandatory Access Control，强制访问控制系统)的一个实现，
+目的在于明确的指明某个进程可以访问哪些资源(文件、网络端口等)。
+
+
+- Disabled 代表 SELinux 被禁用
+- Permissive 代表仅记录安全警告但不阻止可疑行为
+- Enforcing 代表记录警告且阻止可疑行为。
+
+目前常见发行版中，RHEL 和 Fedora 默认设置为 Enforcing，其余的如 openSUSE 等为 Permissive。
+
+获取当前 SELinux 运行状态(Enforcing、Permissive 和 Disabled)
+```
+# getenforce
+```
+
+改变 SELinux 运行状态
+```
+# setenforce [ Enforcing | Permissive | 1 | 0 ]
+```
+
+查看 SELinux 文件
+```
+# vim /etc/sysconfig/selinux
+```
+
+
+## DNS 反向解析
+
+关闭反向解析
+```bash
+# vim /etc/ssh/sshd_config
+```
+设置 UseDNS no
+```bash
+# service sshd restart
+```
