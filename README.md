@@ -1220,6 +1220,29 @@ strace -p [pid] -tt -s 1024 -o /tmp/[pid].log
 ```
 
 
+## 理解 tuple (元祖)
+
+为什么当tuple只有一个item时，需要加逗号
+
+```
+In [1]: (3+4)*5
+Out[1]: 35
+
+In [2]: (3+4,)*5
+Out[2]: (7, 7, 7, 7, 7)
+```
+
+```
+In [3]: type(('fuck'))
+Out[3]: str
+
+In [4]: type(('fuck',))
+Out[4]: tuple
+```
+
+Not the parentheses make the tuple, the commas do.
+
+
 ## 文档托管
 
 Read the Docs
