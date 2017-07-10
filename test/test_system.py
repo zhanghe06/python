@@ -6,6 +6,7 @@ __author__ = 'zhanghe'
 
 
 import os
+import commands
 
 
 def test_memory_usage():
@@ -42,7 +43,8 @@ def test_get_local_ip():
     """
     获取本地ip地址
     """
-    cmd = "LC_ALL=C ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'"
+    # cmd = "LC_ALL=C ifconfig | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'"
+    cmd = "ifconfig"
     print cmd
     # result = os.system(cmd)
     result = os.popen(cmd).read()
@@ -53,9 +55,19 @@ def test_get_local_ip():
     return ip_list
 
 
+def test_commands():
+    """
+    获取状态和回显
+    :return:
+    """
+    status, output = commands.getstatusoutput('ifconfig')
+    print status, output
+
+
 if __name__ == '__main__':
     # test_memory_usage()
-    test_get_local_ip()
+    # test_get_local_ip()
+    test_commands()
 
 """
 测试结果：
