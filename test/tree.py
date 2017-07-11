@@ -22,7 +22,7 @@ def tree():
     return defaultdict(tree)
 
 
-if __name__ == '__main__':
+def test_users():
     users = tree()
     users['jack_1']['jack_2_1']['jack_3_1'] = {}
     users['jack_1']['jack_2_1']['jack_3_2'] = {}
@@ -49,3 +49,61 @@ if __name__ == '__main__':
 
     # 第三层(users孙节点的key)
     print [i for i in users['jack_1']['jack_2_1']]
+
+
+l = [
+    {'u': 4, 'p': 1},
+    {'u': 10, 'p': 1},
+    {'u': 5, 'p': 1},
+    {'u': 6, 'p': 2},
+    {'u': 7, 'p': 2},
+    {'u': 8, 'p': 3},
+    {'u': 9, 'p': 3},
+    {'u': 11, 'p': 3},
+    {'u': 12, 'p': 3},
+    {'u': 13, 'p': 5},
+    {'u': 14, 'p': 6},
+    {'u': 15, 'p': 10},
+    {'u': 17, 'p': 10},
+    {'u': 19, 'p': 10},
+    {'u': 20, 'p': 15},
+    {'u': 21, 'p': 15},
+    {'u': 22, 'p': 17},
+    {'u': 23, 'p': 22},
+]
+
+
+def get_child_users(uid):
+    """
+    获取子节点
+    :param uid:
+    :return:
+    """
+    r = []
+    for i in l:
+        if i['p'] == uid:
+            r.append(i['u'])
+    return r
+
+
+def test_team(uid):
+    """
+    测试
+    :return:
+    """
+    team = tree()
+    child_users = get_child_users(uid)
+    for uid1 in child_users:
+        team[uid1] = {}
+        child_users2 = get_child_users(uid1)
+        for uid2 in child_users2:
+            team[uid1][uid2] = {}
+            child_users3 = get_child_users(uid2)
+            for uid3 in child_users3:
+                team[uid1][uid2][uid3] = {}
+    print json.dumps(team, indent=4)
+
+
+if __name__ == '__main__':
+    # test_users()
+    test_team(1)
