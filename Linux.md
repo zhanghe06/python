@@ -689,9 +689,21 @@ SELinux 全称 Security Enhanced Linux (安全强化 Linux)
 
 关闭反向解析
 ```bash
-# vim /etc/ssh/sshd_config
+vim /etc/ssh/sshd_config
 ```
 设置 UseDNS no
 ```bash
-# service sshd restart
+service sshd restart
+```
+
+
+## at
+
+定时任务
+```bash
+echo `date`
+at now + 1 minute <<< "/bin/echo `date` > /tmp/time.log"
+at now + 10 minutes <<< "/bin/echo `date` > /tmp/time.log"   # 创建任务
+at -l       # 列出任务
+at -c 1     # 显示任务内容
 ```
