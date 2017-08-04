@@ -103,3 +103,22 @@ EF0C7F72D8917DB538A0245E46BFD6B1
 ✗ sudo mv Install\ macOS\ Sierra.app ~/tools/
 ```
 然后可以制作U盘启动盘
+
+
+## at
+
+Mac 环境下，必须先启动 atrun (默认是关闭的)
+```bash
+man atrun  # 查看文档
+sudo launchctl load -w /System/Library/LaunchDaemons/com.apple.atrun.plist  # 开启服务
+sudo launchctl unload -w /System/Library/LaunchDaemons/com.apple.atrun.plist  # 关闭服务
+```
+
+定时任务
+```bash
+echo `date`
+at now + 1 minute <<< "/bin/echo `date` > /tmp/time.log"
+at now + 10 minutes <<< "/bin/echo `date` > /tmp/time.log"   # 创建任务
+at -l       # 列出任务
+at -c 1     # 显示任务内容
+```
