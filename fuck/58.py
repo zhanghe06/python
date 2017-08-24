@@ -16,7 +16,7 @@ import csv
 UserAgent = 'Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/30.0.1599.101 Safari/537.36'
 
 
-city_map_v4 = {
+city_map = {
     'bj': 11,  # 北京
     'sh': 31,  # 上海
     'tj': 12,  # 天津
@@ -453,6 +453,7 @@ city_map_v4 = {
     'cn': 0,  # 其他
 }
 
+
 def get_city_list():
     """
     获取城市列表
@@ -835,12 +836,14 @@ def output_city_area():
             province = row['province']
             district = row['district']
             city_info = get_area_list(city_code, city_name, province, district)
+            city_id = city_map.get(city_code)
             f.write('\t# %s %s %s\n' % (city_name, province, district))
             f.write('\t{\n')
             f.write('\t\t\'code\': \'%s\',\n' % city_code)
             f.write('\t\t\'name\': u\'%s\',\n' % city_name)
+            f.write('\t\t\'id\': %s,\n' % city_id)
             f.write('\t\t\'small\': [\n')
-            city_id = city_map_v4.get(city_code)
+
             for area in city_info['area_list']:
                 f.write('\t\t\t{\n')
                 f.write('\t\t\t\t\'code\': \'%s\',\n' % area[0])
