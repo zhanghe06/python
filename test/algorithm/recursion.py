@@ -33,9 +33,17 @@ nodes = [
 node_list = []
 
 
-def pop_list(nodes=None, parent=None, node_list=None):
+def pop_list(nodes, parent=None, node_list=None):
+    """
+    递归父子关系
+    :param nodes:
+    :param parent:
+    :param node_list:
+    :return:
+    """
     if parent is None:
         return node_list
+    next_parent = None
     node_list.append([])
     for node in nodes:
         if node['parent'] == parent:
