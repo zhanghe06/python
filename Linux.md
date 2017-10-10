@@ -42,8 +42,24 @@ $ sudo apt-get update
 
 查看系统版本
 ```
-$ cat /proc/version
+# cat /proc/version
+Linux version 3.10.0-327.36.3.el7.x86_64 (builder@kbuilder.dev.centos.org) (gcc version 4.8.5 20150623 (Red Hat 4.8.5-4) (GCC) ) #1 SMP Mon Oct 24 16:09:20 UTC 2016
 ```
+
+```
+# uname -a
+Linux controller01 3.10.0-327.36.3.el7.x86_64 #1 SMP Mon Oct 24 16:09:20 UTC 2016 x86_64 x86_64 x86_64 GNU/Linux
+```
+
+```
+# lsb_release -a
+LSB Version:	:core-4.1-amd64:core-4.1-noarch
+Distributor ID:	CentOS
+Description:	CentOS Linux release 7.2.1511 (Core)
+Release:	7.2.1511
+Codename:	Core
+```
+
 
 显示操作系统32还是64位
 ```
@@ -492,9 +508,16 @@ $ pip -i http://pypi.douban.com/simple install Flask
 或者修改 pip 源配置
 ```
 $ mkdir ~/.pip
-$ vim ~/.pip/pip.conf
+$ tee ~/.pip/pip.conf <<-'EOF'
+[global]
+index-url = http://mirrors.aliyun.com/pypi/simple/
+
+[install]
+trusted-host=mirrors.aliyun.com
+EOF
 ```
 
+阿里源
 ```
 [global]
 index-url = http://mirrors.aliyun.com/pypi/simple/
@@ -502,7 +525,7 @@ index-url = http://mirrors.aliyun.com/pypi/simple/
 [install]
 trusted-host=mirrors.aliyun.com
 ```
-或者
+豆瓣源
 ```
 [global]
 index-url = http://pypi.douban.com/simple
@@ -510,6 +533,7 @@ index-url = http://pypi.douban.com/simple
 [install]
 trusted-host=pypi.douban.com
 ```
+
 由于最新的 pip 安装需要使用的 https 加密，所以在此需要添加 trusted-host
 
 参考：http://mirrors.aliyun.com/help/pypi
@@ -617,8 +641,7 @@ chkconfig frobozz --list | ls /etc/systemd/system/*.wants/frobozz.service | 用�
 chkconfig frobozz --add  | systemctl daemon-reload | 当您创建新服务文件或者变更设置时使用。
 
 
-## 网络调试
-
+### 网络调试
 
 ```bash
 telnet IP PORT
@@ -637,7 +660,7 @@ nc -u ip port       # 连接服务
 ```
 
 
-## 网络服务
+### 网络服务
 
 快速开启网络web服务
 
@@ -653,6 +676,30 @@ http://0.0.0.0:8866
 
 
 区别，PHP版本需要index.php, 而python版本直接返回目录
+
+
+### DNS 反向解析
+
+关闭反向解析
+```bash
+vim /etc/ssh/sshd_config
+```
+设置 UseDNS no
+```bash
+service sshd restart
+```
+
+
+### at
+
+定时任务
+```bash
+echo `date`
+at now + 1 minute <<< "/bin/echo `date` > /tmp/time.log"
+at now + 10 minutes <<< "/bin/echo `date` > /tmp/time.log"   # 创建任务
+at -l       # 列出任务
+at -c 1     # 显示任务内容
+```
 
 
 ## CentOs
@@ -674,9 +721,10 @@ SELinux 全称 Security Enhanced Linux (安全强化 Linux)
 # getenforce
 ```
 
-改变 SELinux 运行状态
+改变 SELinux 运行状态(不用重启)
 ```
-# setenforce [ Enforcing | Permissive | 1 | 0 ]
+# setenforce 1  # Enforcing
+# setenforce 0  # Permissive
 ```
 
 查看 SELinux 文件
@@ -684,26 +732,195 @@ SELinux 全称 Security Enhanced Linux (安全强化 Linux)
 # vim /etc/sysconfig/selinux
 ```
 
+最小化安装（Server 版）注意事项
 
-## DNS 反向解析
-
-关闭反向解析
-```bash
-vim /etc/ssh/sshd_config
 ```
-设置 UseDNS no
-```bash
-service sshd restart
+# vi /etc/selinux/config
+SELINUX=enforcing
+改为:
+SELINUX=permissive
+```
+保存, 重启
+
+启用网卡
+```
+# vi /etc/sysconfig/network-scripts/ifcfg-ens33
+ONBOOT = no
+修改为:
+ONBOOT = yes
+保存, 重启
+```
+
+`ifconfig`无法使用
+
+```
+# ip addr
+# ip link
+```
+
+查看哪个组件包含了`ifconfig`
+```
+# yum provides ifconfig  # 或 yum whatprovides ifconfig
+Loaded plugins: fastestmirror
+Loading mirror speeds from cached hostfile
+ * base: mirrors.shuosc.org
+ * extras: mirrors.163.com
+ * updates: mirrors.163.com
+net-tools-2.0-0.22.20131004git.el7.x86_64 : Basic networking tools
+Repo        : @base
+Matched from:
+Filename    : /usr/sbin/ifconfig
+# yum install -y net-tools
+```
+
+`firewall`是动态防火墙, 建立在`iptables`之上; `iptables`用于过滤数据包，属于网络层防火墙.
+
+关闭 CentOS7 自带的防火墙`firewall`并取消开机自启
+```
+# systemctl status firewalld
+# systemctl stop firewalld
+# systemctl disable firewalld
+# systemctl status firewalld
+```
+
+安装`iptables`防火墙 
+```
+yum install -y iptables-services
+```
+
+修改`iptables`配置文件
+```
+# vi /etc/sysconfig/iptables
+# 添加下面三句话到默认的22端口这条规则的下面
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 3306 -j ACCEPT
+-A INPUT -p tcp -m state --state NEW -m tcp --dport 6379 -j ACCEPT
+```
+
+```
+# systemctl restart iptables
+# 添加iptables开机自启项 
+# systemctl enable iptables
+```
+
+安装 EPEL 源
+```
+# yum install -y epel-release
+```
+
+安装 pip 并升级 pip
+```
+# yum install -y python-pip
+# pip install -U pip
+# pip -V
+```
+
+补充常用的工具（wget, vim）
+```
+# yum install -y wget vim-enhanced
 ```
 
 
-## at
+从`ping`命令的回显判断操作系统类型 
 
-定时任务
-```bash
-echo `date`
-at now + 1 minute <<< "/bin/echo `date` > /tmp/time.log"
-at now + 10 minutes <<< "/bin/echo `date` > /tmp/time.log"   # 创建任务
-at -l       # 列出任务
-at -c 1     # 显示任务内容
+ttl | system
+--- | ---
+128 | WIN NT/2K/XP
+32 | WIN 95/98/ME
+256 | UNIX
+64 | LINUX
+
+一般 ttl 都会小于上面的值, 因为中间有跳跃的节点
+但是这个`ttl`值可以人为修改
+
+
+## 文件校验
+```
+$ md5sum .bashrc
+1f98b8f3f3c8f8927eca945d59dcc1c6  .bashrc
+$ shasum .bashrc
+c4d853993e323432cb84359de2c319b9a767b729  .bashrc
+$ sha1sum .bashrc
+c4d853993e323432cb84359de2c319b9a767b729  .bashrc
+```
+
+
+## 文件描述符
+
+描述符号 | 说明
+--- | ---
+0 | 标准输入
+1 | 标准输出
+2 | 标准错误输出
+/dev/null | 黑洞
+
+常见组合:
+
+描述符号组合 | 说明
+--- | ---
+2>&1 | -
+/dev/null | -
+
+
+## `ls -l`命令查看某一个目录会得到一个7个字段的列
+
+```
+root@kali:~# ls -l /var/spool/cron/crontabs/root
+-rw------- 1 root crontab 1.5K 12月 24 00:30 root
+```
+
+- 第 1 字段
+
+10个字母的序号 | 说明
+--- | ---
+1 | 文件类型（'-':普通文件;'d':目录;'l':链接文件;'b':块设备文件;'c':字符设备文件;'p':命令管道文件;'s':sock文件）
+2,3,4  | rwx(读,写,执行)权限;文件的拥有者
+5,6,7  | rwx(读,写,执行)权限;文件的拥有者同组用户
+8,9,10 | rwx(读,写,执行)权限;非文件拥有者其他用户
+
+- 第 2 字段
+
+文件硬链接数
+
+- 第 3 字段
+
+文件(目录)拥有者
+
+- 第 4 字段
+
+文件(目录)拥有者所在的组
+
+- 第 5 字段
+
+文件所占用的空间(以字节为单位)
+
+- 第 6 字段
+
+文件(目录)最近访问(修改)时间
+
+- 第 7 字段
+
+文件名
+
+
+## 登录远程主机如果出现如下警告
+```
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @
+@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+IT IS POSSIBLE THAT SOMEONE IS DOING SOMETHING NASTY!
+Someone could be eavesdropping on you right now (man-in-the-middle attack)!
+It is also possible that a host key has just been changed.
+The fingerprint for the RSA key sent by the remote host is
+SHA256:IpTUMpNl17JrbLg2l3bHcP2x6A9ijsF+EKmfRcZBxPU.
+Please contact your system administrator.
+Add correct host key in /Users/zhanghe/.ssh/known_hosts to get rid of this message.
+Offending RSA key in /Users/zhanghe/.ssh/known_hosts:68
+RSA host key for 100.100.100.100 has changed and you have requested strict checking.
+Host key verification failed.
+```
+
+把以下文件中IP（`100.100.100.100`）对应的这一行删除
+```
+vim /Users/zhanghe/.ssh/known_hosts
 ```
