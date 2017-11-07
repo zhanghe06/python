@@ -122,3 +122,112 @@ at now + 10 minutes <<< "/bin/echo `date` > /tmp/time.log"   # 创建任务
 at -l       # 列出任务
 at -c 1     # 显示任务内容
 ```
+
+
+## Mac 键盘图标与对应快捷按键
+
+键盘图标 | 快捷按键
+| --- | --- |
+⌘ | Command () win
+⌃ | Control ctrl
+⌥ | Option alt
+⇧ | Shift
+⇪ | Caps Lock
+
+
+### 文件校验
+Mac md5 替代 md5sum
+```
+$ md5 .bashrc
+MD5 (.bashrc) = 1f98b8f3f3c8f8927eca945d59dcc1c6
+$ shasum .bashrc
+c4d853993e323432cb84359de2c319b9a767b729  .bashrc
+```
+
+
+## Mac 安装 matplotlib
+
+```bash
+pip install matplotlib
+```
+测试导入报错
+```
+Traceback (most recent call last):
+  File "wechat_jump_iOS_py3.py", line 3, in <module>
+    import matplotlib.pyplot as plt
+  File "/Users/zhanghe/code/wechat_jump_game/wechat_jump_game.env/lib/python3.6/site-packages/matplotlib/pyplot.py", line 116, in <module>
+    _backend_mod, new_figure_manager, draw_if_interactive, _show = pylab_setup()
+  File "/Users/zhanghe/code/wechat_jump_game/wechat_jump_game.env/lib/python3.6/site-packages/matplotlib/backends/__init__.py", line 60, in pylab_setup
+    [backend_name], 0)
+  File "/Users/zhanghe/code/wechat_jump_game/wechat_jump_game.env/lib/python3.6/site-packages/matplotlib/backends/backend_macosx.py", line 17, in <module>
+    from matplotlib.backends import _macosx
+RuntimeError: Python is not installed as a framework. The Mac OS X backend will not be able to function correctly if Python is not installed as a framework. See the Python documentation for more information on installing Python as a framework on Mac OS X. Please either reinstall Python as a framework, or try one of the other backends. If you are using (Ana)Conda please install python.app and replace the use of 'python' with 'pythonw'. See 'Working with Matplotlib on OSX' in the Matplotlib FAQ for more information.
+```
+
+解决办法:
+```bash
+echo "backend: TkAgg" > ~/.matplotlib/matplotlibrc
+```
+
+
+## iphone 真机调试
+
+https://github.com/openatx/facebook-wda
+
+Install python wda client
+```bash
+pip install --pre facebook-wda
+```
+
+https://github.com/Carthage/Carthage
+```bash
+brew install carthage
+```
+
+iOS 真机如何安装 WebDriverAgent
+```bash
+git clone https://github.com/facebook/WebDriverAgent
+cd WebDriverAgent
+./Scripts/bootstrap.sh
+```
+安装完成, 双击`WebDriverAgent.xcodeproj`文件
+
+设置证书, 参考: 
+- https://testerhome.com/topics/7220
+- https://testerhome.com/topics/8085
+
+
+```bash
+brew install libimobiledevice
+```
+
+端口转发
+```bash
+iproxy --help
+usage: iproxy LOCAL_TCP_PORT DEVICE_TCP_PORT [UDID]
+
+iproxy 8100 8100
+```
+
+验证服务状态
+```
+curl http://localhost:8100/status
+{
+    "value": {
+        "state": "success",
+        "os": {
+            "name": "iOS",
+            "version": "11.2.1"
+        },
+        "ios": {
+            "simulatorVersion": "11.2.1",
+            "ip": "192.168.3.44"
+        },
+        "build": {
+            "time": "Dec 30 2017 21:05:55"
+        }
+    },
+    "sessionId": "BC69BB2F-945F-4EBC-B94B-5E8C01696F82",
+    "status": 0
+}
+```
