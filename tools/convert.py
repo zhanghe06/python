@@ -25,6 +25,8 @@ def test_unescape():
     # unicode编码后的汉字的解析
     str_xx = '&#21152;&#20837;&#21040;&#34;&#25105;&#30340;&#20070;&#30446;&#36873;&#21333;&#34;&#20013;'
     str_xx = '\xe5\xbd\x93\xe5\x89\x8d\xe5\xb7\xb2\xe8\xbe\xbe\xe5\x88\xb0\xe6\x8a\x93\xe5\x8f\x96\xe9\x85\x8d\xe7\xbd\xae\xe7\x9a\x84\xe6\x9c\x80\xe5\xa4\xa7\xe9\xa1\xb5\xe7\xa0\x81'
+    str_xx = '\xe9\xaa\x8c\xe8\xaf\x81\xe7\xa0\x81\xe8\xbe\x93\xe5\x85\xa5\xe9\x94\x99\xe8\xaf\xaf, \xe8\xaf\xb7\xe9\x87\x8d\xe6\x96\xb0\xe8\xbe\x93\xe5\x85\xa5\xef\xbc\x81'
+    str_xx = '\xe6\x9c\xaa\xe7\x9f\xa5\xe8\xae\xbf\xe9\x97\xae\xe6\x9d\xa5\xe6\xba\x90'
     from HTMLParser import HTMLParser
     h = HTMLParser()
     print h.unescape(str_xx)
@@ -76,10 +78,10 @@ def test():
 
 if __name__ == "__main__":
     test()
-    print system_to_decimal('000000001b2025f6', 16)
-    print system_to_decimal('0001000100010001', 2)
-    test_unescape()
-    test_unicode()
+    # print system_to_decimal('000000001b2025f6', 16)
+    # print system_to_decimal('0001000100010001', 2)
+    # test_unescape()
+    # test_unicode()
 
 
 """

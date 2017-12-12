@@ -79,26 +79,28 @@ class RedisPubSub(object):
 
 
 def test_pub():
-    q = RedisPubSub('test:aa')
-    q.pub('hh', '123')
+    q = RedisPubSub('test:aa', password='123456')
+    q.pub('hh', '123')                      # 字符串
+    q.pub('hh', {'a': False})               # 字典
+    q.pub('hh', json.dumps({'a': False}))   # JSON
 
 
 def test_sub():
-    q = RedisPubSub('test:aa')
+    q = RedisPubSub('test:aa', password='123456')
     r = q.sub('hh')
     for i in r:
         print i
 
 
 def test_p_sub():
-    q = RedisPubSub('test:*')
+    q = RedisPubSub('test:*', password='123456')
     r = q.p_sub('hh')
     for i in r:
         print i
 
 
 def test_sub_not_loop():
-    q = RedisPubSub('test')
+    q = RedisPubSub('test:aa', password='123456')
     r = q.sub_not_loop('hh')
     print r
 

@@ -203,4 +203,16 @@ if __name__ == "__main__":
 time模块的官方文档
 https://docs.python.org/2/library/time.html
 
+
+模拟 http response header Date 时间格式:
+
+格林威治时间
+In [4]: time.strftime("%a, %d %b %Y %H:%M:%S GMT", time.gmtime())
+Out[4]: 'Mon, 11 Dec 2017 12:04:25 GMT'
+
+本地时区时间
+In [5]: time.strftime("%a, %d %b %Y %H:%M:%S %Z")
+Out[5]: 'Mon, 11 Dec 2017 20:04:45 CST'
+
+
 """
