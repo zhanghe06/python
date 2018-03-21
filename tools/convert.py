@@ -27,6 +27,8 @@ def test_unescape():
     str_xx = '\xe5\xbd\x93\xe5\x89\x8d\xe5\xb7\xb2\xe8\xbe\xbe\xe5\x88\xb0\xe6\x8a\x93\xe5\x8f\x96\xe9\x85\x8d\xe7\xbd\xae\xe7\x9a\x84\xe6\x9c\x80\xe5\xa4\xa7\xe9\xa1\xb5\xe7\xa0\x81'
     str_xx = '\xe9\xaa\x8c\xe8\xaf\x81\xe7\xa0\x81\xe8\xbe\x93\xe5\x85\xa5\xe9\x94\x99\xe8\xaf\xaf, \xe8\xaf\xb7\xe9\x87\x8d\xe6\x96\xb0\xe8\xbe\x93\xe5\x85\xa5\xef\xbc\x81'
     str_xx = '\xe6\x9c\xaa\xe7\x9f\xa5\xe8\xae\xbf\xe9\x97\xae\xe6\x9d\xa5\xe6\xba\x90'
+    str_xx = u'&lt;/p&gt;&lt;p&gt;帮企业控制采购成本，提升市场竞争力&lt;/p&gt;&lt;/div&gt;'
+    str_xx = u'&#26368;&#26032;&#21338;&#24425;&#30333;&#33756;&#22823;&#20840;&#65292;&#50;&#48;&#49;&#56;&#21338;&#24425;&#30333;&#33756;&#22823;&#20840;&#65292;&#26368;&#26032;&#21338;&#24425;&#23089;&#20048;&#32593;&#22336;&#65292;&#21338;&#24425;&#26368;&#26032;&#32593;&#31449;&#22823;&#20840;&#65292;&#21338;&#24425;&#26368;&#26032;&#32593;&#31449;&#22823;&#20840;&#65292;&#21338;&#24425;&#26368;&#26032;&#20248;&#24800;'
     from HTMLParser import HTMLParser
     h = HTMLParser()
     print h.unescape(str_xx)
@@ -77,10 +79,10 @@ def test():
     print [hex(i).lstrip('0x').zfill(2) for i in range(0, 256)]
 
 if __name__ == "__main__":
-    test()
+    # test()
     # print system_to_decimal('000000001b2025f6', 16)
     # print system_to_decimal('0001000100010001', 2)
-    # test_unescape()
+    test_unescape()
     # test_unicode()
 
 

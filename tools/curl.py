@@ -84,7 +84,7 @@ if __name__ == '__main__':
 
 """
 保存请求页面结果
-$ url -o page.html http://www.linuxidc.com
+$ curl -o page.html http://www.linuxidc.com
 通过代理访问
 $ curl -x 123.45.67.89:1080 -o page.html http://www.linuxidc.com
 上传文件
