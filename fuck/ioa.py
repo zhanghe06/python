@@ -90,7 +90,9 @@ class IoaClient(object):
         return status
 
     def login(self):
-        url = 'https://i.ioa.cn/rs/m/security/login'
+        # TODO http 或 https (非电信不支持https? 待确认)
+        # 或者 不改协议，重启网络试试？dns问题？
+        url = 'http://i.ioa.cn/rs/m/security/login'
         payload = {
             "username": self.username,
             "password": self.password,
@@ -117,6 +119,94 @@ class IoaClient(object):
             print(res.status_code)
             print(res.content)
             return False
+
+    def get_statistics_by_day(self):
+        """
+        检查打卡状况
+
+        {
+            "resultCode": "0000",
+            "data": {
+                "dateTime": "8月27日 星期一",
+                "historyList": [{
+                    "clockHistoryId": "94827c514009429aa857094a798323eb",
+                    "primaryOrgId": "40b30cfa9f2145b1810e02f953a5b27b",
+                    "staffId": "d91d9f3fbc9744848894308e72cb6f4b",
+                    "clockDate": 1535299200000,
+                    "clockTime": "09:39",
+                    "clockType": 1,
+                    "remark": null,
+                    "longitude": "121.516476",
+                    "latitude": "31.311131",
+                    "place": "上海市 杨浦区 三门路36号",
+                    "signType": 0,
+                    "createTime": 1535333971000,
+                    "attIds": null,
+                    "caseId": null
+                }],
+                "clock": null
+            },
+            "msg": null
+        }
+
+        {
+            "resultCode": "0000",
+            "data": {
+                "dateTime": "8月27日 星期一",
+                "historyList": [{
+                    "clockHistoryId": "94827c514009429aa857094a798323eb",
+                    "primaryOrgId": "40b30cfa9f2145b1810e02f953a5b27b",
+                    "staffId": "d91d9f3fbc9744848894308e72cb6f4b",
+                    "clockDate": 1535299200000,
+                    "clockTime": "09:39",
+                    "clockType": 1,
+                    "remark": null,
+                    "longitude": "121.516476",
+                    "latitude": "31.311131",
+                    "place": "上海市 杨浦区 三门路36号",
+                    "signType": 0,
+                    "createTime": 1535333971000,
+                    "attIds": null,
+                    "caseId": null
+                }, {
+                    "clockHistoryId": "f1051d4978784dbc9b6c426879fb8f0a",
+                    "primaryOrgId": "40b30cfa9f2145b1810e02f953a5b27b",
+                    "staffId": "d91d9f3fbc9744848894308e72cb6f4b",
+                    "clockDate": 1535299200000,
+                    "clockTime": "19:54",
+                    "clockType": 1,
+                    "remark": null,
+                    "longitude": "121.516620",
+                    "latitude": "31.311244",
+                    "place": "上海市 杨浦区 三门路38-1号",
+                    "signType": 0,
+                    "createTime": 1535370881000,
+                    "attIds": null,
+                    "caseId": null
+                }],
+                "clock": null
+            },
+            "msg": null
+        }
+        错误结果:
+        {
+            "msg": "服务异常",
+            "resultCode": "1111",
+            "data": null
+        }
+        :return:
+        """
+        url = 'http://i.ioa.cn/hr/h/clockJsonController/getStatisticsByDay'
+        params = {
+            'currentDate': '',
+            'staffId': self.staff_id,
+        }
+        request_headers = self.headers.copy()
+        request_headers['securityToken'] = self.security_token
+        request_headers['Referer'] = 'http://i.ioa.cn/hr/h5/html/attendanceSign'
+        res = s.get(url, params=params, headers=request_headers, timeout=REQUESTS_TIME_OUT)
+        data = res.json()
+        print(json.dumps(data, indent=4, ensure_ascii=False))
 
     def fuck(self):
         """
@@ -179,4 +269,7 @@ if __name__ == '__main__':
         username='13800000000',
         password='123456',
     )
+    # ioa_client.login()
+    # ioa_client.get_statistics_by_day()
     ioa_client.fuck()
+    ioa_client.get_statistics_by_day()
