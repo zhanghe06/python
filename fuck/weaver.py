@@ -8,13 +8,15 @@
 @time: 2019-02-19 17:50
 """
 
-from __future__ import unicode_literals
 from __future__ import print_function
+from __future__ import unicode_literals
 
 import json
+import time
 import uuid
-import requests
 from urllib import urlencode
+
+import requests
 
 # from future.moves.urllib.parse import urlencode
 
@@ -43,6 +45,7 @@ class WeaverClient(object):
     udid = ''
     user_id = ''
     user_key = ''
+    sign_status = 'checkin'  # 打卡类型: 默认签到（checkout 签退）
 
     token = '3eef8a67907788cbd45266ad4921d7d1802b1cd8fd4db00cd55516d8a5b38d13'
     client_user_id = '191e35f7e01b0dacefa'
@@ -172,9 +175,12 @@ class WeaverClient(object):
 
         request_headers = self.headers.copy()
 
+        current_time = time.strftime("%H%M")
+        self.sign_status = 'checkout' if current_time >= '1826' else self.sign_status
+
         params = {
             "method": "checkin",
-            "type": "checkin",
+            "type": self.sign_status,
             "latlng": self.longitude,  # 纬度,经度
             "addr": self.addr,  # 地址
             "sessionkey": self.session_key,
