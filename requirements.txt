@@ -4,7 +4,7 @@ MarkupSafe==0.23
 Pillow==2.8.1
 PyExecJS==1.1.0
 PyMySQL==0.6.7
-Werkzeug==0.11.2
+Werkzeug==0.15.3
 argparse==1.2.1
 backports.ssl-match-hostname==3.4.0.2
 beautifulsoup4==4.4.1
