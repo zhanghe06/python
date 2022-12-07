@@ -8,7 +8,7 @@ Werkzeug==0.11.2
 argparse==1.2.1
 backports.ssl-match-hostname==3.4.0.2
 beautifulsoup4==4.4.1
-certifi==14.05.14
+certifi==2022.12.7
 cssselect==0.9.1
 cycler==0.9.0
 elasticsearch==2.1.0
